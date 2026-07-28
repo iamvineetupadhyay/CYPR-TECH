@@ -45,24 +45,99 @@ public class EmailService {
         String verifyUrl = frontendBaseUrl + "/login.html?verify_token=" + rawToken;
         String subject = "Verify Your CYPR Account";
 
-        String htmlContent = "<html>" +
-                "<body style=\"margin:0;padding:0;background-color:#f8fafc;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;color:#334155;\">" +
-                "  <div style=\"max-width:540px;margin:40px auto;background-color:#ffffff;border:1px solid #e2e8f0;border-radius:8px;padding:40px;box-shadow:0 4px 6px -1px rgba(0,0,0,0.05);\">" +
-                "    <div style=\"text-align:center;margin-bottom:32px;\">" +
-                "      <img src=\"" + frontendBaseUrl + "/assets/default-news.jpg\" alt=\"CYPR\" style=\"width:130px;height:auto;display:block;margin:0 auto;\">" +
-                "    </div>" +
-                "    <h2 style=\"font-size:20px;font-weight:700;color:#0f172a;margin:0 0 16px 0;text-align:center;\">Account Verification Required</h2>" +
-                "    <p style=\"font-size:14px;color:#334155;line-height:1.6;margin:0 0 24px 0;\">Hello " + name + ",</p>" +
-                "    <p style=\"font-size:14px;color:#334155;line-height:1.6;margin:0 0 24px 0;\">Thank you for registering with CYPR. Please verify your email address to complete your account setup and activate your security dashboard.</p>" +
-                "    <div style=\"text-align:center;margin:32px 0;\">" +
-                "      <a href=\"" + verifyUrl + "\" style=\"display:inline-block;background-color:#0f172a;color:#ffffff;font-weight:600;font-size:14px;text-decoration:none;padding:13px 28px;border-radius:6px;\">Verify Account</a>" +
-                "    </div>" +
-                "    <p style=\"font-size:12px;color:#64748b;line-height:1.5;margin:24px 0 0 0;\">If the button above does not work, please copy and paste the following URL into your browser:<br>" +
-                "    <a href=\"" + verifyUrl + "\" style=\"color:#2563eb;text-decoration:underline;\">" + verifyUrl + "</a></p>" +
-                "    <div style=\"margin:32px 0;border-top:1px solid #e2e8f0;\"></div>" +
-                "    <p style=\"font-size:12px;color:#64748b;line-height:1.5;margin:0 0 16px 0;\">This verification link will expire in 30 minutes. If you did not create a CYPR account, please disregard this email.</p>" +
-                "    <p style=\"font-size:12px;color:#94a3b8;margin:0;\">&copy; 2026 CYPR Security. All rights reserved.</p>" +
-                "  </div>" +
+        String htmlContent = "<!DOCTYPE html>" +
+                "<html lang=\"en\" xmlns:v=\"urn:schemas-microsoft-com:vml\" xmlns:o=\"urn:schemas-microsoft-com:office:office\">" +
+                "<head>" +
+                "  <meta charset=\"utf-8\">" +
+                "  <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">" +
+                "  <meta name=\"color-scheme\" content=\"light dark\">" +
+                "  <meta name=\"supported-color-schemes\" content=\"light dark\">" +
+                "  <title>Verify Your CYPR Account</title>" +
+                "  <!--[if mso]><noscript><xml><o:OfficeDocumentSettings><o:PixelsPerInch>96</o:PixelsPerInch></o:OfficeDocumentSettings></xml></noscript><![endif]-->" +
+                "  <style>" +
+                "    :root { color-scheme: light dark; supported-color-schemes: light dark; }" +
+                "    body, table, td, a { -webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%; }" +
+                "    table, td { mso-table-lspace: 0pt; mso-table-rspace: 0pt; }" +
+                "    img { -ms-interpolation-mode: bicubic; border: 0; outline: none; text-decoration: none; }" +
+                "    @media (prefers-color-scheme: dark) {" +
+                "      .body-bg { background-color: #0b0f19 !important; }" +
+                "      .card-bg { background-color: #111827 !important; border-color: #1f2937 !important; box-shadow: 0 10px 25px -5px rgba(0,0,0,0.5) !important; }" +
+                "      .text-heading { color: #f9fafb !important; }" +
+                "      .text-body { color: #d1d5db !important; }" +
+                "      .text-muted { color: #9ca3af !important; }" +
+                "      .text-link { color: #60a5fa !important; }" +
+                "      .badge-bg { background-color: #1f2937 !important; border-color: #374151 !important; }" +
+                "      .badge-text { color: #93c5fd !important; }" +
+                "      .btn-primary { background-color: #2563eb !important; color: #ffffff !important; }" +
+                "      .footer-border { border-color: #1f2937 !important; }" +
+                "      .callout-bg { background-color: #1e293b !important; border-color: #334155 !important; }" +
+                "    }" +
+                "    [data-ogsc] .body-bg { background-color: #0b0f19 !important; }" +
+                "    [data-ogsc] .card-bg { background-color: #111827 !important; border-color: #1f2937 !important; }" +
+                "    [data-ogsc] .text-heading { color: #f9fafb !important; }" +
+                "    [data-ogsc] .text-body { color: #d1d5db !important; }" +
+                "    [data-ogsc] .text-muted { color: #9ca3af !important; }" +
+                "    [data-ogsc] .btn-primary { background-color: #2563eb !important; color: #ffffff !important; }" +
+                "  </style>" +
+                "</head>" +
+                "<body class=\"body-bg\" style=\"margin:0;padding:0;width:100%;background-color:#f8fafc;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;-webkit-font-smoothing:antialiased;\">" +
+                "  <div style=\"display:none;max-height:0;overflow:hidden;opacity:0;font-size:1px;line-height:1px;color:#f8fafc;\">Verify your email address to complete your CYPR account setup and activate your security dashboard.</div>" +
+                "  <table border=\"0\" cellpadding=\"0\" cellspacing=\"0\" width=\"100%\" class=\"body-bg\" style=\"background-color:#f8fafc;table-layout:fixed;\">" +
+                "    <tr>" +
+                "      <td align=\"center\" style=\"padding:40px 16px;\">" +
+                "        <table border=\"0\" cellpadding=\"0\" cellspacing=\"0\" width=\"100%\" style=\"max-width:540px;\">" +
+                "          <tr>" +
+                "            <td class=\"card-bg\" style=\"background-color:#ffffff;border:1px solid #e2e8f0;border-radius:12px;padding:40px 36px;box-shadow:0 10px 25px -5px rgba(15,23,42,0.05),0 8px 10px -6px rgba(15,23,42,0.05);\">" +
+                "              <table border=\"0\" cellpadding=\"0\" cellspacing=\"0\" width=\"100%\">" +
+                "                <tr>" +
+                "                  <td align=\"center\" style=\"padding-bottom:24px;\">" +
+                "                    <img src=\"" + frontendBaseUrl + "/assets/default-news.jpg\" alt=\"CYPR Security\" width=\"130\" style=\"display:block;width:130px;max-width:130px;height:auto;border:0;border-radius:6px;\">" +
+                "                  </td>" +
+                "                </tr>" +
+                "              </table>" +
+                "              <table border=\"0\" cellpadding=\"0\" cellspacing=\"0\" width=\"100%\">" +
+                "                <tr>" +
+                "                  <td align=\"center\" style=\"padding-bottom:20px;\">" +
+                "                    <div class=\"badge-bg\" style=\"display:inline-block;background-color:#f1f5f9;border:1px solid #e2e8f0;border-radius:20px;padding:6px 16px;font-size:11px;font-weight:700;color:#0f172a;letter-spacing:0.6px;text-transform:uppercase;\">" +
+                "                      <span class=\"badge-text\">ACCOUNT VERIFICATION</span>" +
+                "                    </div>" +
+                "                  </td>" +
+                "                </tr>" +
+                "              </table>" +
+                "              <h1 class=\"text-heading\" style=\"margin:0 0 16px 0;font-size:22px;font-weight:700;line-height:1.3;color:#0f172a;text-align:center;letter-spacing:-0.3px;\">Verify Your CYPR Account</h1>" +
+                "              <p class=\"text-body\" style=\"margin:0 0 16px 0;font-size:15px;line-height:1.6;color:#334155;\">Hello " + name + ",</p>" +
+                "              <p class=\"text-body\" style=\"margin:0 0 28px 0;font-size:15px;line-height:1.6;color:#334155;\">Thank you for registering with <strong>CYPR Security Platform</strong>. Please confirm your email address to complete account setup and activate your threat security dashboard.</p>" +
+                "              <table border=\"0\" cellpadding=\"0\" cellspacing=\"0\" width=\"100%\" style=\"margin:32px 0;\">" +
+                "                <tr>" +
+                "                  <td align=\"center\">" +
+                "                    <!--[if mso]><v:roundrect xmlns:v=\"urn:schemas-microsoft-com:vml\" xmlns:w=\"urn:schemas-microsoft-com:office:word\" href=\"" + verifyUrl + "\" style=\"height:48px;v-text-anchor:middle;width:220px;\" arcsize=\"17%\" stroke=\"f\" fillcolor=\"#0f172a\"><w:anchorlock/><center style=\"color:#ffffff;font-family:sans-serif;font-size:15px;font-weight:600;\">Verify Account</center></v:roundrect><![endif]-->" +
+                "                    <!--[if !mso]><!-->" +
+                "                    <a href=\"" + verifyUrl + "\" target=\"_blank\" class=\"btn-primary\" style=\"display:inline-block;background-color:#0f172a;color:#ffffff;font-size:15px;font-weight:600;text-decoration:none;padding:14px 32px;border-radius:8px;box-shadow:0 4px 12px rgba(15,23,42,0.15);\">Verify Account &rarr;</a>" +
+                "                    <!--<![endif]-->" +
+                "                  </td>" +
+                "                </tr>" +
+                "              </table>" +
+                "              <p class=\"text-muted\" style=\"margin:0 0 28px 0;font-size:13px;line-height:1.6;color:#64748b;text-align:center;\">Button not working? <a href=\"" + verifyUrl + "\" target=\"_blank\" class=\"text-link\" style=\"color:#2563eb;font-weight:600;text-decoration:underline;\">Click here to verify your account</a></p>" +
+                "              <table border=\"0\" cellpadding=\"0\" cellspacing=\"0\" width=\"100%\" class=\"callout-bg\" style=\"background-color:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;padding:14px 16px;margin-bottom:28px;\">" +
+                "                <tr>" +
+                "                  <td class=\"text-muted\" style=\"font-size:12px;line-height:1.5;color:#64748b;text-align:center;\"><strong class=\"text-heading\" style=\"color:#0f172a;\">Notice:</strong> This verification link is active for <strong>30 minutes</strong> for security compliance.</td>" +
+                "                </tr>" +
+                "              </table>" +
+                "              <table border=\"0\" cellpadding=\"0\" cellspacing=\"0\" width=\"100%\">" +
+                "                <tr>" +
+                "                  <td class=\"footer-border\" style=\"border-top:1px solid #e2e8f0;padding-top:24px;\"></td>" +
+                "                </tr>" +
+                "              </table>" +
+                "              <p class=\"text-muted\" style=\"margin:0 0 8px 0;font-size:12px;line-height:1.5;color:#94a3b8;text-align:center;\">This is an automated security email from <strong>CYPR Security Platform</strong>.</p>" +
+                "              <p class=\"text-muted\" style=\"margin:0 0 12px 0;font-size:12px;line-height:1.5;color:#94a3b8;text-align:center;\">Questions? Reach out to our support team at <a href=\"mailto:mail.cyprtech@gmail.com\" class=\"text-link\" style=\"color:#2563eb;text-decoration:underline;\">mail.cyprtech@gmail.com</a>.</p>" +
+                "              <p class=\"text-muted\" style=\"margin:0 0 16px 0;font-size:11px;line-height:1.5;color:#94a3b8;text-align:center;\">If you did not request a CYPR account, you can safely ignore or disregard this email.</p>" +
+                "              <p class=\"text-muted\" style=\"margin:0;font-size:11px;line-height:1.5;color:#cbd5e1;text-align:center;\">&copy; 2026 CYPR Security. All rights reserved.</p>" +
+                "            </td>" +
+                "          </tr>" +
+                "        </table>" +
+                "      </td>" +
+                "    </tr>" +
+                "  </table>" +
                 "</body>" +
                 "</html>";
 
