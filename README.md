@@ -1,6 +1,3 @@
-<p align="center">
-  <img src="assets/banners/github-banner.png" alt="CYPR" width="100%" />
-</p>
 
 <p align="center">
   <img src="assets/logo/cypr-logo.png" alt="CYPR logo" width="96" />
