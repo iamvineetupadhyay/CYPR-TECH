@@ -2835,14 +2835,18 @@
       // Alerts bell integrated with notifications.js
 
       // User profile trigger dropdown binding
+      const userMenuEl = rightGroup.querySelector('.cm-user-menu');
       const trigger = rightGroup.querySelector('.cm-user-trigger');
-      const menu = rightGroup.querySelector('.cm-dropdown-menu');
-      if (trigger && menu) {
+      if (trigger && userMenuEl) {
         trigger.addEventListener('click', (e) => {
           e.stopPropagation();
-          menu.classList.toggle('open');
+          userMenuEl.classList.toggle('active');
         });
-        document.addEventListener('click', () => menu.classList.remove('open'));
+        document.addEventListener('click', (e) => {
+          if (!userMenuEl.contains(e.target)) {
+            userMenuEl.classList.remove('active');
+          }
+        });
       }
 
       // Logout triggers
