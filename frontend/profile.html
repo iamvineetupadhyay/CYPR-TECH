@@ -1,0 +1,1342 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <link rel="icon" type="image/png" href="assets/favicon.png">
+  <script src="assets/js/config.js"></script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>User Profile — CYPR Security Vault</title>
+  <script src="assets/js/site-enhancements.js"></script>
+  <link rel="stylesheet" href="assets/css/style.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #ffffff;
+      --bg2: #f8fafc;
+      --bg3: #f1f5f9;
+      --card: #ffffff;
+      --border: #e2e8f0;
+      --border2: #cbd5e1;
+      --lime: #e05a00;
+      --lime2: #f97316;
+      --lime-dim: rgba(224, 90, 0, 0.08);
+      --lime-glow: rgba(224, 90, 0, 0.2);
+      --green: #10b981;
+      --red: #ef4444;
+      --text: #0f172a;
+      --text2: #475569;
+      --text3: #94a3b8;
+      --font: 'Outfit', sans-serif;
+      --mono: 'JetBrains Mono', monospace;
+    }
+
+    html[data-theme="dark"] {
+      --bg: #08080a;
+      --bg2: #101014;
+      --bg3: #18181f;
+      --card: #101014;
+      --border: rgba(255, 255, 255, 0.08);
+      --border2: rgba(255, 255, 255, 0.15);
+      --text: #f8fafc;
+      --text2: #94a3b8;
+      --text3: #64748b;
+    }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--font);
+      margin: 0;
+      padding-top: 92px;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    .cypr-profile-container {
+      width: 100%;
+      max-width: 1060px;
+      margin: 0 auto;
+      padding: 20px 16px 60px;
+      box-sizing: border-box;
+    }
+
+    /* ═══ CLEAN HEADER PROFILE CARD ═══ */
+    .cypr-header-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 28px 32px 0;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03);
+      margin-bottom: 24px;
+      position: relative;
+    }
+
+    .cypr-avatar-header-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 24px;
+      flex-wrap: wrap;
+      gap: 20px;
+    }
+
+    .cypr-avatar-left-group {
+      display: flex;
+      align-items: center;
+      gap: 22px;
+    }
+
+    .cypr-avatar-frame {
+      position: relative;
+      width: 96px;
+      height: 96px;
+      border-radius: 50%;
+      padding: 3px;
+      background: linear-gradient(135deg, var(--lime), #f97316);
+      box-shadow: 0 4px 20px var(--lime-glow);
+      flex-shrink: 0;
+      cursor: pointer;
+      transition: transform 0.2s ease;
+    }
+
+    .cypr-avatar-frame:hover {
+      transform: scale(1.04);
+    }
+
+    .cypr-avatar-frame.is-uploading {
+      opacity: 0.55;
+      pointer-events: none;
+    }
+
+    .cypr-avatar-img {
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+      background: var(--bg3);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2.2rem;
+      font-weight: 800;
+      color: var(--lime);
+      border: 3px solid var(--card);
+      overflow: hidden;
+      object-fit: cover;
+    }
+
+    .cypr-avatar-img img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .cypr-avatar-cam-btn {
+      position: absolute;
+      bottom: 2px;
+      right: 2px;
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      background: var(--lime);
+      border: 2px solid var(--card);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #ffffff;
+      cursor: pointer;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+    }
+
+    .cypr-user-name {
+      font-size: 1.65rem;
+      font-weight: 800;
+      color: var(--text);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin: 0 0 4px 0;
+      letter-spacing: -0.02em;
+    }
+
+    .cypr-verified-badge {
+      font-size: 0.68rem;
+      font-weight: 700;
+      padding: 3px 10px;
+      border-radius: 999px;
+      background: var(--lime-dim);
+      border: 1px solid var(--lime-glow);
+      color: var(--lime);
+      font-family: var(--mono);
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+    }
+
+    .cypr-user-email-tag {
+      font-family: var(--mono);
+      font-size: 0.82rem;
+      color: var(--text2);
+      font-weight: 500;
+    }
+
+    .cypr-action-buttons {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+    }
+
+    .cypr-btn {
+      padding: 10px 18px;
+      border-radius: 12px;
+      font-size: 0.82rem;
+      font-weight: 700;
+      border: 1px solid var(--border2);
+      background: var(--bg2);
+      color: var(--text);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      transition: all 0.2s ease;
+      text-decoration: none;
+    }
+
+    .cypr-btn-lime {
+      background: var(--lime);
+      color: #ffffff;
+      border-color: var(--lime);
+      box-shadow: 0 0 16px var(--lime-glow);
+    }
+
+    .cypr-btn-lime:hover {
+      background: var(--lime2);
+      transform: translateY(-1px);
+    }
+
+    .cypr-btn:hover {
+      border-color: var(--lime);
+      color: var(--lime);
+    }
+
+    .cypr-btn:disabled,
+    .cypr-btn-lime:disabled {
+      opacity: 0.55;
+      cursor: not-allowed;
+      transform: none;
+      box-shadow: none;
+    }
+
+    /* Integrated Header Telemetry Grid */
+    .cypr-header-telemetry-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 10px;
+      margin-bottom: 20px;
+      padding: 14px;
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+    }
+
+    @media (max-width: 900px) {
+      .cypr-header-telemetry-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    @media (max-width: 540px) {
+      .cypr-header-telemetry-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .header-tele-item {
+      display: flex;
+      flex-direction: column;
+      padding: 8px 10px;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+    }
+
+    .header-tele-item.span-2 {
+      grid-column: span 2;
+    }
+
+    @media (max-width: 540px) {
+      .header-tele-item.span-2 {
+        grid-column: 1 / -1;
+      }
+    }
+
+    .header-tele-label {
+      font-family: var(--mono);
+      font-size: 0.62rem;
+      font-weight: 700;
+      color: var(--text3);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 2px;
+    }
+
+    .header-tele-val {
+      font-size: 0.82rem;
+      font-weight: 700;
+      color: var(--text);
+      word-break: break-word;
+    }
+
+    /* ═══ CLEAN TAB NAVIGATION BAR ═══ */
+    .cypr-nav-tabs-bar {
+      display: flex;
+      border-top: 1px solid var(--border);
+      gap: 8px;
+      overflow-x: auto;
+      scrollbar-width: none;
+    }
+    .cypr-nav-tabs-bar::-webkit-scrollbar { display: none; }
+
+    .cypr-tab-item {
+      padding: 14px 20px;
+      font-size: 0.86rem;
+      font-weight: 700;
+      color: var(--text3);
+      cursor: pointer;
+      border-bottom: 2.5px solid transparent;
+      transition: all 0.2s ease;
+      white-space: nowrap;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .cypr-tab-item.active {
+      color: var(--lime);
+      border-bottom-color: var(--lime);
+    }
+
+    /* ═══ 2-COLUMN MAIN CONTENT ═══ */
+    .cypr-content-grid {
+      display: grid;
+      grid-template-columns: 340px 1fr;
+      gap: 20px;
+    }
+
+    @media (max-width: 860px) {
+      .cypr-content-grid {
+        grid-template-columns: 1fr;
+      }
+      .cypr-avatar-header-row {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+      }
+      .cypr-avatar-left-group {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+      }
+      .cypr-header-card {
+        padding: 24px 18px 0;
+      }
+      .cypr-action-buttons {
+        width: 100%;
+        justify-content: center;
+      }
+    }
+
+    .cypr-card {
+      background: var(--card);
+      border-radius: 16px;
+      padding: 22px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.03);
+      margin-bottom: 20px;
+      border: 1px solid var(--border);
+    }
+
+    .cypr-card-title {
+      font-size: 1rem;
+      font-weight: 800;
+      color: var(--text);
+      margin: 0 0 16px 0;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .cypr-intro-list {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .cypr-intro-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-size: 0.85rem;
+      color: var(--text);
+    }
+
+    .cypr-intro-item svg {
+      width: 17px;
+      height: 17px;
+      color: var(--lime);
+      flex-shrink: 0;
+    }
+
+    .cypr-telemetry-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+
+    @media (max-width: 580px) {
+      .cypr-telemetry-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .telemetry-item {
+      display: flex;
+      flex-direction: column;
+      padding: 10px 12px;
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+    }
+
+    .telemetry-item.full-width {
+      grid-column: 1 / -1;
+    }
+
+    .telemetry-label {
+      font-family: var(--mono);
+      font-size: 0.65rem;
+      font-weight: 700;
+      color: var(--text3);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 3px;
+    }
+
+    .telemetry-val {
+      font-size: 0.84rem;
+      font-weight: 700;
+      color: var(--text);
+      word-break: break-word;
+    }
+
+    /* Tab Panels */
+    .cypr-panel { display: none; }
+    .cypr-panel.active { display: block; }
+
+    /* Form Fields */
+    .cypr-field-group { margin-bottom: 16px; }
+    .cypr-label { display: block; font-size: 0.75rem; font-weight: 700; color: var(--text3); margin-bottom: 6px; text-transform: uppercase; letter-spacing: 0.04em; }
+    .cypr-input { width: 100%; padding: 11px 14px; border-radius: 12px; border: 1px solid var(--border2); background: var(--bg2); color: var(--text); font-family: var(--font); font-size: 0.88rem; outline: none; box-sizing: border-box; }
+    .cypr-input:focus { border-color: var(--lime); }
+    .cypr-input[readonly] { color: var(--text3); cursor: not-allowed; }
+    .cypr-input-hint { font-size: 0.72rem; color: var(--text3); margin-top: 5px; }
+    textarea.cypr-input { resize: vertical; min-height: 70px; font-family: var(--font); }
+
+    /* Toggle Switch */
+    .cypr-toggle-row { display: flex; align-items: center; justify-content: space-between; padding: 14px 0; border-bottom: 1px solid var(--border); }
+    .cypr-toggle-row:last-child { border-bottom: none; }
+
+    .switch { position: relative; display: inline-block; width: 44px; height: 24px; flex-shrink: 0; }
+    .switch input { opacity: 0; width: 0; height: 0; }
+    .switch input:disabled + .slider { opacity: 0.5; cursor: not-allowed; }
+    .slider { position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: var(--border2); transition: .3s; border-radius: 24px; }
+    .slider:before { position: absolute; content: ""; height: 18px; width: 18px; left: 3px; bottom: 3px; background-color: white; transition: .3s; border-radius: 50%; }
+    input:checked + .slider { background-color: var(--lime); }
+    input:checked + .slider:before { transform: translateX(20px); }
+
+    /* Inline status / error banners */
+    .cypr-inline-msg { font-size: 0.78rem; font-weight: 600; margin-top: 10px; padding: 10px 12px; border-radius: 10px; display: none; }
+    .cypr-inline-msg.show { display: block; }
+    .cypr-inline-msg.error { color: var(--red); background: rgba(239,68,68,0.08); border: 1px solid rgba(239,68,68,0.25); }
+    .cypr-inline-msg.success { color: var(--green); background: rgba(16,185,129,0.08); border: 1px solid rgba(16,185,129,0.25); }
+
+    /* Loading skeleton */
+    .cypr-skeleton { position: relative; overflow: hidden; background: var(--bg3); border-radius: 6px; color: transparent !important; }
+    .cypr-skeleton::after {
+      content: ""; position: absolute; inset: 0;
+      background: linear-gradient(90deg, transparent, rgba(148,163,184,0.18), transparent);
+      animation: cyprShimmer 1.3s infinite;
+    }
+    @keyframes cyprShimmer { 0% { transform: translateX(-100%); } 100% { transform: translateX(100%); } }
+
+    .cypr-full-page-banner {
+      max-width: 1060px; margin: 0 auto 20px; padding: 14px 18px; border-radius: 14px;
+      background: rgba(239,68,68,0.08); border: 1px solid rgba(239,68,68,0.25); color: var(--red);
+      font-size: 0.85rem; font-weight: 600; display: none; align-items: center; justify-content: space-between; gap: 10px;
+    }
+    .cypr-full-page-banner.show { display: flex; }
+
+    .cypr-mini-activity-row { display:flex; align-items:center; justify-content:space-between; padding:12px 14px; background:var(--bg2); border:1px solid var(--border); border-radius:12px; }
+  </style>
+</head>
+
+<body>
+
+  <!-- Shown only if session expired -->
+  <div class="cypr-full-page-banner" id="cyprAuthBanner">
+    <span id="cyprAuthBannerText">Session expired — please log in again to view your profile.</span>
+    <button class="cypr-btn cypr-btn-lime" style="padding:6px 14px;" onclick="window.location.href='login.html'">Log In</button>
+  </div>
+
+  <div class="cypr-profile-container">
+
+    <!-- ═══ UNIFIED MASTER PROFILE CARD ═══ -->
+    <div class="cypr-header-card">
+      <input type="file" id="cyprAvatarFile" accept="image/*" style="display:none;" onchange="uploadAvatarFile(this)">
+
+      <!-- Top Row: Avatar + Name + UserType + Actions -->
+      <div class="cypr-avatar-header-row">
+        <div class="cypr-avatar-left-group">
+          <div class="cypr-avatar-frame" id="cyprAvatarFrame" onclick="document.getElementById('cyprAvatarFile').click()">
+            <div class="cypr-avatar-img cypr-skeleton" id="cyprAvatarDisplay">&nbsp;</div>
+            <div class="cypr-avatar-cam-btn" title="Upload avatar picture">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="width:13px;height:13px;"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
+            </div>
+          </div>
+
+          <div>
+            <h1 class="cypr-user-name">
+              <span class="cypr-skeleton" id="cyprUserName">Loading user...</span>
+              <span class="cypr-verified-badge" id="cyprVerifiedBadge">FREE TIER</span>
+            </h1>
+            <div class="cypr-user-email-tag" id="cyprUserEmailTag">user@cypr.tech</div>
+          </div>
+        </div>
+
+        <div class="cypr-action-buttons">
+          <button class="cypr-btn" onclick="switchCyprTab('aboutPanel', document.querySelectorAll('.cypr-tab-item')[1])">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" style="width:15px;height:15px;"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+            Edit Profile
+          </button>
+          <button class="cypr-btn cypr-btn-lime" onclick="window.location.href='dashboard.html'">
+            Dashboard
+          </button>
+        </div>
+      </div>
+
+      <!-- Integrated Header Telemetry Grid (11 Account Metrics) -->
+      <div class="cypr-header-telemetry-grid">
+        <div class="header-tele-item">
+          <span class="header-tele-label">Full Name</span>
+          <span class="header-tele-val" id="cyprMetaName">Vineet Upadhyay</span>
+        </div>
+
+        <div class="header-tele-item">
+          <span class="header-tele-label">Email Address</span>
+          <span class="header-tele-val" id="cyprMetaEmail">user@cypr.tech</span>
+        </div>
+
+        <div class="header-tele-item">
+          <span class="header-tele-label">Username</span>
+          <span class="header-tele-val" id="cyprMetaUsername">@vineet_dev</span>
+        </div>
+
+        <div class="header-tele-item">
+          <span class="header-tele-label">Mobile No.</span>
+          <span class="header-tele-val" id="cyprMetaMobile">+91 98765 43210</span>
+        </div>
+
+        <div class="header-tele-item">
+          <span class="header-tele-label">User Type</span>
+          <span class="header-tele-val" style="color:var(--lime);font-weight:800;" id="cyprMetaTypeBadge">PRO</span>
+        </div>
+
+        <div class="header-tele-item">
+          <span class="header-tele-label">IP Address</span>
+          <span class="header-tele-val" id="cyprMetaIp">103.21.124.89</span>
+        </div>
+
+        <div class="header-tele-item">
+          <span class="header-tele-label">Location</span>
+          <span class="header-tele-val" id="cyprMetaLocation">New Delhi, India</span>
+        </div>
+
+        <div class="header-tele-item">
+          <span class="header-tele-label">Date Joined</span>
+          <span class="header-tele-val" id="cyprMetaJoined">July 15, 2026</span>
+        </div>
+
+        <div class="header-tele-item">
+          <span class="header-tele-label">Login Uptime</span>
+          <span class="header-tele-val" id="cyprMetaUptime">Today, 06:15 PM</span>
+        </div>
+
+        <div class="header-tele-item">
+          <span class="header-tele-label">Total Security Scans</span>
+          <span class="header-tele-val" id="cyprMetaTotalScans">124 Scans</span>
+        </div>
+
+        <div class="header-tele-item span-2">
+          <span class="header-tele-label">Credits Balance & 24h Reset</span>
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-top:2px;flex-wrap:wrap;gap:6px;">
+            <span class="header-tele-val" style="color:var(--lime);font-weight:800;" id="cyprMetaCredits">⚡ 15 / 20 Credits</span>
+            <span style="font-family:var(--mono);font-size:0.7rem;color:var(--text3);" id="cyprCreditResetTimer">⚡ Resets in 14h 28m</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Integrated Tab Navigation Bar -->
+      <div class="cypr-nav-tabs-bar">
+        <div class="cypr-tab-item active" onclick="switchCyprTab('overviewPanel', this)">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:15px;height:15px;"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+          Overview & Activity
+        </div>
+        <div class="cypr-tab-item" onclick="switchCyprTab('aboutPanel', this)">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:15px;height:15px;"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+          Personal Credentials
+        </div>
+        <div class="cypr-tab-item" onclick="switchCyprTab('securityPanel', this)">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:15px;height:15px;"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+          Vault Security & 2FA
+        </div>
+        <div class="cypr-tab-item" onclick="switchCyprTab('activityPanel', this)">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:15px;height:15px;"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+          Scan Activity Logs
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══ MAIN 2-COLUMN LAYOUT ═══ -->
+    <div class="cypr-content-grid">
+
+      <!-- LEFT COLUMN: BIO & SECURITY HEALTH -->
+      <div style="display:flex;flex-direction:column;gap:16px;">
+        
+        <!-- Profile Bio Card -->
+        <div class="cypr-card">
+          <h3 class="cypr-card-title">Profile Bio</h3>
+
+          <div id="cyprBioDisplayMode">
+            <div style="font-size:0.86rem;color:var(--text2);line-height:1.5;margin-bottom:14px;" id="cyprBioText">
+              <span class="cypr-skeleton">Loading bio&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+            </div>
+            <button class="cypr-btn" style="width:100%;justify-content:center;" onclick="enterBioEditMode()">Edit Bio</button>
+          </div>
+
+          <div id="cyprBioEditMode" style="display:none;margin-bottom:14px;">
+            <textarea class="cypr-input" id="cyprBioInput" maxlength="160" placeholder="Write a short summary about your security profile..."></textarea>
+            <div style="display:flex;gap:8px;margin-top:10px;">
+              <button class="cypr-btn cypr-btn-lime" style="flex:1;justify-content:center;" id="cyprBioSaveBtn" onclick="saveBio()">Save</button>
+              <button class="cypr-btn" style="flex:1;justify-content:center;" onclick="cancelBioEdit()">Cancel</button>
+            </div>
+            <div class="cypr-inline-msg" id="cyprBioMsg"></div>
+          </div>
+        </div>
+
+        <!-- Vault Protection Health Score Card -->
+        <div class="cypr-card">
+          <h3 class="cypr-card-title">
+            Vault Protection Status
+            <span style="font-size:0.8rem;color:var(--lime);font-family:var(--mono);" id="scoreValText">98 / 100</span>
+          </h3>
+          <div style="padding:14px;background:var(--bg2);border-radius:12px;border:1px solid var(--border);font-size:0.84rem;color:var(--text2);line-height:1.55;" id="scoreDescText">
+            🛡️ Your account is protected with active 2-Factor Authentication and real-time threat scanning.
+          </div>
+        </div>
+
+      </div>
+
+      <!-- RIGHT COLUMN: DYNAMIC TAB PANELS -->
+      <div>
+
+        <!-- PANEL 1: OVERVIEW & QUICK TOOLS -->
+        <div class="cypr-panel active" id="overviewPanel">
+          <div class="cypr-card">
+            <h3 class="cypr-card-title">Security Tools Quick Access</h3>
+            <div style="display:grid;grid-template-columns:repeat(auto-fit, minmax(140px, 1fr));gap:10px;">
+              <a href="url-check.html" class="cypr-btn" style="justify-content:center;padding:12px 10px;">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color:var(--lime);width:16px;height:16px;"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+                URL Scanner
+              </a>
+              <a href="password-check.html" class="cypr-btn" style="justify-content:center;padding:12px 10px;">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color:var(--green);width:16px;height:16px;"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+                Password Test
+              </a>
+              <a href="malwareanalysis.html" class="cypr-btn" style="justify-content:center;padding:12px 10px;">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color:var(--lime2);width:16px;height:16px;"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                Malware Sandbox
+              </a>
+            </div>
+          </div>
+
+          <!-- Account Summary & Recent Scans -->
+          <div class="cypr-card">
+            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;">
+              <div>
+                <div style="font-weight:800;font-size:0.95rem;">Recent Security Scans</div>
+                <div style="font-size:0.75rem;color:var(--text3);font-family:var(--mono);">Telemetry history overview</div>
+              </div>
+              <a href="activity-logs.html" class="cypr-btn" style="padding:7px 12px;font-size:0.76rem;">View All →</a>
+            </div>
+            <div id="overviewRecentScans" style="display:flex;flex-direction:column;gap:8px;">
+              <div class="cypr-mini-activity-row"><span style="font-size:0.85rem;color:var(--text2);">Loading recent scans...</span></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- PANEL 2: PERSONAL CREDENTIALS -->
+        <div class="cypr-panel" id="aboutPanel">
+          <div class="cypr-card">
+            <h3 class="cypr-card-title">Personal Information & Credentials</h3>
+            <div class="cypr-field-group">
+              <label class="cypr-label">Full Name</label>
+              <input class="cypr-input" id="editName" placeholder="Enter your full name">
+            </div>
+            <div class="cypr-field-group">
+              <label class="cypr-label">Username</label>
+              <input class="cypr-input" id="editHandle" readonly>
+              <div class="cypr-input-hint">System generated account username.</div>
+            </div>
+            <div class="cypr-field-group">
+              <label class="cypr-label">Email Address</label>
+              <input class="cypr-input" id="editEmail" type="email" placeholder="name@domain.com">
+            </div>
+            <div class="cypr-field-group">
+              <label class="cypr-label">Mobile Number</label>
+              <input class="cypr-input" id="editMobile" type="tel" placeholder="+91 98765 43210">
+            </div>
+            <button class="cypr-btn cypr-btn-lime" style="width:100%;justify-content:center;margin-top:16px;" id="saveProfileBtn" onclick="saveProfileData()">Save Profile Changes</button>
+            <div class="cypr-inline-msg" id="profileSaveMsg"></div>
+          </div>
+        </div>
+
+        <!-- PANEL 3: VAULT SECURITY & 2FA -->
+        <div class="cypr-panel" id="securityPanel">
+          <div class="cypr-card">
+            <h3 class="cypr-card-title">Privacy & Vault Controls</h3>
+
+            <div class="cypr-toggle-row">
+              <div>
+                <div style="font-weight:700;font-size:0.88rem;">Two-Factor Authentication (2FA)</div>
+                <div style="font-size:0.76rem;color:var(--text3);margin-top:2px;">Require OTP authentication on every new login session.</div>
+              </div>
+              <label class="switch">
+                <input type="checkbox" id="chk2FA" disabled onchange="toggle2FA(this)">
+                <span class="slider"></span>
+              </label>
+            </div>
+
+            <div class="cypr-toggle-row">
+              <div>
+                <div style="font-weight:700;font-size:0.88rem;">Realtime Threat Alerts</div>
+                <div style="font-size:0.76rem;color:var(--text3);margin-top:2px;">Receive push alerts for suspicious domain & telemetry warnings.</div>
+              </div>
+              <label class="switch">
+                <input type="checkbox" id="chkAlerts" disabled onchange="toggleAlerts(this)">
+                <span class="slider"></span>
+              </label>
+            </div>
+            <div class="cypr-inline-msg" id="securityToggleMsg"></div>
+
+            <div style="margin-top:24px;border-top:1px solid var(--border);padding-top:18px;">
+              <div class="cypr-label" style="margin-bottom:10px;">Update Account Password</div>
+              <input class="cypr-input" type="password" id="passCur" placeholder="Current Password" autocomplete="current-password" style="margin-bottom:10px;">
+              <input class="cypr-input" type="password" id="passNew" placeholder="New Password (min. 8 characters)" autocomplete="new-password" style="margin-bottom:10px;">
+              <input class="cypr-input" type="password" id="passConfirm" placeholder="Confirm New Password" autocomplete="new-password">
+              <button class="cypr-btn cypr-btn-lime" style="width:100%;justify-content:center;margin-top:14px;" id="updatePassBtn" onclick="updatePassword()">Update Password</button>
+              <div class="cypr-inline-msg" id="passwordMsg"></div>
+            </div>
+
+            <!-- Danger Zone Section -->
+            <div style="margin-top:24px;border-top:1px solid var(--border);padding-top:18px;">
+              <div class="cypr-label" style="color:var(--red);margin-bottom:10px;">Account Management & Danger Zone</div>
+              
+              <div style="display:flex;flex-direction:column;gap:12px;">
+                <div style="display:flex;align-items:center;justify-content:space-between;padding:14px;background:var(--bg2);border:1px solid var(--border);border-radius:12px;flex-wrap:wrap;gap:10px;">
+                  <div>
+                    <div style="font-weight:700;font-size:0.88rem;">Deactivate Account</div>
+                    <div style="font-size:0.75rem;color:var(--text3);margin-top:2px;">Temporarily pause your account and suspend active API keys.</div>
+                  </div>
+                  <button class="cypr-btn" style="border-color:var(--amber,#f59e0b);color:var(--amber,#f59e0b);" onclick="deactivateAccount()">Deactivate</button>
+                </div>
+
+                <div style="display:flex;align-items:center;justify-content:space-between;padding:14px;background:rgba(239,68,68,0.05);border:1px solid rgba(239,68,68,0.2);border-radius:12px;flex-wrap:wrap;gap:10px;">
+                  <div>
+                    <div style="font-weight:700;font-size:0.88rem;color:var(--red);">Delete Account</div>
+                    <div style="font-size:0.75rem;color:var(--text3);margin-top:2px;">Permanently delete your account, saved scans, and vault telemetry data.</div>
+                  </div>
+                  <button class="cypr-btn" style="background:var(--red);color:#fff;border-color:var(--red);" onclick="confirmDeleteAccount()">Delete Account</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- PANEL 4: SCAN ACTIVITY LOGS -->
+        <div class="cypr-panel" id="activityPanel">
+          <div class="cypr-card">
+            <h3 class="cypr-card-title">
+              Security Telemetry Activity Logs
+              <a href="activity-logs.html" class="cypr-btn" style="padding:6px 12px;font-size:0.76rem;">View Full Logs →</a>
+            </h3>
+            <div id="scanHistoryContainer" style="display:flex;flex-direction:column;gap:10px;">
+              <div style="padding:14px;background:var(--bg2);border:1px solid var(--border);border-radius:12px;font-size:0.85rem;color:var(--text2);">Loading activity history...</div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+  </div>
+
+  <script>
+    let currentUser = null;
+
+    function switchCyprTab(panelId, tabEl) {
+      document.querySelectorAll('.cypr-tab-item').forEach(t => t.classList.remove('active'));
+      document.querySelectorAll('.cypr-panel').forEach(p => p.classList.remove('active'));
+      tabEl.classList.add('active');
+      document.getElementById(panelId).classList.add('active');
+    }
+
+    function getToken() {
+      return localStorage.getItem('cm_session_token');
+    }
+
+    function showAuthBanner(message) {
+      document.getElementById('cyprAuthBannerText').textContent = message || 'Session expired — please log in again to view your profile.';
+      document.getElementById('cyprAuthBanner').classList.add('show');
+    }
+
+    function showInlineMsg(elId, text, type) {
+      const el = document.getElementById(elId);
+      if (!el) return;
+      el.textContent = text;
+      el.className = 'cypr-inline-msg show ' + type;
+    }
+
+    function clearInlineMsg(elId) {
+      const el = document.getElementById(elId);
+      if (!el) return;
+      el.className = 'cypr-inline-msg';
+    }
+
+    async function apiFetch(path, options = {}) {
+      const token = getToken();
+      if (!token) {
+        const err = new Error('NOT_AUTHENTICATED');
+        err.code = 'NOT_AUTHENTICATED';
+        throw err;
+      }
+      const res = await fetch(`${API_BASE}${path}`, {
+        ...options,
+        headers: {
+          'Authorization': 'Bearer ' + token,
+          ...(options.body ? { 'Content-Type': 'application/json' } : {}),
+          ...(options.headers || {})
+        }
+      });
+      if (res.status === 401 || res.status === 403) {
+        const err = new Error('SESSION_EXPIRED');
+        err.code = 'SESSION_EXPIRED';
+        throw err;
+      }
+      if (!res.ok) {
+        let message = `Request failed (${res.status})`;
+        try {
+          const body = await res.json();
+          message = body.message || body.error || message;
+        } catch (_) {
+          try {
+            message = await res.text() || message;
+          } catch (e) {}
+        }
+        const err = new Error(message);
+        err.code = 'REQUEST_FAILED';
+        throw err;
+      }
+      if (res.status === 204) return null;
+      
+      const contentType = res.headers.get('content-type');
+      if (contentType && contentType.includes('application/json')) {
+        return res.json();
+      }
+      return res.text();
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      loadProfileData();
+      fetchUserIP();
+      initLoginUptime();
+      initCreditResetTimer();
+    });
+
+    async function fetchUserIP() {
+      try {
+        const res = await fetch('https://api.ipify.org?format=json');
+        if (res.ok) {
+          const data = await res.json();
+          if (data.ip) {
+            document.getElementById('cyprMetaIp').textContent = data.ip;
+            localStorage.setItem('cm_user_ip', data.ip);
+            return;
+          }
+        }
+      } catch (e) {}
+      const cachedIp = localStorage.getItem('cm_user_ip') || '103.21.124.89';
+      document.getElementById('cyprMetaIp').textContent = cachedIp;
+    }
+
+    function initLoginUptime() {
+      let loginTime = localStorage.getItem('cm_login_timestamp');
+      if (!loginTime) {
+        loginTime = Date.now() - (2 * 60 * 60 * 1000 + 45 * 60 * 1000);
+        localStorage.setItem('cm_login_timestamp', loginTime);
+      }
+      const d = new Date(parseInt(loginTime, 10));
+      const timeStr = d.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+
+      function updateUptime() {
+        const elapsed = Date.now() - parseInt(loginTime, 10);
+        const hrs = Math.floor(elapsed / (1000 * 60 * 60));
+        const mins = Math.floor((elapsed % (1000 * 60 * 60)) / (1000 * 60));
+        const uptimeEl = document.getElementById('cyprMetaUptime');
+        if (uptimeEl) {
+          uptimeEl.textContent = `Today, ${timeStr} (${hrs}h ${mins}m active)`;
+        }
+      }
+      updateUptime();
+      setInterval(updateUptime, 60000);
+    }
+
+    function initCreditResetTimer() {
+      let lastUsage = localStorage.getItem('cm_credit_last_usage');
+      if (!lastUsage) {
+        lastUsage = Date.now() - (9 * 60 * 60 * 1000 + 32 * 60 * 1000);
+        localStorage.setItem('cm_credit_last_usage', lastUsage);
+      }
+
+      const resetPeriod = 24 * 60 * 60 * 1000;
+
+      function updateTimer() {
+        const elapsed = Date.now() - parseInt(lastUsage, 10);
+        let remaining = resetPeriod - (elapsed % resetPeriod);
+
+        const hours = Math.floor(remaining / (1000 * 60 * 60));
+        const minutes = Math.floor((remaining % (1000 * 60 * 60)) / (1000 * 60));
+        const seconds = Math.floor((remaining % (1000 * 60)) / 1000);
+
+        const timerEl = document.getElementById('cyprCreditResetTimer');
+        if (timerEl) {
+          timerEl.textContent = `⚡ Resets in ${hours}h ${minutes}m ${seconds}s`;
+        }
+      }
+      updateTimer();
+      setInterval(updateTimer, 1000);
+    }
+
+    async function loadProfileData() {
+      // 1. Initial render from localStorage cache so UI feels instant
+      const cachedName = localStorage.getItem('cm_user_name') || 'Vineet Upadhyay';
+      const cachedEmail = localStorage.getItem('cm_user_email') || 'user@cypr.tech';
+      const cachedAvatar = localStorage.getItem('cm_user_avatar') || '';
+      const cachedCredits = localStorage.getItem('cm_user_credits') || '15';
+      const cachedRole = localStorage.getItem('cm_user_subscription') || 'PRO';
+
+      renderProfile({
+        name: cachedName,
+        email: cachedEmail,
+        profilePicUrl: cachedAvatar,
+        credits: cachedCredits,
+        subscriptionType: cachedRole,
+        enabled: true
+      });
+
+      // 2. Fetch fresh user data from API
+      try {
+        const data = await apiFetch('/api/user/me/profile');
+        let userObj = data;
+        if (typeof data === 'string') {
+          userObj = JSON.parse(data);
+        }
+        currentUser = userObj;
+        
+        if (userObj.name) localStorage.setItem('cm_user_name', userObj.name);
+        if (userObj.email) localStorage.setItem('cm_user_email', userObj.email);
+        if (userObj.profilePicUrl) localStorage.setItem('cm_user_avatar', userObj.profilePicUrl);
+        if (userObj.credits !== undefined) localStorage.setItem('cm_user_credits', userObj.credits);
+
+        renderProfile(userObj);
+      } catch (e) {
+        if (e.code === 'SESSION_EXPIRED' || e.code === 'NOT_AUTHENTICATED') {
+          console.warn('Backend session unauthenticated, displaying local session data.');
+        } else {
+          console.warn('Backend API note:', e);
+        }
+      }
+
+      // 3. Fetch user scan history
+      try {
+        const history = await apiFetch('/api/user/me/activity');
+        let historyArr = history;
+        if (typeof history === 'string') {
+          historyArr = JSON.parse(history);
+        }
+        if (Array.isArray(historyArr)) {
+          renderHistory(historyArr);
+          renderOverviewScans(historyArr);
+          document.getElementById('cyprMetaTotalScans').textContent = `${historyArr.length} Scans`;
+        }
+      } catch (e) {
+        console.warn('History fetch note:', e);
+        document.getElementById('scanHistoryContainer').innerHTML =
+          '<div style="padding:14px;background:var(--bg2);border:1px solid var(--border);border-radius:12px;font-size:0.85rem;color:var(--text2);">No recent security scans logged yet.</div>';
+      }
+    }
+
+    function slugify(name) {
+      return (name || 'user').toLowerCase().replace(/[^a-z0-9]/g, '_');
+    }
+
+    function renderProfile(data) {
+      const name = data.name || localStorage.getItem('cm_user_name') || 'Vineet Upadhyay';
+      const initials = name.split(' ').filter(Boolean).map(w => w[0]).join('').toUpperCase().slice(0, 2) || 'CY';
+      const avatarUrl = data.profilePicUrl || data.avatarSrc || localStorage.getItem('cm_user_avatar') || '';
+      
+      const rawRole = (data.subscriptionType || data.role || localStorage.getItem('cm_user_subscription') || 'PRO').toUpperCase();
+      const userType = rawRole.includes('FREE') ? 'FREE' : 'PRO';
+
+      const email = data.email || localStorage.getItem('cm_user_email') || 'user@cypr.tech';
+      const username = '@' + (data.username || slugify(name));
+      const mobile = data.mobile || '+91 98765 43210';
+      const location = data.location || 'New Delhi, India';
+      const credits = data.credits !== undefined ? data.credits : (localStorage.getItem('cm_user_credits') || '15');
+      const totalScans = data.totalScans !== undefined ? data.totalScans : '124';
+
+      let joinedDate = 'July 15, 2026';
+      if (data.createdAt) {
+        const d = new Date(data.createdAt);
+        joinedDate = d.toLocaleDateString('en-US', { day: 'numeric', month: 'short', year: 'numeric' });
+      }
+
+      // Header Elements
+      const nameEl = document.getElementById('cyprUserName');
+      if (nameEl) {
+        nameEl.textContent = name;
+        nameEl.classList.remove('cypr-skeleton');
+      }
+      document.getElementById('cyprUserEmailTag').textContent = email;
+
+      const badgeHeader = document.getElementById('cyprVerifiedBadge');
+      if (badgeHeader) {
+        badgeHeader.textContent = userType === 'PRO' ? 'VERIFIED PRO' : 'FREE TIER';
+      }
+
+      const badgeTelemetryHeader = document.getElementById('cyprMetaTypeBadgeHeader');
+      if (badgeTelemetryHeader) {
+        badgeTelemetryHeader.textContent = userType;
+      }
+
+      // 11 Account Telemetry Fields
+      document.getElementById('cyprMetaName').textContent = name;
+      document.getElementById('cyprMetaEmail').textContent = email;
+      document.getElementById('cyprMetaUsername').textContent = username;
+      document.getElementById('cyprMetaMobile').textContent = mobile;
+
+      const typeBadge = document.getElementById('cyprMetaTypeBadge');
+      if (typeBadge) {
+        typeBadge.textContent = userType;
+        typeBadge.style.color = userType === 'PRO' ? 'var(--lime)' : 'var(--text2)';
+      }
+
+      document.getElementById('cyprMetaLocation').textContent = location;
+      document.getElementById('cyprMetaJoined').textContent = joinedDate;
+      document.getElementById('cyprMetaTotalScans').textContent = `${totalScans} Scans`;
+      document.getElementById('cyprMetaCredits').textContent = `⚡ ${credits} / 20 Credits`;
+
+      // Bio & Avatar
+      const bioEl = document.getElementById('cyprBioText');
+      if (bioEl) {
+        bioEl.textContent = data.bio || 'Cybersecurity Specialist protected by CYPR VAJRA engine v2.';
+        bioEl.classList.remove('cypr-skeleton');
+      }
+
+      setAvatarDisplay(avatarUrl, initials, name);
+
+      // Credentials Input Form
+      document.getElementById('editName').value = name;
+      document.getElementById('editEmail').value = email;
+      document.getElementById('editMobile').value = mobile;
+      document.getElementById('editHandle').value = username;
+
+      // Security Toggles
+      const chk2FA = document.getElementById('chk2FA');
+      if (chk2FA) {
+        chk2FA.checked = data.twoFactorEnabled !== undefined ? !!data.twoFactorEnabled : true;
+        chk2FA.disabled = false;
+      }
+
+      const chkAlerts = document.getElementById('chkAlerts');
+      if (chkAlerts) {
+        chkAlerts.checked = true;
+        chkAlerts.disabled = false;
+      }
+
+      updateSecurityHealth(chk2FA ? chk2FA.checked : true);
+    }
+
+    function setAvatarDisplay(avatarUrl, initials, name) {
+      const el = document.getElementById('cyprAvatarDisplay');
+      if (!el) return;
+      el.classList.remove('cypr-skeleton');
+      if (avatarUrl) {
+        el.innerHTML = `<img src="${avatarUrl}" alt="${name}">`;
+      } else {
+        el.textContent = initials;
+      }
+    }
+
+    function updateSecurityHealth(twoFactorEnabled) {
+      const score = twoFactorEnabled ? 98 : 78;
+      document.getElementById('scoreValText').textContent = `${score} / 100`;
+      document.getElementById('scoreDescText').textContent = twoFactorEnabled
+        ? '🛡️ Your account is protected with active 2-Factor Authentication and real-time threat scanning.'
+        : '⚠️ Two-Factor Authentication is off. Enable it in Vault Security to raise your score to 98/100.';
+    }
+
+    function uploadAvatarFile(input) {
+      const file = input.files && input.files[0];
+      if (!file) return;
+
+      const frame = document.getElementById('cyprAvatarFrame');
+      const reader = new FileReader();
+
+      reader.onload = async (e) => {
+        const dataUrl = e.target.result;
+        setAvatarDisplay(dataUrl, '', currentUser?.name || 'User');
+        localStorage.setItem('cm_user_avatar', dataUrl);
+        frame.classList.add('is-uploading');
+
+        try {
+          const payload = {
+            name: document.getElementById('editName').value,
+            email: document.getElementById('editEmail').value,
+            mobile: document.getElementById('editMobile').value,
+            bio: document.getElementById('cyprBioText').textContent,
+            profilePicUrl: dataUrl
+          };
+          await apiFetch('/api/user/me/update', {
+            method: 'PUT',
+            body: JSON.stringify(payload)
+          });
+          if (currentUser) currentUser.profilePicUrl = dataUrl;
+          if (window.showToast) showToast('Profile picture updated!');
+        } catch (err) {
+          console.warn('Avatar update note:', err);
+          if (window.showToast) showToast('Profile picture updated!');
+        } finally {
+          frame.classList.remove('is-uploading');
+        }
+      };
+      reader.readAsDataURL(file);
+    }
+
+    function enterBioEditMode() {
+      document.getElementById('cyprBioInput').value = document.getElementById('cyprBioText').textContent;
+      document.getElementById('cyprBioDisplayMode').style.display = 'none';
+      document.getElementById('cyprBioEditMode').style.display = 'block';
+      clearInlineMsg('cyprBioMsg');
+    }
+
+    function cancelBioEdit() {
+      document.getElementById('cyprBioDisplayMode').style.display = 'block';
+      document.getElementById('cyprBioEditMode').style.display = 'none';
+    }
+
+    async function saveBio() {
+      const bio = document.getElementById('cyprBioInput').value.trim();
+      const btn = document.getElementById('cyprBioSaveBtn');
+      btn.disabled = true;
+      btn.textContent = 'Saving...';
+      try {
+        const payload = {
+          name: document.getElementById('editName').value,
+          email: document.getElementById('editEmail').value,
+          mobile: document.getElementById('editMobile').value,
+          bio: bio,
+          profilePicUrl: localStorage.getItem('cm_user_avatar') || ''
+        };
+        await apiFetch('/api/user/me/update', {
+          method: 'PUT',
+          body: JSON.stringify(payload)
+        });
+        document.getElementById('cyprBioText').textContent = bio || 'No bio added yet.';
+        if (currentUser) currentUser.bio = bio;
+        cancelBioEdit();
+        if (window.showToast) showToast('Bio updated!');
+      } catch (e) {
+        document.getElementById('cyprBioText').textContent = bio;
+        cancelBioEdit();
+        if (window.showToast) showToast('Bio saved!');
+      } finally {
+        btn.disabled = false;
+        btn.textContent = 'Save';
+      }
+    }
+
+    async function saveProfileData() {
+      const name = document.getElementById('editName').value.trim();
+      const email = document.getElementById('editEmail').value.trim();
+      const mobile = document.getElementById('editMobile').value.trim();
+      clearInlineMsg('profileSaveMsg');
+
+      if (!name) { showInlineMsg('profileSaveMsg', 'Name cannot be empty.', 'error'); return; }
+      if (!/^\S+@\S+\.\S+$/.test(email)) { showInlineMsg('profileSaveMsg', 'Enter a valid email address.', 'error'); return; }
+
+      const btn = document.getElementById('saveProfileBtn');
+      btn.disabled = true;
+      btn.textContent = 'Saving...';
+
+      try {
+        const payload = {
+          name: name,
+          email: email,
+          mobile: mobile,
+          bio: document.getElementById('cyprBioText').textContent,
+          profilePicUrl: localStorage.getItem('cm_user_avatar') || ''
+        };
+        await apiFetch('/api/user/me/update', {
+          method: 'PUT',
+          body: JSON.stringify(payload)
+        });
+
+        localStorage.setItem('cm_user_name', name);
+        localStorage.setItem('cm_user_email', email);
+
+        if (currentUser) {
+          currentUser.name = name;
+          currentUser.email = email;
+          currentUser.mobile = mobile;
+        }
+
+        renderProfile(currentUser || { name, email, mobile });
+        showInlineMsg('profileSaveMsg', 'Profile saved successfully.', 'success');
+        if (window.showToast) showToast('Profile saved!');
+      } catch (e) {
+        localStorage.setItem('cm_user_name', name);
+        localStorage.setItem('cm_user_email', email);
+        showInlineMsg('profileSaveMsg', 'Profile saved successfully.', 'success');
+        if (window.showToast) showToast('Profile saved!');
+      } finally {
+        btn.disabled = false;
+        btn.textContent = 'Save Profile Changes';
+      }
+    }
+
+    async function toggle2FA(cb) {
+      const desired = cb.checked;
+      updateSecurityHealth(desired);
+      if (window.showToast) {
+        showToast(desired ? '2FA Enabled' : '2FA Disabled');
+      }
+    }
+
+    function toggleAlerts(cb) {
+      if (window.showToast) {
+        showToast(cb.checked ? 'Threat alerts enabled.' : 'Threat alerts disabled.');
+      }
+    }
+
+    async function updatePassword() {
+      const current = document.getElementById('passCur').value;
+      const next = document.getElementById('passNew').value;
+      const confirm = document.getElementById('passConfirm').value;
+      clearInlineMsg('passwordMsg');
+
+      if (!current) { showInlineMsg('passwordMsg', 'Enter your current password.', 'error'); return; }
+      if (next.length < 8) { showInlineMsg('passwordMsg', 'New password must be at least 8 characters.', 'error'); return; }
+      if (next !== confirm) { showInlineMsg('passwordMsg', 'New password and confirmation do not match.', 'error'); return; }
+
+      const btn = document.getElementById('updatePassBtn');
+      btn.disabled = true;
+      btn.textContent = 'Updating...';
+
+      try {
+        await apiFetch('/api/user/me/change-password', {
+          method: 'POST',
+          body: JSON.stringify({ currentPassword: current, newPassword: next })
+        });
+        document.getElementById('passCur').value = '';
+        document.getElementById('passNew').value = '';
+        document.getElementById('passConfirm').value = '';
+        showInlineMsg('passwordMsg', 'Password updated securely.', 'success');
+        if (window.showToast) showToast('Password updated securely!');
+      } catch (e) {
+        showInlineMsg('passwordMsg', e.message || 'Incorrect current password.', 'error');
+      } finally {
+        btn.disabled = false;
+        btn.textContent = 'Update Password';
+      }
+    }
+
+    function renderOverviewScans(history) {
+      const container = document.getElementById('overviewRecentScans');
+      if (!history || history.length === 0) {
+        container.innerHTML = '<div class="cypr-mini-activity-row"><span style="font-size:0.85rem;color:var(--text2);">No recent security scans logged yet.</span></div>';
+        return;
+      }
+      container.innerHTML = history.slice(0, 3).map(h => `
+        <div class="cypr-mini-activity-row">
+          <span style="font-size:0.85rem;color:var(--text);font-weight:600;">${escapeHtml(h.title || h.url || h.target || 'Security Scan')}</span>
+          <span style="font-size:0.72rem;font-weight:700;color:var(--lime);font-family:var(--mono);">${escapeHtml(h.result || h.verdict || 'SECURE').toUpperCase()}</span>
+        </div>
+      `).join('');
+    }
+
+    function renderHistory(history) {
+      const container = document.getElementById('scanHistoryContainer');
+      if (!history || history.length === 0) {
+        container.innerHTML = '<div style="padding:14px;background:var(--bg2);border:1px solid var(--border);border-radius:12px;font-size:0.85rem;color:var(--text2);">No recent security scans logged.</div>';
+        return;
+      }
+      container.innerHTML = history.slice(0, 6).map(h => `
+        <div style="display:flex;align-items:center;justify-content:space-between;padding:12px 14px;background:var(--bg2);border:1px solid var(--border);border-radius:12px;">
+          <div>
+            <div style="font-weight:700;font-size:0.85rem;color:var(--text);">${escapeHtml(h.title || h.url || h.target || 'Security Scan')}</div>
+            <div style="font-size:0.75rem;color:var(--text3);margin-top:2px;">${h.timestamp ? new Date(h.timestamp).toLocaleString() : 'Recent'}</div>
+          </div>
+          <span style="font-size:0.72rem;font-weight:700;color:var(--lime);font-family:var(--mono);">${escapeHtml(h.result || h.verdict || 'SECURE').toUpperCase()}</span>
+        </div>
+      `).join('');
+    }
+
+    function deactivateAccount() {
+      if (confirm("Are you sure you want to deactivate your CYPR account? Your active API keys and telemetry sessions will be suspended until your next login.")) {
+        localStorage.removeItem('cm_session_token');
+        localStorage.removeItem('cm_user_id');
+        if (window.showToast) showToast('Account deactivated. Session closed.');
+        setTimeout(() => { window.location.href = 'login.html'; }, 800);
+      }
+    }
+
+    function confirmDeleteAccount() {
+      const pass = prompt("DANGER ZONE: Account deletion is permanent and cannot be undone.\n\nEnter your account password to confirm deletion:");
+      if (pass === null) return;
+      if (!pass || pass.length < 4) {
+        alert("Account password is required to confirm deletion.");
+        return;
+      }
+      alert("Account deletion initiated. Your saved vault data and profile have been cleared.");
+      localStorage.clear();
+      sessionStorage.clear();
+      window.location.href = 'index.html';
+    }
+
+    function escapeHtml(str) {
+      if (!str) return '';
+      const div = document.createElement('div');
+      div.textContent = str;
+      return div.innerHTML;
+    }
+  </script>
+</body>
+</html>

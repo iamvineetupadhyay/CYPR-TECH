@@ -2739,4 +2739,17 @@ html {
     touch-action: manipulation;
   }
 }
+
+/* ══ AMBIENT GLOW BACKDROP FOR DARK MODE ACROSS ALL PAGES ══ */
+html[data-theme="dark"],
+html[data-theme="dark"] body {
+  background-color: #0b0f14 !important;
+  background-image: 
+    radial-gradient(circle at 12% 88%, rgba(224, 90, 0, 0.15) 0%, rgba(224, 90, 0, 0.04) 35%, transparent 60%),
+    radial-gradient(circle at 88% 12%, rgba(16, 185, 129, 0.08) 0%, rgba(16, 185, 129, 0.02) 35%, transparent 55%),
+    radial-gradient(circle at 50% 0%, rgba(249, 115, 22, 0.06) 0%, transparent 45%) !important;
+  background-attachment: fixed !important;
+  background-repeat: no-repeat !important;
+  background-size: cover !important;
+}
 

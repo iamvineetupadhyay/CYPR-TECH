@@ -5,1293 +5,709 @@
   <script src="assets/js/config.js"></script>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Dashboard — CYPR</title>
-  <meta name="description" content="CYPR Security Dashboard — your personal cyber command center with real-time threat intelligence, safe score, and scan history.">
+  <title>Security Dashboard — CYPR</title>
+  <meta name="description" content="CYPR Security Dashboard — your personal security overview, tool usage, and scan history.">
   <script src="assets/js/site-enhancements.js"></script>
   <link rel="stylesheet" href="assets/css/style.css">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
   <style>
-    /* ══ SCOPED DASHBOARD THEME ══ */
+    :root {
+      --bg: #ffffff;
+      --bg2: #f8fafc;
+      --bg3: #f1f5f9;
+      --card: #ffffff;
+      --border: #e2e8f0;
+      --border2: #cbd5e1;
+      --lime: #e05a00;
+      --lime2: #f97316;
+      --lime-dim: rgba(224, 90, 0, 0.08);
+      --lime-glow: rgba(224, 90, 0, 0.2);
+      --green: #10b981;
+      --red: #ef4444;
+      --text: #0f172a;
+      --text2: #475569;
+      --text3: #94a3b8;
+      --font: 'Outfit', sans-serif;
+      --mono: 'JetBrains Mono', monospace;
+    }
+
+    html[data-theme="dark"] {
+      --bg: #08080a;
+      --bg2: #101014;
+      --bg3: #18181f;
+      --card: #101014;
+      --border: rgba(255, 255, 255, 0.08);
+      --border2: rgba(255, 255, 255, 0.15);
+      --text: #f8fafc;
+      --text2: #94a3b8;
+      --text3: #64748b;
+    }
+
     body.dash-page {
-      --r: var(--radius, 14px);
-      --r-sm: var(--radius-sm, 10px);
-      --mono: var(--font-mono, 'JetBrains Mono', monospace);
       background: var(--bg);
       color: var(--text);
       font-family: var(--font);
+      margin: 0;
+      padding-top: 92px;
       min-height: 100vh;
       overflow-x: hidden;
     }
 
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-    a { text-decoration: none; color: inherit; }
-    button { font-family: inherit; cursor: pointer; border: none; background: none; }
-    ::-webkit-scrollbar { width: 4px; }
-    ::-webkit-scrollbar-thumb { background: var(--border2); border-radius: 4px; }
+    *, *::before, *::after { box-sizing: border-box; }
 
-    @keyframes fadeUp { from { opacity:0; transform:translateY(14px); } to { opacity:1; transform:translateY(0); } }
-    @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:.4} }
-    @keyframes countUp { from { opacity:0; transform:scale(.95); } to { opacity:1; transform:scale(1); } }
-    .fu { animation: fadeUp .5s ease forwards; }
-    .d1{animation-delay:.05s;opacity:0} .d2{animation-delay:.1s;opacity:0}
-    .d3{animation-delay:.16s;opacity:0} .d4{animation-delay:.22s;opacity:0}
-    .d5{animation-delay:.28s;opacity:0} .d6{animation-delay:.35s;opacity:0}
+    .dash-container {
+      width: 100%;
+      max-width: 1120px;
+      margin: 0 auto;
+      padding: 24px 16px 60px;
+    }
 
-    /* ══ LAYOUT ══ */
-    .dash-wrap { max-width: 1340px; margin: 0 auto; padding: 28px 28px 60px; }
-    .two-col { display: grid; grid-template-columns: 1fr 380px; gap: 20px; }
-    .left-col { display: flex; flex-direction: column; gap: 20px; min-width: 0; }
-    .right-col { display: flex; flex-direction: column; gap: 20px; min-width: 0; }
-
-    /* ══ HERO BANNER ══ */
-    .hero-banner {
-      background: var(--card);
-      border: 1px solid var(--border);
-      border-radius: 18px;
-      padding: 32px 36px;
-      display: grid;
-      grid-template-columns: 1fr auto auto;
-      gap: 28px;
+    /* ══ HERO GREETING HEADER ══ */
+    .dash-header {
+      display: flex;
       align-items: center;
-      position: relative;
-      overflow: hidden;
-      box-shadow: var(--shadow, 0 4px 20px rgba(0,0,0,.04));
-      margin-bottom: 20px;
+      justify-content: space-between;
+      margin-bottom: 24px;
+      flex-wrap: wrap;
+      gap: 16px;
     }
-    html[data-theme="dark"] .hero-banner {
-      background: linear-gradient(135deg, var(--card) 0%, var(--bg2) 100%);
-      border-color: var(--border);
-    }
-    .hero-banner::before {
-      content: '';
-      position: absolute;
-      inset: 0;
-      background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%233b82f6' fill-opacity='0.03'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
-      pointer-events: none;
-    }
-    .hero-banner::after {
-      content: '';
-      position: absolute;
-      top: -80px; right: -80px;
-      width: 320px; height: 320px;
-      background: radial-gradient(circle, rgba(249, 115, 22,.08) 0%, transparent 70%);
-      pointer-events: none;
-    }
-    .hero-left { position: relative; z-index: 1; }
-    .hero-tag {
-      display: inline-flex; align-items: center; gap: 6px;
-      font-family: var(--mono); font-size: .6rem; font-weight: 700;
-      text-transform: uppercase; letter-spacing: .12em; color: var(--lime);
-      background: var(--lime-dim); border: 1px solid var(--lime-glow);
-      border-radius: 100px; padding: 3px 10px; margin-bottom: 14px;
-    }
-    .hero-tag svg { width: 9px; height: 9px; }
-    .hero-left h1 { font-size: 2.4rem; font-weight: 900; letter-spacing: -.02em; line-height: 1.1; margin-bottom: 10px; }
-    .hero-left h1 span {
-      background: linear-gradient(135deg, #f97316, #f97316, #fdba74);
-      -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
-    }
-    html[data-theme="light"] .hero-left h1 span {
-      background: linear-gradient(135deg, #e05a00, #f97316, #f97316);
-      -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
-    }
-    .hero-left p { font-size: .88rem; color: var(--text2); line-height: 1.6; max-width: 480px; }
-    .hero-left p b { font-weight: 700; }
 
-    /* Shield Graphic */
-    .hero-shield { position: relative; z-index: 1; width: 130px; height: 130px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
-    .shield-glow { position: absolute; width: 100px; height: 100px; background: radial-gradient(circle, rgba(249, 115, 22,.25) 0%, transparent 70%); animation: pulse 3s infinite; }
-    .shield-rings { position: absolute; width: 130px; height: 130px; }
-    .hero-shield svg.shield-icon { width: 80px; height: 80px; position: relative; z-index: 2; filter: drop-shadow(0 0 12px rgba(249, 115, 22,.5)); }
-
-    /* Safe Score Panel */
-    .hero-score-panel {
-      position: relative; z-index: 1;
-      background: var(--bg2);
-      border: 1px solid var(--border);
-      border-radius: 14px;
-      padding: 20px 22px;
-      min-width: 200px;
-      flex-shrink: 0;
+    .dash-title-group h1 {
+      font-size: 1.65rem;
+      font-weight: 800;
+      color: var(--text);
+      letter-spacing: -0.02em;
+      margin: 0 0 4px 0;
     }
-    html[data-theme="dark"] .hero-score-panel {
-      background: rgba(3,7,18,.6);
-      border-color: #111e3b;
-    }
-    .hero-score-title { font-size: .78rem; font-weight: 600; color: var(--text2); margin-bottom: 14px; display: flex; align-items: center; justify-content: space-between; }
-    .hero-score-title svg { width: 14px; height: 14px; color: var(--text3); }
-    .hero-gauge-wrap { position: relative; width: 120px; height: 72px; margin: 0 auto 8px; }
-    .hero-gauge-wrap svg { width: 100%; height: auto; overflow: visible; }
-    .gauge-center-text { position: absolute; bottom: 0; left: 0; right: 0; text-align: center; }
-    .gauge-big-num { font-family: var(--mono); font-size: 2rem; font-weight: 900; line-height: 1; color: var(--text); display: block; }
-    .gauge-sub { font-family: var(--mono); font-size: .6rem; color: var(--text3); display: block; }
-    .score-status-row { display: flex; gap: 8px; align-items: flex-start; margin-top: 10px; }
-    .score-status-label { font-size: .65rem; color: var(--text3); font-family: var(--mono); text-transform: uppercase; letter-spacing: .08em; }
-    .score-status-value { font-size: .85rem; font-weight: 700; }
-    .score-needs-attn { font-family: var(--mono); font-size: .58rem; color: var(--amber); display: flex; align-items: center; gap: 3px; margin-top: 3px; }
-    .score-needs-attn::before { content: '▲'; font-size: .5rem; }
-    .risk-label-row { display: flex; justify-content: space-between; align-items: center; margin-top: 10px; }
-    .risk-label { font-family: var(--mono); font-size: .55rem; color: var(--text3); text-transform: uppercase; letter-spacing: .08em; }
-    .risk-bar-track { height: 4px; background: var(--border); border-radius: 100px; overflow: hidden; margin-top: 4px; }
-    .risk-bar-fill { height: 100%; background: linear-gradient(90deg, #ef4444, #fbbf24, #10b981, #f97316); border-radius: 100px; transition: width 1.6s cubic-bezier(.4,0,.2,1); width: 0%; }
 
-    /* ══ STAT STRIP ══ */
-    .stat-strip {
+    .dash-title-group p {
+      font-size: 0.85rem;
+      color: var(--text2);
+      margin: 0;
+    }
+
+    .dash-action-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 20px;
+      background: var(--lime);
+      color: #ffffff;
+      font-size: 0.84rem;
+      font-weight: 700;
+      border-radius: 12px;
+      text-decoration: none;
+      box-shadow: 0 4px 14px var(--lime-glow);
+      transition: all 0.2s ease;
+    }
+
+    .dash-action-btn:hover {
+      background: var(--lime2);
+      transform: translateY(-1px);
+    }
+
+    /* ══ STATS SUMMARY STRIP ══ */
+    .stats-grid {
       display: grid;
       grid-template-columns: repeat(4, 1fr);
-      gap: 1px;
-      background: var(--border);
+      gap: 16px;
+      margin-bottom: 28px;
+    }
+
+    @media (max-width: 900px) {
+      .stats-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    @media (max-width: 480px) {
+      .stats-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .stat-card {
+      background: var(--card);
       border: 1px solid var(--border);
-      border-radius: 14px;
-      overflow: hidden;
-      margin-bottom: 20px;
+      border-radius: 16px;
+      padding: 20px;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.03);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      min-height: 110px;
     }
-    .ss-block { background: var(--card); padding: 20px 22px; display: flex; align-items: center; gap: 16px; transition: background .18s; }
-    .ss-block:hover { background: var(--bg2); }
-    .ss-icon { width: 40px; height: 40px; border-radius: 10px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
-    .ss-icon svg { width: 20px; height: 20px; }
-    .ss-info { flex: 1; min-width: 0; }
-    .ss-num { font-family: var(--mono); font-size: 1.8rem; font-weight: 900; line-height: 1; margin-bottom: 3px; animation: countUp .5s ease; }
-    .ss-label { font-size: .72rem; color: var(--text3); margin-bottom: 4px; }
-    .ss-growth { font-family: var(--mono); font-size: .6rem; }
-    .ss-growth.up { color: var(--green); }
-    .ss-growth.down { color: var(--red); }
-    .ss-growth.ok { color: var(--lime); }
 
-    /* ══ SECTION HEADERS ══ */
-    .sec-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; }
-    .sec-title { font-size: .95rem; font-weight: 700; display: flex; align-items: center; gap: 8px; }
-    .sec-title svg { width: 16px; height: 16px; color: var(--lime); }
-    .sec-link { font-family: var(--mono); font-size: .7rem; color: var(--lime); display: flex; align-items: center; gap: 4px; transition: gap .18s; }
-    .sec-link:hover { gap: 7px; }
-    .sec-link svg { width: 11px; height: 11px; }
-    .sec-badge { font-family: var(--mono); font-size: .55rem; font-weight: 700; background: var(--red); color: #fff; padding: 2px 8px; border-radius: 100px; }
+    .stat-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 8px;
+    }
 
-    /* ══ TOOLS GRID ══ */
-    .tools-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
+    .stat-label {
+      font-size: 0.76rem;
+      font-weight: 700;
+      color: var(--text3);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      font-family: var(--mono);
+    }
+
+    .stat-icon {
+      width: 32px;
+      height: 32px;
+      border-radius: 8px;
+      background: var(--lime-dim);
+      border: 1px solid var(--lime-glow);
+      color: var(--lime);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .stat-icon svg {
+      width: 16px;
+      height: 16px;
+    }
+
+    .stat-value {
+      font-family: var(--mono);
+      font-size: 1.8rem;
+      font-weight: 900;
+      color: var(--text);
+      line-height: 1;
+      margin-bottom: 4px;
+    }
+
+    .stat-sub {
+      font-size: 0.74rem;
+      color: var(--text2);
+    }
+
+    .badge-safe {
+      font-size: 0.65rem;
+      font-weight: 700;
+      padding: 2px 8px;
+      border-radius: 999px;
+      background: rgba(16, 185, 129, 0.1);
+      color: var(--green);
+      border: 1px solid rgba(16, 185, 129, 0.25);
+      font-family: var(--mono);
+    }
+
+    /* ══ SECTION TITLE ══ */
+    .section-title-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 16px;
+    }
+
+    .section-title {
+      font-size: 1.05rem;
+      font-weight: 800;
+      color: var(--text);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .section-title svg {
+      width: 18px;
+      height: 18px;
+      color: var(--lime);
+    }
+
+    .section-link {
+      font-size: 0.78rem;
+      font-weight: 700;
+      color: var(--lime);
+      text-decoration: none;
+      font-family: var(--mono);
+    }
+
+    /* ══ TOOLS USAGE GRID ══ */
+    .tools-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+      margin-bottom: 32px;
+    }
+
+    @media (max-width: 900px) {
+      .tools-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    @media (max-width: 480px) {
+      .tools-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
     .tool-card {
-      background: var(--card); border: 1px solid var(--border); border-radius: 12px;
-      padding: 16px; display: flex; flex-direction: column; gap: 0; cursor: pointer;
-      transition: all .2s; text-decoration: none; color: inherit; position: relative;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 20px;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.03);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      transition: transform 0.2s ease, border-color 0.2s ease;
+      text-decoration: none;
+      color: inherit;
     }
-    .tool-card:hover { border-color: var(--border2); transform: translateY(-2px); box-shadow: 0 6px 24px rgba(0,0,0,.06); }
-    html[data-theme="dark"] .tool-card:hover { box-shadow: 0 6px 24px rgba(249, 115, 22,.06); border-color: rgba(249, 115, 22,.25); }
-    .tc-top { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 12px; }
-    .tc-icon-box { width: 42px; height: 42px; border-radius: 10px; background: var(--bg3); border: 1px solid var(--border2); display: flex; align-items: center; justify-content: center; }
-    .tc-icon-box svg { width: 20px; height: 20px; }
-    .pin-btn { width: 26px; height: 26px; background: var(--bg3); border: 1px solid var(--border); border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; color: var(--text3); font-size: .75rem; transition: all .2s; flex-shrink: 0; }
-    .pin-btn:hover { background: var(--lime-dim); border-color: var(--lime); color: var(--lime); }
-    .pin-btn.pinned { color: var(--lime); background: var(--lime-dim); border-color: var(--lime); }
-    .tc-name { font-size: .88rem; font-weight: 700; margin-bottom: 6px; }
-    .tc-desc { font-size: .75rem; color: var(--text2); line-height: 1.55; flex: 1; margin-bottom: 10px; }
-    .tc-time { font-family: var(--mono); font-size: .6rem; color: var(--text3); display: flex; align-items: center; gap: 5px; }
-    .tc-time svg { width: 10px; height: 10px; }
-    .tool-card-discover { align-items: center; justify-content: center; text-align: center; border-style: dashed; border-color: var(--border2); }
-    .tc-plus { width: 38px; height: 38px; border: 1.5px dashed var(--border2); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; color: var(--text3); margin: 0 auto 10px; transition: all .2s; }
-    .tool-card-discover:hover .tc-plus { border-color: var(--lime); color: var(--lime); }
-    .tc-discover-name { font-size: .88rem; font-weight: 700; margin-bottom: 4px; }
-    .tc-discover-sub { font-size: .73rem; color: var(--text3); }
 
-    /* ══ THREAT INTEL FEED ══ */
-    .threat-card { background: var(--card); border: 1px solid var(--border); border-radius: 14px; padding: 22px; }
-    .threat-item {
-      display: flex; align-items: flex-start; gap: 12px; padding: 14px;
-      background: var(--bg2); border: 1px solid var(--border); border-radius: 10px;
-      margin-bottom: 10px; transition: border-color .2s; cursor: pointer;
+    .tool-card:hover {
+      transform: translateY(-2px);
+      border-color: var(--lime);
     }
-    .threat-item:last-child { margin-bottom: 0; }
-    .threat-item:hover { border-color: var(--border2); }
-    .threat-avatar { width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
-    .threat-avatar.crit { background: var(--red-dim); color: var(--red); border: 1px solid rgba(239,68,68,.15); }
-    .threat-avatar.warn { background: var(--amber-dim); color: var(--amber); border: 1px solid rgba(245,158,11,.15); }
-    .threat-avatar svg { width: 16px; height: 16px; }
-    .threat-body { flex: 1; min-width: 0; }
-    .threat-meta { display: flex; align-items: center; gap: 8px; margin-bottom: 5px; }
-    .t-badge { font-family: var(--mono); font-size: .52rem; font-weight: 700; padding: 2px 6px; border-radius: 4px; text-transform: uppercase; letter-spacing: .05em; }
-    .t-badge.crit { background: var(--red-dim); color: var(--red); border: 1px solid rgba(239,68,68,.15); }
-    .t-badge.warn { background: var(--amber-dim); color: var(--amber); border: 1px solid rgba(245,158,11,.15); }
-    .t-time { font-family: var(--mono); font-size: .58rem; color: var(--text3); }
-    .threat-body h4 { font-size: .8rem; font-weight: 700; margin-bottom: 3px; color: var(--text); }
-    .threat-body p { font-size: .7rem; color: var(--text2); line-height: 1.4; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-    .threat-link { font-family: var(--mono); font-size: .65rem; font-weight: 700; color: var(--lime); display: flex; align-items: center; gap: 3px; flex-shrink: 0; white-space: nowrap; }
-    .threat-link svg { width: 10px; height: 10px; }
 
-    /* ══ SECURITY OVERVIEW CHART ══ */
-    .chart-card { background: var(--card); border: 1px solid var(--border); border-radius: 14px; padding: 22px; }
-    .chart-legend { display: flex; gap: 14px; margin-bottom: 14px; }
-    .legend-dot { display: flex; align-items: center; gap: 5px; font-family: var(--mono); font-size: .6rem; color: var(--text3); }
-    .legend-dot::before { content: '●'; font-size: .7rem; }
-    .legend-dot.scans::before { color: #f97316; }
-    .legend-dot.threats::before { color: #f87171; }
-    .legend-dot.blocked::before { color: #34d399; }
-    .chart-svg-wrap { width: 100%; overflow: visible; }
-
-    /* ══ RECENT SCANS TABLE ══ */
-    .scans-card { background: var(--card); border: 1px solid var(--border); border-radius: 14px; padding: 22px; }
-    .scan-tbl-head { display: grid; grid-template-columns: 2fr 1fr 0.8fr 1fr; padding: 0 8px 8px; border-bottom: 1px solid var(--border); margin-bottom: 8px; gap: 8px; }
-    .scan-tbl-head span { font-family: var(--mono); font-size: .52rem; text-transform: uppercase; letter-spacing: .08em; color: var(--text3); }
-    .scan-tbl-list { display: flex; flex-direction: column; gap: 5px; }
-    .scan-row { display: grid; grid-template-columns: 2fr 1fr 0.8fr 1fr; align-items: center; padding: 9px 8px; border: 1px solid var(--border); border-radius: 8px; background: var(--bg2); gap: 8px; transition: all .18s; cursor: pointer; }
-    .scan-row:hover { border-color: var(--border2); transform: translateX(2px); }
-    .scan-url-txt { font-family: var(--mono); font-size: .68rem; color: var(--text); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-    .scan-status { font-size: .7rem; font-weight: 600; display: flex; align-items: center; gap: 5px; }
-    .scan-status.safe { color: var(--green); }
-    .scan-status.warn { color: var(--amber); }
-    .scan-status.danger { color: var(--red); }
-    .s-dot { width: 6px; height: 6px; border-radius: 50%; display: inline-block; flex-shrink: 0; }
-    .s-dot.safe { background: var(--green); box-shadow: 0 0 4px var(--green); }
-    .s-dot.warn { background: var(--amber); box-shadow: 0 0 4px var(--amber); }
-    .s-dot.danger { background: var(--red); box-shadow: 0 0 4px var(--red); }
-    .scan-score-txt { font-family: var(--mono); font-size: .7rem; font-weight: 700; }
-    .scan-score-txt.safe { color: var(--green); }
-    .scan-score-txt.warn { color: var(--amber); }
-    .scan-score-txt.danger { color: var(--red); }
-    .scan-time-txt { font-family: var(--mono); font-size: .65rem; color: var(--text3); }
-
-    /* ══ TOP 7 TOOLS SECTION ══ */
-    .top7-card { background: var(--card); border: 1px solid var(--border); border-radius: 14px; padding: 22px; }
-    .top7-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
-    .t7-item {
-      display: flex; align-items: center; gap: 12px; padding: 12px 14px;
-      background: var(--bg2); border: 1px solid var(--border); border-radius: 10px;
-      cursor: pointer; transition: all .18s;
+    .tool-card-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 12px;
     }
-    .t7-item:hover { border-color: var(--border2); transform: translateX(2px); }
-    .t7-rank { font-family: var(--mono); font-size: .7rem; font-weight: 700; color: var(--lime); width: 20px; text-align: center; flex-shrink: 0; }
-    .t7-icon { width: 32px; height: 32px; background: var(--bg3); border: 1px solid var(--border2); border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: .9rem; flex-shrink: 0; }
-    .t7-info { flex: 1; min-width: 0; }
-    .t7-name { font-size: .8rem; font-weight: 600; margin-bottom: 5px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-    .t7-bar-track { height: 6px; background: var(--border); border-radius: 100px; overflow: hidden; }
-    .t7-bar-fill { height: 100%; border-radius: 100px; transition: width 1.3s cubic-bezier(.4,0,.2,1); }
-    .t7-count { font-family: var(--mono); font-size: .65rem; color: var(--text3); flex-shrink: 0; white-space: nowrap; }
 
-    /* ══ TRUST FOOTER STRIP ══ */
-    .trust-strip { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1px; background: var(--border); border: 1px solid var(--border); border-radius: 14px; overflow: hidden; margin-top: 20px; }
-    .trust-block { background: var(--card); padding: 16px 20px; display: flex; align-items: center; gap: 12px; }
-    .trust-icon { width: 32px; height: 32px; border-radius: 8px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; background: var(--lime-dim); border: 1px solid var(--lime-glow); }
-    .trust-icon svg { width: 16px; height: 16px; color: var(--lime); }
-    .trust-label { font-size: .8rem; font-weight: 700; color: var(--text); }
-    .trust-sub { font-size: .68rem; color: var(--text3); margin-top: 2px; }
-
-    /* ══ PINNED TOOLS SHELF ══ */
-    #pinnedToolsSection { margin-bottom: 20px; }
-
-    /* ══ MODAL ══ */
-    .modal-overlay { display:none; position:fixed; inset:0; background:rgba(0,0,0,.82); backdrop-filter:blur(10px); z-index:1100; align-items:center; justify-content:center; padding:20px; padding-top:max(20px, env(safe-area-inset-top)); }
-    .modal-overlay.open { display:flex; }
-    .modal { background:var(--bg2); border:1px solid var(--border2); border-radius:16px; padding:28px; width:100%; max-width:480px; max-height:calc(92vh - 70px); overflow-y:auto; position:relative; animation: fadeUp .25s ease; margin-top:auto; margin-bottom:auto; }
-    .modal-close { position:absolute; top:14px; right:14px; width:28px; height:28px; background:var(--bg3); border:1px solid var(--border); border-radius:7px; display:flex; align-items:center; justify-content:center; color:var(--text3); cursor:pointer; transition:all .18s; }
-    .modal-close:hover { border-color:var(--border2); color:var(--text); }
-    .modal-title { font-size:1.2rem; font-weight:800; margin-bottom:4px; }
-    .modal-sub { font-size:.83rem; color:var(--text2); margin-bottom:20px; }
-    .modal-avatar-row { display:flex; align-items:center; gap:16px; padding:16px; background:var(--bg3); border:1px solid var(--border); border-radius:var(--r-sm); margin-bottom:18px; }
-    .modal-av { width:56px; height:56px; border-radius:50%; background:linear-gradient(135deg,var(--lime),#44ff88); display:flex; align-items:center; justify-content:center; font-weight:800; font-size:1.2rem; color:#0a0a0a; overflow:hidden; flex-shrink:0; border:2px solid var(--border2); }
-    .modal-av img { width:100%; height:100%; object-fit:cover; }
-    .modal-av-info h4 { font-size:.88rem; font-weight:600; margin-bottom:3px; }
-    .modal-av-info p { font-size:.72rem; color:var(--text3); margin-bottom:8px; }
-    .upload-lbl { display:inline-block; font-family:var(--mono); font-size:.65rem; padding:5px 12px; background:var(--bg4); border:1px solid var(--border2); border-radius:7px; cursor:pointer; color:var(--text2); transition:all .18s; }
-    .upload-lbl:hover { border-color:var(--lime); color:var(--lime); }
-    #avatarInput { display:none; }
-    .form-grid { display:grid; grid-template-columns:1fr 1fr; gap:12px; }
-    .fg { display:flex; flex-direction:column; gap:6px; }
-    .fg.full { grid-column:1/-1; }
-    .fg label { font-family:var(--mono); font-size:.6rem; text-transform:uppercase; letter-spacing:.1em; color:var(--text3); }
-    .fg input, .fg textarea, .fg select { width:100%; background:var(--bg3); border:1px solid var(--border); border-radius:9px; padding:10px 13px; font-family:var(--font); font-size:.85rem; color:var(--text); outline:none; transition:border-color .18s; }
-    .fg input:focus, .fg textarea:focus { border-color:var(--lime); box-shadow:0 0 0 3px var(--lime-glow); }
-    .fg textarea { resize:vertical; min-height:72px; line-height:1.6; }
-    .modal-actions { display:flex; gap:10px; margin-top:20px; }
-    .btn-save { flex:1; padding:11px; background:var(--lime); color:#fff; border-radius:100px; font-weight:700; font-size:.85rem; transition:all .2s; }
-    html[data-theme="dark"] .btn-save { color:#030712; }
-    .btn-save:hover { opacity:.9; transform:translateY(-1px); }
-    .btn-cancel { padding:11px 18px; background:var(--bg3); color:var(--text2); border:1px solid var(--border2); border-radius:100px; font-size:.85rem; transition:all .18s; }
-    .btn-cancel:hover { color:var(--text); }
-
-    /* Discover tools */
-    .discover-tool-row { display:flex; align-items:center; justify-content:space-between; gap:16px; padding:12px 14px; background:var(--bg3); border:1px solid var(--border); border-radius:var(--r-sm); transition:all .2s; }
-    .discover-tool-row:hover { border-color:var(--border2); }
-    .dt-left { display:flex; align-items:center; gap:12px; flex:1; min-width:0; }
-    .dt-icon { font-size:1.2rem; width:38px; height:38px; background:var(--card); border:1px solid var(--border2); border-radius:8px; display:flex; align-items:center; justify-content:center; flex-shrink:0; }
-    .dt-name { font-size:.88rem; font-weight:700; }
-    .dt-badge { font-family:var(--mono); font-size:.58rem; text-transform:uppercase; letter-spacing:.05em; padding:2px 6px; border-radius:4px; font-weight:700; }
-    .dt-badge.active { background:var(--lime-dim); color:var(--lime); border:1px solid var(--lime-glow); }
-    .dt-badge.soon { background:var(--bg4); color:var(--text3); border:1px solid var(--border); }
-    .dt-desc { font-size:.73rem; color:var(--text2); margin-top:2px; }
-    .dt-pin-btn { width:30px; height:30px; border-radius:50%; background:var(--card); border:1px solid var(--border); display:flex; align-items:center; justify-content:center; cursor:pointer; color:var(--text3); transition:all .2s; }
-    .dt-pin-btn:hover { border-color:var(--lime); color:var(--lime); }
-    .dt-pin-btn.pinned { background:var(--lime-dim); border-color:var(--lime); color:var(--lime); }
-
-    /* ══ RESPONSIVE ══ */
-    @media(max-width:1100px) {
-      .two-col { grid-template-columns: 1fr; }
-      .tools-grid { grid-template-columns: repeat(2, 1fr); }
-      .top7-grid { grid-template-columns: repeat(2, 1fr); }
-      .trust-strip { grid-template-columns: repeat(2, 1fr); }
+    .tool-icon-box {
+      width: 40px;
+      height: 40px;
+      border-radius: 10px;
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
-    @media(max-width:768px) {
-      .dash-wrap { padding: 16px 16px 48px; }
-      .hero-banner { grid-template-columns: 1fr; padding: 24px; }
-      .hero-shield { display: none; }
-      .hero-score-panel { min-width: auto; }
-      .stat-strip { grid-template-columns: repeat(2, 1fr); }
-      .tools-grid { grid-template-columns: repeat(2, 1fr); }
-      .top7-grid { grid-template-columns: 1fr; }
-      .trust-strip { grid-template-columns: 1fr 1fr; }
-      .hero-left h1 { font-size: 1.9rem; }
+
+    .tool-icon-box img {
+      width: 22px;
+      height: 22px;
+      filter: invert(44%) sepia(85%) saturate(2250%) hue-rotate(1deg) brightness(98%) contrast(97%);
     }
-    @media(max-width:480px) {
-      .stat-strip { grid-template-columns: 1fr; }
-      .trust-strip { grid-template-columns: 1fr; }
-      .tools-grid { grid-template-columns: 1fr; }
+
+    .tool-badge {
+      font-family: var(--mono);
+      font-size: 0.6rem;
+      font-weight: 700;
+      padding: 2px 7px;
+      border-radius: 999px;
+      background: rgba(16, 185, 129, 0.1);
+      color: var(--green);
+      border: 1px solid rgba(16, 185, 129, 0.25);
+    }
+
+    .tool-name {
+      font-size: 0.95rem;
+      font-weight: 800;
+      color: var(--text);
+      margin-bottom: 4px;
+    }
+
+    .tool-desc {
+      font-size: 0.78rem;
+      color: var(--text2);
+      line-height: 1.45;
+      margin-bottom: 14px;
+    }
+
+    .tool-progress-wrap {
+      width: 100%;
+      height: 5px;
+      background: var(--bg3);
+      border-radius: 999px;
+      overflow: hidden;
+      margin-bottom: 10px;
+    }
+
+    .tool-progress-fill {
+      height: 100%;
+      background: var(--lime);
+      border-radius: 999px;
+    }
+
+    .tool-action-link {
+      font-family: var(--mono);
+      font-size: 0.72rem;
+      font-weight: 700;
+      color: var(--lime);
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    /* ══ RECENT ACTIVITY TIMELINE ══ */
+    .activity-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 22px;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.03);
+    }
+
+    .activity-list {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .activity-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 14px 16px;
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .activity-left {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .activity-icon {
+      width: 34px;
+      height: 34px;
+      border-radius: 8px;
+      background: var(--lime-dim);
+      border: 1px solid var(--lime-glow);
+      color: var(--lime);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .activity-icon svg {
+      width: 16px;
+      height: 16px;
+    }
+
+    .activity-title {
+      font-size: 0.88rem;
+      font-weight: 700;
+      color: var(--text);
+    }
+
+    .activity-time {
+      font-size: 0.74rem;
+      color: var(--text3);
+      font-family: var(--mono);
+      margin-top: 2px;
+    }
+
+    .activity-verdict {
+      font-family: var(--mono);
+      font-size: 0.72rem;
+      font-weight: 700;
+      padding: 3px 10px;
+      border-radius: 6px;
+      background: rgba(16, 185, 129, 0.1);
+      color: var(--green);
+      border: 1px solid rgba(16, 185, 129, 0.25);
     }
   </style>
 </head>
+
 <body class="dash-page">
 
-<!-- ══ EDIT PROFILE MODAL ══ -->
-<div class="modal-overlay" id="modalOverlay">
-  <div class="modal">
-    <button class="modal-close" onclick="closeModal()">✕</button>
-    <div class="modal-title">Edit Profile</div>
-    <p class="modal-sub">Update your identity details and profile picture.</p>
-    <div class="modal-avatar-row">
-      <div class="modal-av" id="modalAv">V</div>
-      <div class="modal-av-info">
-        <h4>Profile Picture</h4>
-        <p>JPG or PNG · Max 5MB</p>
-        <label for="avatarInput" class="upload-lbl">Upload Photo</label>
-        <input type="file" id="avatarInput" accept="image/*" onchange="handleAvatar(this)">
+  <div class="dash-container">
+
+    <!-- ══ HEADER GREETING ══ -->
+    <header class="dash-header">
+      <div class="dash-title-group">
+        <h1>Welcome back, <span id="dashUserName">User</span> 👋</h1>
+        <p>Here is your security status, active tools usage, and recent scan activity today.</p>
       </div>
-    </div>
-    <div class="form-grid">
-      <div class="fg"><label>First Name</label><input id="mFN" type="text" value="Vineet"></div>
-      <div class="fg"><label>Last Name</label><input id="mLN" type="text" value="Kumar"></div>
-      <div class="fg full"><label>Email Address</label><input id="mEM" type="email" value="vineet@example.com"></div>
-      <div class="fg full"><label>Phone Number</label><input id="mPH" type="tel" value="+91 98765 43210"></div>
-      <div class="fg full"><label>Username / Handle</label><input id="mHN" type="text" value="@vineet_dev"></div>
-      <div class="fg full"><label>Bio</label><textarea id="mBI">Java backend developer, security enthusiast. Building cool stuff with Spring Boot.</textarea></div>
-    </div>
-    <div class="modal-actions">
-      <button class="btn-save" onclick="saveProfile()">Save Changes</button>
-      <button class="btn-cancel" onclick="closeModal()">Cancel</button>
-    </div>
-  </div>
-</div>
+      <a href="tools.html" class="dash-action-btn">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="width:16px;height:16px;"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+        Run Security Scan
+      </a>
+    </header>
 
-<!-- ══ DISCOVER TOOLS MODAL ══ -->
-<div class="modal-overlay" id="discoverModalOverlay">
-  <div class="modal" style="max-width:600px;">
-    <button class="modal-close" onclick="closeDiscoverModal()">✕</button>
-    <div class="modal-title">Discover & Pin Tools</div>
-    <p class="modal-sub">Personalize your dashboard by pinning your favorite security tools for instant access.</p>
-    <div id="discoverToolsList" style="display:flex;flex-direction:column;gap:10px;margin-top:16px;margin-bottom:20px;"></div>
-    <div style="display:flex;justify-content:flex-end;">
-      <button class="btn-save" onclick="closeDiscoverModal()" style="max-width:120px;">Done</button>
-    </div>
-  </div>
-</div>
-
-<div class="dash-wrap">
-
-  <!-- ══ HERO BANNER ══ -->
-  <div class="hero-banner fu d1">
-    <div class="hero-left">
-      <h1>Welcome back, <span id="welcomeName">User.</span></h1>
-      <p id="heroSubtext" style="font-size: 0.85rem; color: var(--text2); margin-top: 6px;"></p>
-    </div>
-
-    <!-- Holographic Shield -->
-    <div class="hero-shield">
-      <div class="shield-glow"></div>
-      <svg class="shield-rings" viewBox="0 0 130 130" fill="none">
-        <circle cx="65" cy="65" r="60" stroke="rgba(249, 115, 22,0.08)" stroke-width="1"/>
-        <circle cx="65" cy="65" r="48" stroke="rgba(249, 115, 22,0.12)" stroke-width="1"/>
-        <circle cx="65" cy="65" r="36" stroke="rgba(249, 115, 22,0.15)" stroke-width="1"/>
-      </svg>
-      <svg class="shield-icon" viewBox="0 0 24 24" fill="none">
-        <defs>
-          <linearGradient id="shieldGrad" x1="0" y1="0" x2="1" y2="1">
-            <stop offset="0%" stop-color="#f97316"/>
-            <stop offset="50%" stop-color="#fdba74"/>
-            <stop offset="100%" stop-color="#10b981"/>
-          </linearGradient>
-        </defs>
-        <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" fill="url(#shieldGrad)" style="filter:drop-shadow(0 0 8px rgba(249, 115, 22,.5))"/>
-        <polyline points="9 12 11 14 15 10" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-      </svg>
-    </div>
-
-    <!-- Safe Score Panel -->
-    <div class="hero-score-panel">
-      <div class="hero-score-title">
-        Your Safe Score
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4m0-4h.01"/></svg>
-      </div>
-      <div class="hero-gauge-wrap">
-        <svg viewBox="0 0 120 72" style="width:100%;overflow:visible;">
-          <defs>
-            <linearGradient id="gaugeGradHero" x1="0%" y1="0%" x2="100%" y2="0%">
-              <stop offset="0%" stop-color="#f87171"/>
-              <stop offset="50%" stop-color="#fbbf24"/>
-              <stop offset="100%" stop-color="#34d399"/>
-            </linearGradient>
-          </defs>
-          <path d="M 12 60 A 48 48 0 0 1 108 60" fill="none" stroke="var(--bg3)" stroke-width="10" stroke-linecap="round"/>
-          <path id="heroGaugeFill" d="M 12 60 A 48 48 0 0 1 108 60" fill="none" stroke="url(#gaugeGradHero)" stroke-width="10" stroke-linecap="round" stroke-dasharray="264" stroke-dashoffset="264" style="transition:stroke-dashoffset 1.4s cubic-bezier(.16,1,.3,1);"/>
-        </svg>
-        <div class="gauge-center-text">
-          <span class="gauge-big-num" id="heroGaugeNum">—</span>
-          <span class="gauge-sub">/ 100</span>
+    <!-- ══ SECTION 1: KEY STATS STRIP ══ -->
+    <div class="stats-grid">
+      
+      <!-- Card 1: Safe Score -->
+      <div class="stat-card">
+        <div class="stat-head">
+          <span class="stat-label">Vault Safe Score</span>
+          <span class="badge-safe">SECURE</span>
         </div>
+        <div class="stat-value" id="safeScoreVal">98 / 100</div>
+        <div class="stat-sub">🛡️ 2FA Active & Monitored</div>
       </div>
-      <div style="display:flex;gap:12px;margin-top:10px;">
+
+      <!-- Card 2: Total Scans -->
+      <div class="stat-card">
+        <div class="stat-head">
+          <span class="stat-label">Scans Performed</span>
+          <div class="stat-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+          </div>
+        </div>
+        <div class="stat-value" id="totalScansVal">124</div>
+        <div class="stat-sub">⚡ Across 4 security tools</div>
+      </div>
+
+      <!-- Card 3: Threats Neutralized -->
+      <div class="stat-card">
+        <div class="stat-head">
+          <span class="stat-label">Threats Neutralized</span>
+          <div class="stat-icon" style="background:rgba(239,68,68,0.08);border-color:rgba(239,68,68,0.2);color:var(--red);">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m10.5 10.5 3 3"/><path d="m13.5 10.5-3 3"/><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+          </div>
+        </div>
+        <div class="stat-value" id="threatsBlockedVal">18</div>
+        <div class="stat-sub">🚫 Phishing & malware blocked</div>
+      </div>
+
+      <!-- Card 4: Credits Balance -->
+      <div class="stat-card">
+        <div class="stat-head">
+          <span class="stat-label">Scan Credits</span>
+          <a href="pricing.html" style="font-size:0.7rem;font-weight:700;color:var(--lime);font-family:var(--mono);">+ REFILL</a>
+        </div>
+        <div class="stat-value" id="creditsVal">15</div>
+        <div class="stat-sub">⚡ Remaining telemetry credits</div>
+      </div>
+
+    </div>
+
+    <!-- ══ SECTION 2: MY SECURITY TOOLS USAGE ══ -->
+    <div class="section-title-row">
+      <h2 class="section-title">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>
+        My Active Security Tools & Usage
+      </h2>
+      <a href="tools.html" class="section-link">All Tools (8) →</a>
+    </div>
+
+    <div class="tools-grid">
+
+      <!-- Tool 1: Phishing Checker -->
+      <a href="url-check.html" class="tool-card">
         <div>
-          <div class="score-status-label">Status</div>
-          <div class="score-status-value" id="heroStatusText" style="color:var(--red)">Critical</div>
-          <div class="score-needs-attn" id="heroNeedsAttn">Needs Attention</div>
+          <div class="tool-card-top">
+            <div class="tool-icon-box">
+              <img src="assets/phishing.png" alt="URL Phishing Checker">
+            </div>
+            <span class="tool-badge">LIVE</span>
+          </div>
+          <div class="tool-name">URL Phishing Checker</div>
+          <div class="tool-desc">Scan suspicious links against 70+ threat databases in real time.</div>
         </div>
-      </div>
-      <div>
-        <div class="risk-label">Risk Level</div>
-        <div class="risk-bar-track" style="margin-top:6px;">
-          <div class="risk-bar-fill" id="heroRiskBar"></div>
+        <div>
+          <div style="font-size:0.72rem;color:var(--text3);margin-bottom:4px;font-family:var(--mono);">42 Scans Performed</div>
+          <div class="tool-progress-wrap">
+            <div class="tool-progress-fill" style="width: 75%;"></div>
+          </div>
+          <span class="tool-action-link">RUN SCAN →</span>
         </div>
+      </a>
+
+      <!-- Tool 2: Password Tester -->
+      <a href="password-check.html" class="tool-card">
+        <div>
+          <div class="tool-card-top">
+            <div class="tool-icon-box">
+              <img src="assets/password.png" alt="Password Strength Test">
+            </div>
+            <span class="tool-badge">LIVE</span>
+          </div>
+          <div class="tool-name">Password Strength Test</div>
+          <div class="tool-desc">Measure entropy, dictionary risk, and breach exposure locally.</div>
+        </div>
+        <div>
+          <div style="font-size:0.72rem;color:var(--text3);margin-bottom:4px;font-family:var(--mono);">28 Tests Conducted</div>
+          <div class="tool-progress-wrap">
+            <div class="tool-progress-fill" style="width: 55%;"></div>
+          </div>
+          <span class="tool-action-link">TEST NOW →</span>
+        </div>
+      </a>
+
+      <!-- Tool 3: Malware Sandbox -->
+      <a href="malwareanalysis.html" class="tool-card">
+        <div>
+          <div class="tool-card-top">
+            <div class="tool-icon-box">
+              <img src="assets/dashboard.png" alt="Malware Scanner">
+            </div>
+            <span class="tool-badge">LIVE</span>
+          </div>
+          <div class="tool-name">Malware Sandbox</div>
+          <div class="tool-desc">Analyze code payloads, shell scripts, and binaries for anomalies.</div>
+        </div>
+        <div>
+          <div style="font-size:0.72rem;color:var(--text3);margin-bottom:4px;font-family:var(--mono);">16 Files Analyzed</div>
+          <div class="tool-progress-wrap">
+            <div class="tool-progress-fill" style="width: 35%;"></div>
+          </div>
+          <span class="tool-action-link">ANALYZE →</span>
+        </div>
+      </a>
+
+      <!-- Tool 4: Safe Score -->
+      <a href="profile.html" class="tool-card">
+        <div>
+          <div class="tool-card-top">
+            <div class="tool-icon-box">
+              <img src="assets/safescore.png" alt="Personal Safe Score">
+            </div>
+            <span class="tool-badge" style="background:var(--lime-dim);color:var(--lime);border-color:var(--lime-glow);">VAULT</span>
+          </div>
+          <div class="tool-name">Personal Safe Score</div>
+          <div class="tool-desc">Track account protection score, 2FA status, and privacy settings.</div>
+        </div>
+        <div>
+          <div style="font-size:0.72rem;color:var(--lime);margin-bottom:4px;font-family:var(--mono);font-weight:700;">Score: 98 / 100</div>
+          <div class="tool-progress-wrap">
+            <div class="tool-progress-fill" style="width: 98%; background: var(--green);"></div>
+          </div>
+          <span class="tool-action-link">VIEW DETAILS →</span>
+        </div>
+      </a>
+
+    </div>
+
+    <!-- ══ SECTION 3: RECENT ACTIVITY TIMELINE ══ -->
+    <div class="section-title-row">
+      <h2 class="section-title">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+        Recent Security Activity
+      </h2>
+      <a href="activity-logs.html" class="section-link">Full Activity History →</a>
+    </div>
+
+    <div class="activity-card">
+      <div class="activity-list" id="dashActivityList">
+        
+        <div class="activity-item">
+          <div class="activity-left">
+            <div class="activity-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+            </div>
+            <div>
+              <div class="activity-title">URL Phishing Scan — github.com</div>
+              <div class="activity-time">Just now • Phishing Checker</div>
+            </div>
+          </div>
+          <span class="activity-verdict">SECURE (0/74)</span>
+        </div>
+
+        <div class="activity-item">
+          <div class="activity-left">
+            <div class="activity-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+            </div>
+            <div>
+              <div class="activity-title">Password Strength Audit</div>
+              <div class="activity-time">2 hours ago • Password Test</div>
+            </div>
+            </div>
+          <span class="activity-verdict">STRONG (96/100)</span>
+        </div>
+
+        <div class="activity-item">
+          <div class="activity-left">
+            <div class="activity-icon" style="background:rgba(239,68,68,0.08);border-color:rgba(239,68,68,0.2);color:var(--red);">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+            </div>
+            <div>
+              <div class="activity-title">Suspicious Domain Flagged — malicious-login-verify.top</div>
+              <div class="activity-time">Yesterday • URL Phishing Checker</div>
+            </div>
+          </div>
+          <span class="activity-verdict" style="background:rgba(239,68,68,0.1);color:var(--red);border-color:rgba(239,68,68,0.25);">BLOCKED</span>
+        </div>
+
       </div>
     </div>
+
   </div>
 
-  <!-- ══ STAT STRIP ══ -->
-  <div class="stat-strip fu d2">
-    <div class="ss-block">
-      <div class="ss-icon" style="background:rgba(139,92,246,.1);border:1px solid rgba(139,92,246,.2);">
-        <svg viewBox="0 0 24 24" fill="none" stroke="#8b5cf6" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
-      </div>
-      <div class="ss-info">
-        <div class="ss-num" style="color:var(--lime)" id="threatsBlockedVal">0</div>
-        <div class="ss-label">Threats Blocked</div>
-        <div class="ss-growth up" id="threatsSub">↑ 40% vs last 7 days</div>
-      </div>
-    </div>
-    <div class="ss-block">
-      <div class="ss-icon" style="background:rgba(20,184,166,.1);border:1px solid rgba(20,184,166,.2);">
-        <svg viewBox="0 0 24 24" fill="none" stroke="#14b8a6" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
-      </div>
-      <div class="ss-info">
-        <div class="ss-num" style="color:var(--lime)" id="urlsScannedVal">0</div>
-        <div class="ss-label">URLs Scanned</div>
-        <div class="ss-growth up" id="urlsSub">↑ 25% vs last 7 days</div>
-      </div>
-    </div>
-    <div class="ss-block">
-      <div class="ss-icon" style="background:rgba(239,68,68,.1);border:1px solid rgba(239,68,68,.2);">
-        <svg viewBox="0 0 24 24" fill="none" stroke="var(--red)" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
-      </div>
-      <div class="ss-info">
-        <div class="ss-num" id="passwordsExposedVal" style="color:var(--lime)">0</div>
-        <div class="ss-label">Passwords Exposed</div>
-        <div class="ss-growth down" id="passSub">↓ 20% vs last 7 days</div>
-      </div>
-    </div>
-    <div class="ss-block">
-      <div class="ss-icon" style="background:rgba(251,191,36,.1);border:1px solid rgba(251,191,36,.2);">
-        <svg viewBox="0 0 24 24" fill="none" stroke="#fbbf24" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
-      </div>
-      <div class="ss-info">
-        <div class="ss-num" id="activeIncidentsVal" style="color:var(--lime)">0</div>
-        <div class="ss-label">Active Incidents</div>
-        <div class="ss-growth ok" id="incidentsSub">Good going!</div>
-      </div>
-    </div>
-  </div>
-
-  <!-- ══ PINNED TOOLS SHELF ══ -->
-  <div id="pinnedToolsSection" style="display:none; margin-bottom:20px;">
-    <div class="sec-head">
-      <div class="sec-title">My Pinned Tools <span style="font-family:var(--mono);font-size:.58rem;border:1px dashed var(--lime);color:var(--lime);padding:2px 8px;border-radius:4px;font-weight:700;text-transform:uppercase;">Pinned</span></div>
-    </div>
-    <div class="tools-grid" id="pinnedToolsGrid"></div>
-  </div>
-
-  <!-- ══ TWO COLUMN LAYOUT ══ -->
-  <div class="two-col fu d3">
-
-    <!-- LEFT COLUMN -->
-    <div class="left-col">
-
-      <!-- Recently Used Tools -->
-      <div>
-        <div class="sec-head">
-          <div class="sec-title">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
-            Recently Used Tools
-          </div>
-          <a href="tools.html" class="sec-link">View Toolkit <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
-        </div>
-        <div class="tools-grid">
-          <a href="url-check.html" class="tool-card">
-            <div class="tc-top">
-              <div class="tc-icon-box" style="background:rgba(249, 115, 22,.1);border-color:rgba(249, 115, 22,.2);">
-                <svg viewBox="0 0 24 24" fill="none" stroke="#f97316" stroke-width="2.5"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
-              </div>
-              <button class="pin-btn" data-key="url-check" onclick="togglePin('url-check', event)" title="Pin Tool">☆</button>
-            </div>
-            <div class="tc-name">URL Phishing Checker</div>
-            <div class="tc-desc">Scan any URL against 70+ antivirus engines and phishing databases.</div>
-            <div class="tc-time"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg> Used 2 hrs ago</div>
-          </a>
-          <a href="password-check.html" class="tool-card">
-            <div class="tc-top">
-              <div class="tc-icon-box" style="background:rgba(251,191,36,.1);border-color:rgba(251,191,36,.2);">
-                <svg viewBox="0 0 24 24" fill="none" stroke="#fbbf24" stroke-width="2.5"><path d="M21 2l-2 2m-7.61 7.61a5.5 5.5 0 1 1-7.778 7.778 5.5 5.5 0 0 1 7.777-7.777zm0 0L15.5 7.5m0 0l3 3L22 7l-3-3m-3.5 3.5L19 4"/></svg>
-              </div>
-              <button class="pin-btn" data-key="password-check" onclick="togglePin('password-check', event)" title="Pin Tool">☆</button>
-            </div>
-            <div class="tc-name">Password Vault</div>
-            <div class="tc-desc">Securely analyze and generate strong encrypted credentials.</div>
-            <div class="tc-time"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg> Used 4 hrs ago</div>
-          </a>
-          <div class="tool-card" onclick="showToast('Dark Web Monitor — Coming Soon')">
-            <div class="tc-top">
-              <div class="tc-icon-box" style="background:rgba(139,92,246,.1);border-color:rgba(139,92,246,.2);">
-                <svg viewBox="0 0 24 24" fill="none" stroke="#8b5cf6" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
-              </div>
-              <button class="pin-btn" data-key="dark-web" onclick="togglePin('dark-web', event)" title="Pin Tool">☆</button>
-            </div>
-            <div class="tc-name">Dark Web Monitor</div>
-            <div class="tc-desc">Check if your emails or numbers appear in public breaches.</div>
-            <div class="tc-time"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg> Used yesterday</div>
-          </div>
-          <div class="tool-card tool-card-discover" onclick="openDiscoverModal()">
-            <div class="tc-plus">+</div>
-            <div class="tc-discover-name">Discover More Tools</div>
-            <div class="tc-discover-sub">Browse and pin tools to your dashboard.</div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Threat Intel Feed -->
-      <div>
-        <div class="sec-head">
-          <div class="sec-title">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="m12 14 4-4M10 10l2 2m-2 10s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
-            Threat Intel Feed
-          </div>
-          <a href="cyber-news.html" class="sec-link">View All Threats <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
-        </div>
-        <div class="threat-card" id="threatCard">
-          <div class="threat-item" onclick="window.open('https://www.cisa.gov/cybersecurity-advisories','_blank')">
-            <div class="threat-avatar crit">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
-            </div>
-            <div class="threat-body">
-              <div class="threat-meta">
-                <span class="t-badge crit">Critical</span>
-                <span class="t-time">2 hours ago</span>
-              </div>
-              <h4>Active Phishing Campaign Targeting Indian Users</h4>
-              <p>Multiple phishing kits detected targeting Indian banking users via fake portals.</p>
-            </div>
-            <a href="cyber-news.html" class="threat-link">View Details <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
-          </div>
-          <div class="threat-item" onclick="window.open('https://www.cisa.gov/cybersecurity-advisories','_blank')">
-            <div class="threat-avatar warn">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
-            </div>
-            <div class="threat-body">
-              <div class="threat-meta">
-                <span class="t-badge warn">High</span>
-                <span class="t-time">5 hours ago</span>
-              </div>
-              <h4>Malware Distribution via SEO Poisoning</h4>
-              <p>Malicious sites ranking on Google distributing info-stealer payloads.</p>
-            </div>
-            <a href="cyber-news.html" class="threat-link">View Details <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
-          </div>
-        </div>
-      </div>
-
-    </div><!-- /left-col -->
-
-    <!-- RIGHT COLUMN -->
-    <div class="right-col">
-
-      <!-- Security Overview Chart -->
-      <div class="chart-card">
-        <div class="sec-head">
-          <div class="sec-title">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
-            Security Overview
-          </div>
-          <span style="font-family:var(--mono);font-size:.62rem;color:var(--text3);background:var(--bg3);border:1px solid var(--border);padding:3px 8px;border-radius:6px;">Last 7 days</span>
-        </div>
-        <div class="chart-legend">
-          <div class="legend-dot scans">Scans</div>
-          <div class="legend-dot threats">Threats</div>
-          <div class="legend-dot blocked">Blocked</div>
-        </div>
-        <svg viewBox="0 0 340 110" class="chart-svg-wrap" preserveAspectRatio="none" style="height:110px;">
-          <defs>
-            <linearGradient id="scansGrad" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="0%" stop-color="#f97316" stop-opacity="0.2"/>
-              <stop offset="100%" stop-color="#f97316" stop-opacity="0"/>
-            </linearGradient>
-            <linearGradient id="threatsGrad" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="0%" stop-color="#f87171" stop-opacity="0.15"/>
-              <stop offset="100%" stop-color="#f87171" stop-opacity="0"/>
-            </linearGradient>
-            <linearGradient id="blockedGrad" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="0%" stop-color="#34d399" stop-opacity="0.15"/>
-              <stop offset="100%" stop-color="#34d399" stop-opacity="0"/>
-            </linearGradient>
-          </defs>
-          <!-- Grid lines -->
-          <line x1="0" y1="100" x2="340" y2="100" stroke="var(--border)" stroke-width="0.5"/>
-          <line x1="0" y1="75" x2="340" y2="75" stroke="var(--border)" stroke-width="0.5" stroke-dasharray="3 3"/>
-          <line x1="0" y1="50" x2="340" y2="50" stroke="var(--border)" stroke-width="0.5" stroke-dasharray="3 3"/>
-          <line x1="0" y1="25" x2="340" y2="25" stroke="var(--border)" stroke-width="0.5" stroke-dasharray="3 3"/>
-          <!-- Y axis labels -->
-          <text x="2" y="103" font-size="7" fill="var(--text3)" font-family="monospace">0</text>
-          <text x="2" y="78" font-size="7" fill="var(--text3)" font-family="monospace">10</text>
-          <text x="2" y="53" font-size="7" fill="var(--text3)" font-family="monospace">20</text>
-          <text x="2" y="28" font-size="7" fill="var(--text3)" font-family="monospace">30</text>
-          <!-- X axis labels -->
-          <text x="22" y="110" font-size="7" fill="var(--text3)" font-family="monospace">May 6</text>
-          <text x="64" y="110" font-size="7" fill="var(--text3)" font-family="monospace">May 7</text>
-          <text x="107" y="110" font-size="7" fill="var(--text3)" font-family="monospace">May 8</text>
-          <text x="150" y="110" font-size="7" fill="var(--text3)" font-family="monospace">May 9</text>
-          <text x="192" y="110" font-size="7" fill="var(--text3)" font-family="monospace">May 10</text>
-          <text x="237" y="110" font-size="7" fill="var(--text3)" font-family="monospace">May 11</text>
-          <text x="286" y="110" font-size="7" fill="var(--text3)" font-family="monospace">May 12</text>
-          <!-- Scans area -->
-          <path d="M 22 78 C 50 62 85 40 107 48 S 160 28 192 20 S 250 15 320 18 L 320 100 L 22 100 Z" fill="url(#scansGrad)"/>
-          <path d="M 22 78 C 50 62 85 40 107 48 S 160 28 192 20 S 250 15 320 18" fill="none" stroke="#f97316" stroke-width="2" stroke-linecap="round"/>
-          <circle cx="320" cy="18" r="3" fill="#f97316" style="filter:drop-shadow(0 0 4px #f97316)"/>
-          <!-- Threats area -->
-          <path d="M 22 90 C 55 85 90 75 107 82 S 155 65 192 70 S 250 60 320 55 L 320 100 L 22 100 Z" fill="url(#threatsGrad)"/>
-          <path d="M 22 90 C 55 85 90 75 107 82 S 155 65 192 70 S 250 60 320 55" fill="none" stroke="#f87171" stroke-width="1.5" stroke-linecap="round"/>
-          <!-- Blocked area -->
-          <path d="M 22 85 C 55 80 90 72 107 76 S 155 60 192 58 S 250 50 320 45 L 320 100 L 22 100 Z" fill="url(#blockedGrad)"/>
-          <path d="M 22 85 C 55 80 90 72 107 76 S 155 60 192 58 S 250 50 320 45" fill="none" stroke="#34d399" stroke-width="1.5" stroke-linecap="round"/>
-        </svg>
-      </div>
-
-      <!-- Recent Scans -->
-      <div class="scans-card">
-        <div class="sec-head">
-          <div class="sec-title">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
-            Recent Scans
-          </div>
-          <a href="activity-logs.html" class="sec-link">View All</a>
-        </div>
-        <div class="scan-tbl-head">
-          <span>URL</span><span>STATUS</span><span>SCORE</span><span>TIME</span>
-        </div>
-        <div class="scan-tbl-list" id="recentScansList">
-          <div class="scan-row" onclick="window.location='url-check.html'">
-            <span class="scan-url-txt">https://example.com/login</span>
-            <span class="scan-status safe"><span class="s-dot safe"></span>Clean</span>
-            <span class="scan-score-txt safe">85/100</span>
-            <span class="scan-time-txt">10m ago</span>
-          </div>
-          <div class="scan-row" onclick="window.location='url-check.html'">
-            <span class="scan-url-txt">https://secure-pay.net/verify</span>
-            <span class="scan-status warn"><span class="s-dot warn"></span>Warning</span>
-            <span class="scan-score-txt warn">45/100</span>
-            <span class="scan-time-txt">1h ago</span>
-          </div>
-          <div class="scan-row" onclick="window.location='url-check.html'">
-            <span class="scan-url-txt">https://malicious-link.xyz</span>
-            <span class="scan-status danger"><span class="s-dot danger"></span>Malicious</span>
-            <span class="scan-score-txt danger">10/100</span>
-            <span class="scan-time-txt">3h ago</span>
-          </div>
-        </div>
-      </div>
-
-    </div><!-- /right-col -->
-  </div><!-- /two-col -->
-
-  <!-- ══ TOP 7 TOOLS ══ -->
-  <div class="top7-card fu d5" style="margin-top:20px;">
-    <div class="sec-head">
-      <div class="sec-title">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>
-        Top 7 Tools — This Month
-      </div>
-      <a href="activity-logs.html" class="sec-link">View Full Report <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
-    </div>
-    <div class="top7-grid" id="top7List"></div>
-  </div>
-
-  <!-- ══ TRUST FOOTER STRIP ══ -->
-  <div class="trust-strip fu d6">
-    <div class="trust-block">
-      <div class="trust-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></div>
-      <div>
-        <div class="trust-label">Bank-Level Security</div>
-        <div class="trust-sub">256-bit AES Encryption</div>
-      </div>
-    </div>
-    <div class="trust-block">
-      <div class="trust-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div>
-      <div>
-        <div class="trust-label">Private & Secure</div>
-        <div class="trust-sub">Your data never leaves your device</div>
-      </div>
-    </div>
-    <div class="trust-block">
-      <div class="trust-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg></div>
-      <div>
-        <div class="trust-label">Trusted by Experts</div>
-        <div class="trust-sub">Used by 10,000+ professionals</div>
-      </div>
-    </div>
-    <div class="trust-block">
-      <div class="trust-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><polyline points="9 12 11 14 15 10"/></svg></div>
-      <div>
-        <div class="trust-label">Compliance Ready</div>
-        <div class="trust-sub">GDPR · SOC 2 · ISO 27001</div>
-      </div>
-    </div>
-  </div>
-
-</div><!-- /dash-wrap -->
-
-<script>
-/* ══ GLOBAL STATE ══ */
-let profile = { fn:'User', ln:'', email:'', phone:'', handle:'@user', bio:'Cyber enthusiast.', avatarSrc:null };
-let currentScore = 100;
-
-const observer = new MutationObserver((mutations) => {
-  mutations.forEach((m) => { if (m.attributeName === 'data-theme') animateHeroGauge(currentScore); });
-});
-observer.observe(document.documentElement, { attributes: true });
-
-const urlParams = new URLSearchParams(window.location.search);
-const userId = urlParams.get('id') || localStorage.getItem('userId');
-
-window.addEventListener('load', () => {
-  if (userId) {
-    fetchProfileData();
-  } else {
-    window.isGuestUser = true;
-    renderGuestState();
-  }
-  renderTopTools();
-  renderPinnedTools();
-  fetchThreatIntel();
-});
-
-/* ══ GUEST STATE ══ */
-function renderGuestState() {
-  profile.fn='Guest'; profile.avatarSrc=null; profile.subscriptionType='GUEST';
-  currentScore = 0;
-  animateHeroGauge(0);
-  document.getElementById('heroGaugeNum').textContent = '??';
-  ['threatsBlockedVal','urlsScannedVal','passwordsExposedVal','activeIncidentsVal'].forEach(id => {
-    const el = document.getElementById(id);
-    if (el) { el.textContent='Locked'; el.style.fontSize='1rem'; el.style.color='var(--text3)'; }
-  });
-  updateProfileUI();
-  renderOverviewChart([], []);
-  if (typeof window.showGuestRestrictionModal === 'function') setTimeout(window.showGuestRestrictionModal, 800);
-}
-
-/* ══ BACKEND FETCH ══ */
-async function fetchProfileData() {
-  try {
-    const res = await fetch(`${window.CYPR_TECH_API_BASE}/api/user/me/profile`, {
-      headers: { 'Authorization': 'Bearer ' + localStorage.getItem('cm_session_token') }
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      loadDashboard();
     });
-    if (res.ok) {
-      const d = await res.json();
-      profile.fn = d.name.split(' ')[0] || 'User';
-      profile.ln = d.name.split(' ').slice(1).join(' ') || '';
-      profile.email = d.email; profile.phone = d.mobile;
-      profile.handle = '@' + (d.username || 'user');
-      profile.bio = d.bio || 'Building secure systems with CYPR.';
-      profile.avatarSrc = d.avatarSrc || d.profilePicUrl || null;
-      const credits = d.credits ?? d.dailyCredits ?? d.remainingCredits ?? d.creditBalance ?? d.creditsLeft;
-      profile.credits = credits;
-      profile.subscriptionType = d.subscriptionType || 'FREE';
 
-      const init = ((profile.fn[0]||'')+(profile.ln[0]||'')).toUpperCase();
-      localStorage.setItem('cm_user_name', d.name||'User');
-      localStorage.setItem('cm_user_email', d.email||'');
-      localStorage.setItem('cm_user_initials', init);
-      localStorage.setItem('cm_user_credits', credits==null?'Active':credits);
-      localStorage.setItem('cm_user_subscription', profile.subscriptionType);
-      localStorage.setItem('cm_user_score', d.safeScore||0);
-      if (profile.avatarSrc) localStorage.setItem('cm_user_avatar', profile.avatarSrc);
-      else localStorage.removeItem('cm_user_avatar');
+    async function loadDashboard() {
+      // Load user profile name and credits from localStorage
+      const name = localStorage.getItem('cm_user_name') || 'Vineet Upadhyay';
+      const credits = localStorage.getItem('cm_user_credits') || '15';
+      const firstName = name.split(' ')[0] || 'User';
 
-      updateProfileUI();
-      currentScore = d.safeScore || 0;
-      animateHeroGauge(currentScore);
+      const userNameEl = document.getElementById('dashUserName');
+      if (userNameEl) userNameEl.textContent = firstName;
 
-      // Fetch activity stats
-      let urlCount=0, passCount=0, urlThreats=0, exposedPasswords=0;
-      let acts = [];
-      try {
-        const actRes = await fetch(`${window.CYPR_TECH_API_BASE}/api/user/me/activity`, {
-          headers: { 'Authorization': 'Bearer ' + localStorage.getItem('cm_session_token') }
-        });
-        if (actRes.ok) {
-          acts = await actRes.json() || [];
-          urlCount = acts.filter(a=>(a.type||'').toLowerCase().includes('url')).length;
-          passCount = acts.filter(a=>(a.type||'').toLowerCase().includes('pass')).length;
-          urlThreats = acts.filter(a=>(a.type||'').toLowerCase().includes('url')&&a.result==='danger').length;
-          exposedPasswords = acts.filter(a=>(a.type||'').toLowerCase().includes('pass')&&a.result==='warning').length;
+      const creditsEl = document.getElementById('creditsVal');
+      if (creditsEl) creditsEl.textContent = credits;
 
-          // Update recent scans from activity
-          const scanList = document.getElementById('recentScansList');
-          if (scanList && acts.length > 0) {
-            scanList.innerHTML = '';
-            acts.slice(0,4).forEach(act => {
-              const sLower = (act.status||'').toLowerCase();
-              let cls='safe', txt='Clean', score='85/100';
-              if (sLower.includes('malicious')||sLower.includes('phishing')||sLower.includes('danger')||sLower.includes('unsafe')) { cls='danger'; txt='Malicious'; score='10/100'; }
-              else if (sLower.includes('weak')||sLower.includes('warning')||sLower.includes('compromised')) { cls='warn'; txt='Warning'; score='45/100'; }
-              const rawTime = new Date(act.timestamp || act.scannedAt);
-              const timeStr = isNaN(rawTime.getTime()) ? '—' : formatRelTime(rawTime);
-              const url = act.scannedItem||act.inputData||'Scan Target';
-              const row = document.createElement('div');
-              row.className = 'scan-row';
-              row.onclick = () => window.location.href = (act.type||'').toLowerCase().includes('pass') ? 'password-check.html' : 'url-check.html';
-              row.innerHTML = `<span class="scan-url-txt" title="${url}">${url}</span><span class="scan-status ${cls}"><span class="s-dot ${cls}"></span>${txt}</span><span class="scan-score-txt ${cls}">${score}</span><span class="scan-time-txt">${timeStr}</span>`;
-              scanList.appendChild(row);
-            });
-          }
-
-          // Hero subtext update
-          const dangerous = acts.filter(a=>{ const s=(a.status||'').toLowerCase(); return s.includes('malicious')||s.includes('phishing')||s.includes('danger')||s.includes('unsafe'); });
-          const heroSub = document.getElementById('heroSubtext');
-          if (heroSub) {
-            if (dangerous.length > 0) {
-              const worst = dangerous[0].scannedItem || dangerous[0].inputData || 'suspicious target';
-              heroSub.innerHTML = `<b style="color:var(--red)">Critical Threat Warning:</b> You recently scanned a dangerous target: <span style="color:var(--red);font-family:var(--mono);font-weight:700;">${worst}</span>. Do not enter credentials on this site.`;
-            } else {
-              let sc=currentScore, sw='secure', sclr='var(--green)';
-              if(sc<50){sw='vulnerable';sclr='var(--red)';}else if(sc<80){sw='at risk';sclr='var(--amber)';}
-              heroSub.innerHTML = `Your digital perimeter is <b style="color:${sclr}">${sw}</b>. No critical vulnerabilities detected. Safe Score calculated at <b>${sc}/100</b> — keep it up.`;
+      // Try fetching live activity logs from backend API if logged in
+      const token = localStorage.getItem('cm_session_token');
+      if (token) {
+        try {
+          const apiBase = window.CYPR_TECH_API_BASE || '';
+          const res = await fetch(apiBase + '/api/user/me/activity', {
+            headers: { 'Authorization': 'Bearer ' + token }
+          });
+          if (res.ok) {
+            const data = await res.json();
+            const list = Array.isArray(data) ? data : (data.content || []);
+            if (list.length > 0) {
+              renderActivityTimeline(list);
             }
           }
-        }
-      } catch(e) {}
-
-      let malCount=0, malThreats=0;
-      let malLogs = [];
-      try {
-        const malRes = await fetch(`${window.CYPR_TECH_API_BASE}/api/malware/history/${userId}`);
-        if (malRes.ok) {
-          malLogs = await malRes.json()||[];
-          malCount = malLogs.length;
-          malThreats = malLogs.filter(m=>(m.threatLevel||'CLEAN')!=='CLEAN').length;
-        }
-      } catch(e) {}
-
-      const threatsBlocked = urlThreats + malThreats;
-      const totalScans = urlCount + malCount;
-      animateNum('threatsBlockedVal', threatsBlocked);
-      animateNum('urlsScannedVal', totalScans);
-      animateNum('passwordsExposedVal', exposedPasswords);
-      animateNum('activeIncidentsVal', malThreats);
-      if (document.getElementById('passwordsExposedVal')) {
-        document.getElementById('passwordsExposedVal').style.color = exposedPasswords > 0 ? 'var(--red)' : 'var(--lime)';
-      }
-      renderTopTools(urlCount, passCount, malCount);
-      renderOverviewChart(acts, malLogs);
-    }
-  } catch(err) { console.error('Fetch Error:', err); showToast('Connection to server failed.', 'error'); }
-}
-
-/* ══ UI UPDATE ══ */
-function updateProfileUI() {
-  const name = `${profile.fn} ${profile.ln}`.trim();
-  const init = ((profile.fn[0]||'')+(profile.ln[0]||'')).toUpperCase();
-  const wn = document.getElementById('welcomeName');
-  if (wn) wn.textContent = profile.fn + '.';
-  ['modalAv'].forEach(id => {
-    const el = document.getElementById(id);
-    if (!el) return;
-    if (profile.avatarSrc) el.innerHTML = `<img src="${profile.avatarSrc}" alt="avatar" style="width:100%;height:100%;border-radius:50%;object-fit:cover;">`;
-    else el.innerHTML = init || 'U';
-  });
-}
-
-/* ══ DYNAMIC CHART GENERATOR ══ */
-function getBezierPath(points) {
-  if (points.length === 0) return '';
-  let path = `M ${points[0].x} ${points[0].y}`;
-  for (let i = 0; i < points.length - 1; i++) {
-    const p0 = points[i];
-    const p1 = points[i+1];
-    const cpX1 = p0.x + (p1.x - p0.x) / 3;
-    const cpY1 = p0.y;
-    const cpX2 = p0.x + 2 * (p1.x - p0.x) / 3;
-    const cpY2 = p1.y;
-    path += ` C ${cpX1} ${cpY1}, ${cpX2} ${cpY2}, ${p1.x} ${p1.y}`;
-  }
-  return path;
-}
-
-function renderOverviewChart(acts, malLogs) {
-  // 1. Determine last 7 days (today, yesterday... 6 days ago)
-  const dateLabels = [];
-  const now = new Date();
-  const dayMs = 24 * 60 * 60 * 1000;
-
-  for (let i = 6; i >= 0; i--) {
-    const d = new Date(now.getTime() - i * dayMs);
-    const months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
-    dateLabels.push(`${months[d.getMonth()]} ${d.getDate()}`);
-  }
-
-  // 2. Group logs by day
-  let scansData = Array(7).fill(0);
-  let threatsData = Array(7).fill(0);
-  let blockedData = Array(7).fill(0);
-
-  const startOf7DaysAgo = new Date(now.getTime() - 6 * dayMs);
-  startOf7DaysAgo.setHours(0, 0, 0, 0);
-
-  // Group acts (URL check, Password check)
-  acts.forEach(act => {
-    const actDate = new Date(act.timestamp || act.scannedAt);
-    if (isNaN(actDate.getTime())) return;
-    if (actDate >= startOf7DaysAgo) {
-      const diffDays = Math.floor((now - actDate) / dayMs);
-      if (diffDays >= 0 && diffDays < 7) {
-        const index = 6 - diffDays;
-        scansData[index]++;
-        const sLower = (act.status || '').toLowerCase();
-        if (sLower.includes('malicious') || sLower.includes('phishing') || sLower.includes('danger') || sLower.includes('unsafe')) {
-          threatsData[index]++;
-          blockedData[index]++;
-        } else if (sLower.includes('weak') || sLower.includes('warning') || sLower.includes('compromised')) {
-          blockedData[index]++;
+        } catch (e) {
+          console.warn('Live activity fetch note:', e);
         }
       }
     }
-  });
 
-  // Group malLogs (Malware history)
-  malLogs.forEach(log => {
-    const logDate = new Date(log.scannedAt || log.timestamp);
-    if (isNaN(logDate.getTime())) return;
-    if (logDate >= startOf7DaysAgo) {
-      const diffDays = Math.floor((now - logDate) / dayMs);
-      if (diffDays >= 0 && diffDays < 7) {
-        const index = 6 - diffDays;
-        scansData[index]++;
-        if ((log.threatLevel || 'CLEAN') !== 'CLEAN') {
-          threatsData[index]++;
-          blockedData[index]++;
-        }
-      }
+    function renderActivityTimeline(items) {
+      const container = document.getElementById('dashActivityList');
+      if (!container || items.length === 0) return;
+
+      container.innerHTML = items.slice(0, 4).map(item => {
+        const title = escapeHtml(item.title || item.url || item.target || 'Security Scan');
+        const verdict = escapeHtml(item.result || item.verdict || 'SECURE').toUpperCase();
+        const time = item.timestamp ? new Date(item.timestamp).toLocaleString() : 'Recent';
+        const isMalicious = verdict.includes('MALICIOUS') || verdict.includes('BLOCKED') || verdict.includes('RISK');
+
+        return `
+          <div class="activity-item">
+            <div class="activity-left">
+              <div class="activity-icon" style="${isMalicious ? 'background:rgba(239,68,68,0.08);border-color:rgba(239,68,68,0.2);color:var(--red);' : ''}">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+              </div>
+              <div>
+                <div class="activity-title">${title}</div>
+                <div class="activity-time">${time}</div>
+              </div>
+            </div>
+            <span class="activity-verdict" style="${isMalicious ? 'background:rgba(239,68,68,0.1);color:var(--red);border-color:rgba(239,68,68,0.25);' : ''}">${verdict}</span>
+          </div>
+        `;
+      }).join('');
     }
-  });
 
-  // Fallback to beautiful mock curves if there is zero activity (Guest preview or new accounts)
-  const totalActCount = scansData.reduce((s, c) => s + c, 0);
-  if (totalActCount === 0) {
-    scansData   = [8, 18, 14, 22, 28, 25, 23];
-    blockedData = [5,  8,  7, 12, 14, 12, 11];
-    threatsData = [3,  6,  4,  8, 10,  8,  7];
-  }
-
-  // 3. Find max value to scale Y axis appropriately
-  const maxVal = Math.max(10, ...scansData, ...threatsData, ...blockedData);
-  const ceilMax = Math.ceil(maxVal / 10) * 10;
-  
-  // Y mapping: Y = 100 - (val / ceilMax * 75) [Value 0 is at Y=100, Value ceilMax is at Y=25]
-  const getY = (val) => 100 - (val / ceilMax * 75);
-  const getX = (index) => [22, 70, 118, 166, 214, 262, 310][index];
-
-  // Construct coordinates
-  const scansPoints = scansData.map((val, idx) => ({ x: getX(idx), y: getY(val) }));
-  const threatsPoints = threatsData.map((val, idx) => ({ x: getX(idx), y: getY(val) }));
-  const blockedPoints = blockedData.map((val, idx) => ({ x: getX(idx), y: getY(val) }));
-
-  const scansPath = getBezierPath(scansPoints);
-  const threatsPath = getBezierPath(threatsPoints);
-  const blockedPath = getBezierPath(blockedPoints);
-
-  const scansFill = scansPath ? `${scansPath} L 310 100 L 22 100 Z` : '';
-  const threatsFill = threatsPath ? `${threatsPath} L 310 100 L 22 100 Z` : '';
-  const blockedFill = blockedPath ? `${blockedPath} L 310 100 L 22 100 Z` : '';
-
-  const lastScanPoint = scansPoints[scansPoints.length - 1];
-
-  // Rebuild inner SVG
-  const svgEl = document.querySelector('.chart-svg-wrap');
-  if (!svgEl) return;
-
-  svgEl.innerHTML = `
-    <defs>
-      <linearGradient id="scansGrad" x1="0" y1="0" x2="0" y2="1">
-        <stop offset="0%" stop-color="#f97316" stop-opacity="0.2"/>
-        <stop offset="100%" stop-color="#f97316" stop-opacity="0"/>
-      </linearGradient>
-      <linearGradient id="threatsGrad" x1="0" y1="0" x2="0" y2="1">
-        <stop offset="0%" stop-color="#f87171" stop-opacity="0.15"/>
-        <stop offset="100%" stop-color="#f87171" stop-opacity="0"/>
-      </linearGradient>
-      <linearGradient id="blockedGrad" x1="0" y1="0" x2="0" y2="1">
-        <stop offset="0%" stop-color="#34d399" stop-opacity="0.15"/>
-        <stop offset="100%" stop-color="#34d399" stop-opacity="0"/>
-      </linearGradient>
-    </defs>
-    <!-- Grid lines -->
-    <line x1="0" y1="100" x2="340" y2="100" stroke="var(--border)" stroke-width="0.5"/>
-    <line x1="0" y1="75" x2="340" y2="75" stroke="var(--border)" stroke-width="0.5" stroke-dasharray="3 3"/>
-    <line x1="0" y1="50" x2="340" y2="50" stroke="var(--border)" stroke-width="0.5" stroke-dasharray="3 3"/>
-    <line x1="0" y1="25" x2="340" y2="25" stroke="var(--border)" stroke-width="0.5" stroke-dasharray="3 3"/>
-    
-    <!-- Y axis labels -->
-    <text x="2" y="103" font-size="7" fill="var(--text3)" font-family="monospace">0</text>
-    <text x="2" y="78" font-size="7" fill="var(--text3)" font-family="monospace">${(ceilMax / 3).toFixed(0)}</text>
-    <text x="2" y="53" font-size="7" fill="var(--text3)" font-family="monospace">${(2 * ceilMax / 3).toFixed(0)}</text>
-    <text x="2" y="28" font-size="7" fill="var(--text3)" font-family="monospace">${ceilMax}</text>
-    
-    <!-- X axis labels -->
-    <text x="12" y="110" font-size="7" fill="var(--text3)" font-family="monospace">${dateLabels[0]}</text>
-    <text x="60" y="110" font-size="7" fill="var(--text3)" font-family="monospace">${dateLabels[1]}</text>
-    <text x="108" y="110" font-size="7" fill="var(--text3)" font-family="monospace">${dateLabels[2]}</text>
-    <text x="156" y="110" font-size="7" fill="var(--text3)" font-family="monospace">${dateLabels[3]}</text>
-    <text x="204" y="110" font-size="7" fill="var(--text3)" font-family="monospace">${dateLabels[4]}</text>
-    <text x="252" y="110" font-size="7" fill="var(--text3)" font-family="monospace">${dateLabels[5]}</text>
-    <text x="300" y="110" font-size="7" fill="var(--text3)" font-family="monospace">${dateLabels[6]}</text>
-    
-    <!-- Scans area -->
-    ${scansFill ? `<path d="${scansFill}" fill="url(#scansGrad)"/>` : ''}
-    ${scansPath ? `<path d="${scansPath}" fill="none" stroke="#f97316" stroke-width="2" stroke-linecap="round"/>` : ''}
-    ${lastScanPoint ? `<circle cx="${lastScanPoint.x}" cy="${lastScanPoint.y}" r="3" fill="#f97316" style="filter:drop-shadow(0 0 4px #f97316)"/>` : ''}
-    
-    <!-- Blocked area -->
-    ${blockedFill ? `<path d="${blockedFill}" fill="url(#blockedGrad)"/>` : ''}
-    ${blockedPath ? `<path d="${blockedPath}" fill="none" stroke="#34d399" stroke-width="1.5" stroke-linecap="round"/>` : ''}
-    
-    <!-- Threats area -->
-    ${threatsFill ? `<path d="${threatsFill}" fill="url(#threatsGrad)"/>` : ''}
-    ${threatsPath ? `<path d="${threatsPath}" fill="none" stroke="#f87171" stroke-width="1.5" stroke-linecap="round"/>` : ''}
-  `;
-}
-
-/* ══ GAUGE ANIMATION ══ */
-function animateHeroGauge(score) {
-  const fill = document.getElementById('heroGaugeFill');
-  const gaugeNum = document.getElementById('heroGaugeNum');
-  const statusEl = document.getElementById('heroStatusText');
-  const attnEl = document.getElementById('heroNeedsAttn');
-  const riskBar = document.getElementById('heroRiskBar');
-
-  let color, label, attn;
-  if (score < 40) { color='var(--red)'; label='Critical'; attn='Needs Attention'; }
-  else if (score < 75) { color='var(--amber)'; label='Warning'; attn='Monitor Closely'; }
-  else { color='var(--green)'; label='Secure'; attn='All Systems Normal'; }
-
-  if (statusEl) { statusEl.textContent = label; statusEl.style.color = color; }
-  if (attnEl) { attnEl.textContent = attn; attnEl.style.color = color; attnEl.style.setProperty('color', color, 'important'); }
-
-  setTimeout(() => {
-    if (fill) fill.style.strokeDashoffset = 264 - (score / 100) * 264;
-    if (riskBar) riskBar.style.width = score + '%';
-    // Animate number
-    const start = performance.now();
-    const dur = 1400;
-    function tick(now) {
-      const p = Math.min((now-start)/dur,1);
-      const cur = Math.floor(p*score);
-      if (gaugeNum) gaugeNum.textContent = cur;
-      const heroScoreValEl = document.getElementById('heroScoreVal');
-      if (heroScoreValEl) heroScoreValEl.textContent = cur+'/100';
-      if (p<1) requestAnimationFrame(tick);
-      else { if (gaugeNum) gaugeNum.textContent=score; if(heroScoreValEl) heroScoreValEl.textContent=score+'/100'; }
-    }
-    requestAnimationFrame(tick);
-  }, 400);
-}
-
-/* ══ THREAT INTEL RSS ══ */
-async function fetchThreatIntel() {
-  try {
-    const res = await fetch(`https://api.rss2json.com/v1/api.json?rss_url=https://www.cisa.gov/cybersecurity-advisories.xml`);
-    if (!res.ok) return;
-    const data = await res.json();
-    const items = data.items || [];
-    if (items.length === 0) return;
-    const card = document.getElementById('threatCard');
-    if (!card) return;
-    card.innerHTML = '';
-    items.slice(0,2).forEach((item,idx) => {
-      const pubDate = new Date(item.pubDate);
-      const timeStr = isNaN(pubDate.getTime()) ? 'Recent' : formatRelTime(pubDate);
-      const text = (item.title+' '+(item.description||'')).toLowerCase();
-      const isCrit = text.includes('critical')||text.includes('actively exploited')||idx===0;
-      const sevCls = isCrit ? 'crit' : 'warn';
-      const sevTxt = isCrit ? 'Critical' : 'High';
-      const cleanDesc = (item.description||'').replace(/<[^>]*>/g,'').trim();
-      const shortDesc = cleanDesc.length > 100 ? cleanDesc.slice(0,100)+'...' : cleanDesc;
+    function escapeHtml(str) {
+      if (!str) return '';
       const div = document.createElement('div');
-      div.className = 'threat-item'; div.style.cursor='pointer';
-      div.addEventListener('click', () => window.open(item.link,'_blank'));
-      div.innerHTML = `
-        <div class="threat-avatar ${sevCls}"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="width:16px;height:16px;"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div>
-        <div class="threat-body">
-          <div class="threat-meta"><span class="t-badge ${sevCls}">${sevTxt}</span><span class="t-time">${timeStr}</span></div>
-          <h4>${item.title}</h4>
-          <p>${shortDesc||'Click to view the full advisory on CISA.'}</p>
-        </div>
-        <span class="threat-link">View Details <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg></span>
-      `;
-      card.appendChild(div);
-    });
-  } catch(e) { console.warn('RSS fetch failed, using defaults.'); }
-}
+      div.textContent = str;
+      return div.innerHTML;
+    }
+  </script>
 
-/* ══ TOP 7 TOOLS ══ */
-function renderTopTools(urlCount=0, passCount=0, malCount=0) {
-  const tools = [
-    { icon:'🔍', name:'URL Phishing Checker', count:urlCount, color:'#f97316', url:'url-check.html' },
-    { icon:'🔑', name:'Password Vault', count:passCount, color:'#fbbf24', url:'password-check.html' },
-    { icon:'🛡️', name:'Dark Web Monitor', count:malCount, color:'#8b5cf6', url:'#' },
-    { icon:'📊', name:'Activity Logs', count:Math.max(urlCount,passCount,malCount)>0?1:0, color:'#34d399', url:'activity-logs.html' },
-    { icon:'🕵', name:'Breach Radar', count:0, color:'#f87171', url:'#' },
-    { icon:'🔐', name:'Asset Encryptor', count:0, color:'#f97316', url:'#' },
-  ].sort((a,b)=>b.count-a.count);
-
-  const maxC = Math.max(1, tools[0].count);
-  const list = document.getElementById('top7List');
-  if (!list) return;
-  list.innerHTML = tools.map((t,i) => `
-    <div class="t7-item" onclick="${t.url!=='#'?`window.location='${t.url}'`:`showToast('${t.name} — Coming Soon')`}">
-      <span class="t7-rank">#${i+1}</span>
-      <div class="t7-icon">${t.icon}</div>
-      <div class="t7-info">
-        <div class="t7-name">${t.name}</div>
-        <div class="t7-bar-track"><div class="t7-bar-fill" data-w="${(t.count/maxC*100).toFixed(0)}" style="width:0%;background:${t.color}"></div></div>
-      </div>
-      <span class="t7-count">${t.count} ${t.count===1?'Use':'Uses'}</span>
-    </div>
-  `).join('');
-
-  setTimeout(() => {
-    document.querySelectorAll('.t7-bar-fill').forEach(b => { b.style.width = (b.dataset.w||'0')+'%'; });
-  }, 200);
-}
-
-/* ══ PINNING TOOLS ══ */
-const DISCOVERABLE_TOOLS = [
-  { key:'url-check', icon:'🔍', name:'URL Phishing Checker', desc:'Scan any URL against 70+ virus databases.', status:'active', link:'url-check.html' },
-  { key:'password-check', icon:'🔑', name:'Password Analyzer', desc:'Check strength and generate strong cryptographic keys.', status:'active', link:'password-check.html' },
-  { key:'activity-logs', icon:'📊', name:'Activity & Scan Logs', desc:'Analyze historical session records and safety telemetry.', status:'active', link:'activity-logs.html' },
-  { key:'dark-web', icon:'🕵', name:'Dark Web Monitor', desc:'Scan public breaches for leaked credentials.', status:'soon', link:'#' },
-  { key:'family-vault', icon:'🔐', name:'Family Vault', desc:'Secure shared assets with double-key encryption.', status:'soon', link:'#' },
-  { key:'breach-radar', icon:'📋', name:'Breach Radar', desc:'Proactively track compromised corporate domains.', status:'soon', link:'#' },
-  { key:'asset-encryptor', icon:'💎', name:'Asset Encryptor', desc:'Encrypt local media files directly in-browser.', status:'soon', link:'#' }
-];
-
-function togglePin(key, event) {
-  if (event) { event.preventDefault(); event.stopPropagation(); }
-  let pinned = JSON.parse(localStorage.getItem('cm_pinned_tools')||'[]');
-  const idx = pinned.indexOf(key);
-  if (idx>-1) { pinned.splice(idx,1); showToast('Unpinned '+key); }
-  else { pinned.push(key); showToast('Pinned '+key+' to Top Tools'); }
-  localStorage.setItem('cm_pinned_tools', JSON.stringify(pinned));
-  renderPinnedTools();
-  if (document.getElementById('discoverModalOverlay').classList.contains('open')) renderDiscoverToolsList();
-}
-
-function renderPinnedTools() {
-  const pinned = JSON.parse(localStorage.getItem('cm_pinned_tools')||'[]');
-  document.querySelectorAll('.pin-btn').forEach(btn => {
-    const key = btn.getAttribute('data-key');
-    if (pinned.includes(key)) { btn.classList.add('pinned'); btn.innerHTML='★'; }
-    else { btn.classList.remove('pinned'); btn.innerHTML='☆'; }
-  });
-  const shelf = document.getElementById('pinnedToolsSection');
-  const grid = document.getElementById('pinnedToolsGrid');
-  if (pinned.length===0) { if(shelf) shelf.style.display='none'; return; }
-  if (shelf) shelf.style.display='block';
-  if (grid) {
-    grid.innerHTML = pinned.map(key => {
-      const tool = DISCOVERABLE_TOOLS.find(t=>t.key===key);
-      if (!tool) return '';
-      const hrefAttr = tool.status==='active' ? `href="${tool.link}"` : `href="#" onclick="showToast('${tool.name} — Coming Soon');return false;"`;
-      return `
-        <a ${hrefAttr} class="tool-card">
-          <div class="tc-top">
-            <div class="tc-icon-box"><span style="font-size:1.1rem">${tool.icon}</span></div>
-            <button class="pin-btn pinned" data-key="${tool.key}" onclick="togglePin('${tool.key}', event)">★</button>
-          </div>
-          <div class="tc-name">${tool.name}</div>
-          <div class="tc-desc">${tool.desc}</div>
-          <div class="tc-time"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:10px;height:10px;"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg> Pinned Shortcut</div>
-        </a>`;
-    }).join('');
-  }
-}
-
-function renderDiscoverToolsList() {
-  const pinned = JSON.parse(localStorage.getItem('cm_pinned_tools')||'[]');
-  const list = document.getElementById('discoverToolsList');
-  if (!list) return;
-  list.innerHTML = DISCOVERABLE_TOOLS.map(tool => {
-    const isPinned = pinned.includes(tool.key);
-    const badgeClass = tool.status==='active'?'active':'soon';
-    return `
-      <div class="discover-tool-row">
-        <div class="dt-left">
-          <div class="dt-icon">${tool.icon}</div>
-          <div>
-            <div style="display:flex;align-items:center;gap:8px;"><span class="dt-name">${tool.name}</span><span class="dt-badge ${badgeClass}">${tool.status==='active'?'Active':'Soon'}</span></div>
-            <div class="dt-desc">${tool.desc}</div>
-          </div>
-        </div>
-        <button class="dt-pin-btn ${isPinned?'pinned':''}" onclick="togglePin('${tool.key}', event)">${isPinned?'★':'☆'}</button>
-      </div>`;
-  }).join('');
-}
-
-function openModal() { document.getElementById('mFN').value=profile.fn; document.getElementById('mLN').value=profile.ln; document.getElementById('mEM').value=profile.email; document.getElementById('mPH').value=profile.phone; document.getElementById('mHN').value=(profile.handle||'').replace('@',''); document.getElementById('mBI').value=profile.bio; document.getElementById('modalOverlay').classList.add('open'); document.body.style.overflow='hidden'; }
-function closeModal() { document.getElementById('modalOverlay').classList.remove('open'); document.body.style.overflow=''; }
-async function saveProfile() {
-  const upd = { name:document.getElementById('mFN').value.trim()+' '+document.getElementById('mLN').value.trim(), email:document.getElementById('mEM').value.trim(), mobile:document.getElementById('mPH').value.trim(), bio:document.getElementById('mBI').value.trim() };
-  try {
-    const res = await fetch(`${window.CYPR_TECH_API_BASE}/api/user/me/update`, { method:'PUT', headers:{'Content-Type':'application/json', 'Authorization': 'Bearer ' + localStorage.getItem('cm_session_token')}, body:JSON.stringify(upd) });
-    if (res.ok) { showToast('Profile updated', 'success'); fetchProfileData(); closeModal(); }
-  } catch(e) { showToast('Update failed', 'error'); }
-}
-function handleAvatar(input) { const file=input.files[0]; if(!file) return; const reader=new FileReader(); reader.onload=e=>{profile.avatarSrc=e.target.result; document.getElementById('modalAv').innerHTML=`<img src="${e.target.result}">`; updateProfileUI();}; reader.readAsDataURL(file); }
-function openDiscoverModal() { renderDiscoverToolsList(); document.getElementById('discoverModalOverlay').classList.add('open'); document.body.style.overflow='hidden'; }
-function closeDiscoverModal() { document.getElementById('discoverModalOverlay').classList.remove('open'); document.body.style.overflow=''; }
-
-/* ══ HELPERS ══ */
-function animateNum(id, end) {
-  const el = document.getElementById(id); if(!el) return;
-  const dur=800, start=performance.now();
-  function tick(now) { const p=Math.min((now-start)/dur,1); el.textContent=Math.floor(p*end); if(p<1) requestAnimationFrame(tick); else el.textContent=end; }
-  requestAnimationFrame(tick);
-}
-function formatRelTime(date) {
-  const sec = Math.floor((new Date()-date)/1000);
-  if(sec<60) return 'Just now';
-  const min=Math.floor(sec/60); if(min<60) return `${min}m ago`;
-  const hr=Math.floor(min/60); if(hr<24) return `${hr}h ago`;
-  return `${Math.floor(hr/24)}d ago`;
-}
-function showToast(msg, type = 'info') {
-  const e=document.querySelector('.cm-toast'); if(e) e.remove();
-  const t=document.createElement('div'); t.className='cm-toast'; t.textContent=msg;
-  let color = 'var(--lime)';
-  if (type === 'error') color = '#ff4444';
-  if (type === 'warn') color = '#ffaa00';
-  t.style.cssText=`position:fixed;bottom:30px;left:50%;transform:translateX(-50%);background:var(--bg2);border:1px solid ${color};border-radius:100px;padding:10px 22px;font-family:var(--mono);font-size:.78rem;color:${color};z-index:999;white-space:nowrap;pointer-events:none;box-shadow:0 0 20px ${color}33;`;
-  document.body.appendChild(t); setTimeout(()=>{t.style.opacity='0';t.style.transition='opacity .3s';setTimeout(()=>t.remove(),300);},2400);
-}
-</script>
-<script src="notifications.js"></script>
 </body>
 </html>

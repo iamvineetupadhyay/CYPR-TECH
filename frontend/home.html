@@ -130,6 +130,10 @@
     .shell {
       display: flex;
       min-height: 100vh;
+      width: 100% !important;
+      max-width: 100vw !important;
+      overflow-x: hidden !important;
+      box-sizing: border-box !important;
     }
 
     /* ═══ SIDEBAR & TOPBAR (Hidden by default when dynamic navbar runs, left as offline fallback) ═══ */
@@ -144,12 +148,20 @@
       display: flex;
       flex-direction: column;
       min-height: 100vh;
+      width: 100% !important;
+      max-width: 100% !important;
+      overflow-x: hidden !important;
+      box-sizing: border-box !important;
     }
 
     .page {
       flex: 1;
       padding: 0 0 60px;
       overflow-y: auto;
+      overflow-x: hidden !important;
+      width: 100% !important;
+      max-width: 100% !important;
+      box-sizing: border-box !important;
     }
 
     /* ═══ PREMIUM HOME LAYOUT ═══ */
@@ -157,9 +169,12 @@
       display: flex;
       flex-direction: column;
       gap: 24px;
-      padding: 24px 36px;
-      max-width: 1200px;
+      padding: 24px 32px !important;
+      width: 100% !important;
+      max-width: 1340px !important;
       margin: 0 auto;
+      box-sizing: border-box !important;
+      overflow-x: hidden !important;
     }
 
     /* Announcement Banner */
@@ -224,11 +239,11 @@
       background: linear-gradient(135deg, #120e0c 0%, #2b201a 100%);
       border: 1px solid rgba(224, 90, 0, 0.25);
       border-radius: var(--r);
-      padding: 32px 36px;
+      padding: 44px 48px;
       color: #f5f2f0;
       position: relative;
       overflow: hidden;
-      min-height: 150px;
+      min-height: 240px;
       display: flex;
       flex-direction: column;
       justify-content: center;
@@ -259,17 +274,17 @@
     }
 
     .promo-title {
-      font-size: 1.45rem;
+      font-size: 1.7rem;
       font-weight: 800;
-      margin-bottom: 6px;
+      margin-bottom: 8px;
       letter-spacing: -0.01em;
     }
 
     .promo-desc {
-      font-size: 0.85rem;
+      font-size: 0.92rem;
       color: #b5adab;
-      max-width: 480px;
-      line-height: 1.5;
+      max-width: 580px;
+      line-height: 1.6;
     }
 
     .promo-dots {
@@ -287,13 +302,15 @@
       width: 6px;
       height: 6px;
       border-radius: 50%;
-      background: rgba(255, 255, 255, 0.25);
+      background: rgba(255, 255, 255, 0.5);
+      border: 1px solid rgba(255, 255, 255, 0.3);
       cursor: pointer;
       transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
     }
 
     .promo-dot.active {
       background: var(--accent);
+      border-color: var(--accent);
       height: 16px;
       border-radius: 4px;
     }
@@ -316,45 +333,133 @@
       letter-spacing: 0.05em;
     }
 
-    /* Quick Tools Pills */
+    /* Quick Tools (tools.html Card Design) */
     .quick-tools-row {
       display: grid;
       grid-template-columns: repeat(4, 1fr);
-      gap: 12px;
+      gap: 16px;
     }
 
-    .q-tool-pill {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      padding: 12px 16px;
+    .tool-card {
       background: var(--card);
       border: 1px solid var(--border);
-      border-radius: var(--r-sm);
-      transition: all 0.18s cubic-bezier(0.4, 0, 0.2, 1);
-      cursor: pointer;
-      font-size: 0.85rem;
-      font-weight: 700;
-      box-shadow: var(--shadow);
-    }
-
-    .q-tool-pill:hover {
-      border-color: var(--accent);
-      background: var(--lime-dim);
-      transform: translateY(-1.5px);
-    }
-
-    .q-tool-icon {
-      font-size: 1.1rem;
+      border-radius: var(--r);
+      padding: 20px;
       display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+      position: relative;
+      min-height: 200px;
+      box-shadow: var(--shadow);
+      cursor: pointer;
+    }
+
+    .tool-card:hover {
+      transform: translateY(-3px);
+      border-color: var(--accent);
+      box-shadow: 0 8px 24px rgba(224, 90, 0, 0.12);
+    }
+
+    .tool-card-header {
+      display: flex;
+      justify-content: space-between;
       align-items: center;
-      justify-content: center;
-      width: 28px;
-      height: 28px;
-      border-radius: 8px;
-      background: var(--lime-dim);
-      border: 1px solid var(--lime-glow);
-      color: var(--accent);
+      margin-bottom: 14px;
+    }
+
+    .tool-card-icon {
+      width: 34px;
+      height: 34px;
+      object-fit: contain;
+      filter: grayscale(100%) brightness(0.15) !important;
+      transition: transform 0.3s ease, filter 0.3s ease;
+    }
+
+    .tool-card:hover .tool-card-icon {
+      transform: scale(1.1);
+      filter: grayscale(100%) brightness(0) !important;
+    }
+
+    html[data-theme="dark"] .tool-card-icon {
+      filter: invert(1) brightness(2) !important;
+    }
+
+    html[data-theme="dark"] .tool-card:hover .tool-card-icon {
+      filter: invert(1) brightness(2.5) !important;
+    }
+
+    .tool-badge {
+      font-family: var(--mono);
+      font-size: 0.6rem;
+      font-weight: 700;
+      padding: 3px 8px;
+      border-radius: 999px;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .tool-badge.live {
+      background: rgba(16, 185, 129, 0.1);
+      color: #10b981;
+      border: 1px solid rgba(16, 185, 129, 0.25);
+    }
+
+    .tool-badge.dashboard {
+      background: rgba(245, 158, 11, 0.1);
+      color: #d97706;
+      border: 1px solid rgba(245, 158, 11, 0.25);
+    }
+
+    .tool-card-title {
+      font-size: 0.95rem;
+      font-weight: 800;
+      color: var(--text);
+      margin-bottom: 6px;
+      letter-spacing: -0.01em;
+    }
+
+    .tool-card-desc {
+      font-size: 0.78rem;
+      color: var(--text2);
+      line-height: 1.5;
+      margin-bottom: 16px;
+      flex: 1;
+    }
+
+    .tool-card-btn-wrap {
+      display: flex;
+      justify-content: flex-end;
+      margin-top: auto;
+      padding-top: 8px;
+    }
+
+    .tool-card-btn {
+      font-family: var(--mono);
+      font-size: 0.72rem;
+      font-weight: 800;
+      color: #ffffff !important;
+      background: linear-gradient(135deg, #e05a00 0%, #ff6b00 100%) !important;
+      border: none;
+      border-radius: 999px;
+      padding: 8px 18px;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.2s ease;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      box-shadow: 0 4px 14px rgba(224, 90, 0, 0.3);
+    }
+
+    .tool-card-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 18px rgba(224, 90, 0, 0.45);
+    }
+
+    .tool-card:hover .tool-card-link {
+      gap: 8px;
     }
 
     /* Explore CYPR */
@@ -380,8 +485,8 @@
 
     .explore-card:hover {
       border-color: var(--accent);
-      transform: translateY(-2px);
-      box-shadow: 0 8px 30px var(--lime-glow);
+      transform: translateY(-3px);
+      box-shadow: 0 6px 18px rgba(224, 90, 0, 0.12);
     }
 
     .explore-icon {
@@ -410,11 +515,11 @@
     .badge-soon {
       font-size: 0.58rem;
       font-weight: 700;
-      background: var(--bg2);
-      border: 1px solid var(--border);
+      background: transparent;
+      border: 1px solid var(--border2);
       color: var(--text3);
-      padding: 1px 6px;
-      border-radius: 4px;
+      padding: 1px 7px;
+      border-radius: 999px;
       text-transform: uppercase;
       letter-spacing: 0.04em;
     }
@@ -466,11 +571,28 @@
     }
 
     .news-source {
-      font-size: 0.68rem;
+      font-size: 0.72rem;
       color: var(--text3);
       margin-bottom: 5px;
-      font-weight: 600;
       font-family: var(--mono);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .news-source .src-name {
+      color: var(--text);
+      font-weight: 700;
+    }
+
+    .news-source .src-sep {
+      color: var(--text3);
+      opacity: 0.6;
+    }
+
+    .news-source .src-time {
+      color: var(--text3);
+      font-weight: 400;
     }
 
     .news-item h4 {
@@ -487,11 +609,16 @@
       color: var(--text3);
       display: flex;
       align-items: center;
-      transition: transform 0.15s ease;
+      transition: transform 0.2s ease, color 0.2s ease;
+    }
+
+    .news-arrow svg {
+      width: 16px !important;
+      height: 16px !important;
     }
 
     .news-item:hover .news-arrow {
-      transform: translateX(3px);
+      transform: translateX(5px);
       color: var(--lime);
     }
 
@@ -558,19 +685,23 @@
 
     .country-dropdown {
       background: var(--bg2);
-      border: 1px solid var(--border);
+      border: 1px solid var(--border2);
       color: var(--text);
       border-radius: 6px;
       font-size: 0.72rem;
-      padding: 4px 8px;
+      padding: 4px 10px;
       font-family: inherit;
       font-weight: 700;
       cursor: pointer;
       outline: none;
+      transition: all 0.2s ease;
     }
 
+    .country-dropdown:hover,
     .country-dropdown:focus {
       border-color: var(--accent);
+      background: var(--bg3);
+      box-shadow: 0 0 0 3px var(--accent-dim);
     }
 
     .complaint-info-block {
@@ -599,10 +730,13 @@
     }
 
     .complaint-phone {
-      font-size: 1.25rem;
+      font-size: 1.85rem;
       font-weight: 900;
       color: var(--accent);
       font-family: var(--mono);
+      letter-spacing: 0.02em;
+      line-height: 1.1;
+      margin: 2px 0 4px;
     }
 
     .complaint-link-btn {
@@ -668,8 +802,25 @@
 
     @media(max-width: 580px) {
       .dashboard-layout {
-        padding: 16px 20px;
-        gap: 18px;
+        padding: 14px 10px !important;
+        gap: 16px !important;
+        width: 100% !important;
+        max-width: 100% !important;
+        box-sizing: border-box !important;
+      }
+
+      .home-greeting-row h1 {
+        font-size: 1.25rem !important;
+        font-weight: 800 !important;
+        line-height: 1.25 !important;
+        letter-spacing: -0.01em !important;
+        margin-bottom: 2px !important;
+      }
+
+      .home-sub {
+        font-size: 0.8rem !important;
+        line-height: 1.4 !important;
+        opacity: 0.9 !important;
       }
 
       .quick-tools-row {
@@ -680,17 +831,118 @@
         grid-template-columns: 1fr;
       }
 
+      .home-bottom-grid {
+        grid-template-columns: 1fr !important;
+        width: 100% !important;
+        max-width: 100% !important;
+        box-sizing: border-box !important;
+      }
+
+      .right-widgets-col {
+        width: 100% !important;
+        max-width: 100% !important;
+        box-sizing: border-box !important;
+      }
+
       .promo-card {
-        padding: 24px;
-        min-height: 160px;
+        padding: 24px 20px !important;
+        min-height: 185px !important;
+        border-radius: 16px !important;
+        background: linear-gradient(135deg, #120e0c 0%, #2b201a 100%) !important;
+        border: 1px solid rgba(224, 90, 0, 0.3) !important;
+        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25) !important;
+        color: #f5f2f0 !important;
+        width: 100% !important;
+        max-width: 100% !important;
+        box-sizing: border-box !important;
+      }
+
+      .promo-tag {
+        font-size: 0.62rem !important;
+        letter-spacing: 0.1em !important;
+        padding: 3px 10px !important;
+        border-radius: 999px !important;
+        color: var(--accent2) !important;
       }
 
       .promo-title {
-        font-size: 1.25rem;
+        font-size: 1.3rem !important;
+        font-weight: 800 !important;
+        line-height: 1.25 !important;
+        color: #ffffff !important;
+      }
+
+      .promo-desc {
+        font-size: 0.82rem !important;
+        color: #d1c7c5 !important;
+        line-height: 1.5 !important;
       }
 
       .promo-dots {
         display: none;
+      }
+
+      .news-feed-card,
+      .fact-card,
+      .complaint-card,
+      .explore-card,
+      .tool-card {
+        width: 100% !important;
+        max-width: 100% !important;
+        box-sizing: border-box !important;
+        padding: 16px 14px !important;
+        border-radius: 14px !important;
+        border: 1px solid var(--border) !important;
+        background: var(--card) !important;
+        box-shadow: 0 4px 14px rgba(0, 0, 0, 0.06) !important;
+      }
+
+      .complaint-header {
+        flex-direction: column !important;
+        align-items: flex-start !important;
+        gap: 10px !important;
+      }
+
+      .country-selector-wrap {
+        width: 100% !important;
+        justify-content: space-between !important;
+      }
+
+      .complaint-phone {
+        font-size: 1.7rem !important;
+        letter-spacing: 1px !important;
+        background: linear-gradient(135deg, var(--accent, #e05a00), #ff9233) !important;
+        -webkit-background-clip: text !important;
+        -webkit-text-fill-color: transparent !important;
+      }
+
+      .country-dropdown {
+        border-radius: 8px !important;
+        padding: 5px 10px !important;
+        font-weight: 600 !important;
+      }
+
+      .fact-card {
+        border-left: 4px solid var(--accent) !important;
+      }
+
+      .news-feed-card .section-head {
+        flex-wrap: wrap !important;
+        gap: 8px !important;
+      }
+
+      .news-item h4 {
+        white-space: normal !important;
+        display: -webkit-box !important;
+        -webkit-line-clamp: 2 !important;
+        -webkit-box-orient: vertical !important;
+        overflow: hidden !important;
+        word-break: break-word !important;
+      }
+
+      .fact-quote {
+        word-break: break-word !important;
+        overflow-wrap: break-word !important;
       }
     }
   </style>
@@ -715,18 +967,12 @@
         <button class="announce-close" onclick="dismissBanner()">&times;</button>
       </div>
 
-      <!-- Greeting & Subheader -->
-      <div class="home-greeting-row fu d2">
-        <h1>Welcome back, <span id="welcomeName">User</span>.</h1>
-        <p class="home-sub">Here's what's happening across CYPR today.</p>
-      </div>
-
       <!-- Featured Promo Carousel Card -->
       <div class="promo-card fu d2" id="promoCarousel">
         <div class="promo-content">
-          <span class="promo-tag" id="promoTag">NEW FEATURE</span>
-          <h2 class="promo-title" id="promoTitle">GitHub OAuth login is here</h2>
-          <p class="promo-desc" id="promoDesc">Sign in faster with your existing GitHub account.</p>
+          <span class="promo-tag" id="promoTag">PRODUCT UPDATE</span>
+          <h2 class="promo-title" id="promoTitle">VAJRA engine v2 is live</h2>
+          <p class="promo-desc" id="promoDesc">16 security telemetry signals analyze every URL scan in real time.</p>
         </div>
         <div class="promo-dots">
           <span class="promo-dot active" onclick="setCarouselSlide(0)"></span>
@@ -735,44 +981,72 @@
         </div>
       </div>
 
-      <!-- Quick Tools Section -->
-      <div class="home-section-title fu d3">Quick tools</div>
+      <!-- Greeting & Subheader -->
+      <div class="home-greeting-row fu d3">
+        <h1>Welcome back, <span id="welcomeName">User</span>.</h1>
+        <p class="home-sub">Here's what's happening across CYPR today.</p>
+      </div>
+
+      <!-- Quick Tools Section Header Row -->
+      <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px;" class="fu d3">
+        <div class="home-section-title" style="margin-bottom: 0;">Quick tools</div>
+        <button id="addMoreToolsBtn" onclick="openPinToolsModal()" style="display: inline-flex; align-items: center; gap: 6px; padding: 6px 14px; border-radius: 8px; background: var(--surface2); border: 1px solid var(--border); color: var(--text-muted); font-family: var(--font-body); font-size: 0.78rem; font-weight: 700; cursor: pointer; transition: all 0.2s ease;">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+          Add More
+        </button>
+      </div>
       <div class="quick-tools-row fu d3">
-        <a href="url-check.html" class="q-tool-pill">
-          <div class="q-tool-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
-              stroke-linecap="round" stroke-linejoin="round" style="width:14px;height:14px;color:var(--accent);">
-              <circle cx="11" cy="11" r="8"></circle>
-              <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
-            </svg></div>
-          <span>Scan URL</span>
-        </a>
-        <a href="password-check.html" class="q-tool-pill">
-          <div class="q-tool-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
-              stroke-linecap="round" stroke-linejoin="round" style="width:14px;height:14px;color:var(--accent);">
-              <path
-                d="M21 2l-2 2m-7.61 7.61a5.5 5.5 0 1 1-7.778 7.778 5.5 5.5 0 0 1 7.777-7.777zm0 0L15.5 7.5m0 0l3 3L22 7l-3-3m-3.5 3.5L19 4">
-              </path>
-            </svg></div>
-          <span>Test Password</span>
-        </a>
-        <a href="dashboard.html" class="q-tool-pill">
-          <div class="q-tool-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
-              stroke-linecap="round" stroke-linejoin="round" style="width:14px;height:14px;color:var(--accent);">
-              <line x1="18" y1="20" x2="18" y2="10"></line>
-              <line x1="12" y1="20" x2="12" y2="4"></line>
-              <line x1="6" y1="20" x2="6" y2="14"></line>
-            </svg></div>
-          <span>View Dashboard</span>
-        </a>
-        <a href="tools.html" class="q-tool-pill">
-          <div class="q-tool-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
-              stroke-linecap="round" stroke-linejoin="round" style="width:14px;height:14px;color:var(--accent);">
-              <path
-                d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z">
-              </path>
-            </svg></div>
-          <span>All Tools</span>
-        </a>
+        <!-- Card 1 -->
+        <article class="tool-card" onclick="window.location.href='url-check.html'">
+          <div class="tool-card-header">
+            <img src="assets/phishing.png" alt="URL Phishing Checker" class="tool-card-icon">
+            <span class="tool-badge live">LIVE</span>
+          </div>
+          <h3 class="tool-card-title">URL Phishing Checker</h3>
+          <p class="tool-card-desc">Scan any URL against 70+ threat engines via VirusTotal. Get instant verdicts.</p>
+          <div class="tool-card-btn-wrap">
+            <a href="url-check.html" class="tool-card-btn" onclick="event.stopPropagation()">Try It →</a>
+          </div>
+        </article>
+
+        <!-- Card 2 -->
+        <article class="tool-card" onclick="window.location.href='password-check.html'">
+          <div class="tool-card-header">
+            <img src="assets/password.png" alt="Password Strength Test" class="tool-card-icon">
+            <span class="tool-badge live">LIVE</span>
+          </div>
+          <h3 class="tool-card-title">Password Strength Test</h3>
+          <p class="tool-card-desc">Test passwords locally in browser. Measure entropy and strength with 0 server logs.</p>
+          <div class="tool-card-btn-wrap">
+            <a href="password-check.html" class="tool-card-btn" onclick="event.stopPropagation()">Try It →</a>
+          </div>
+        </article>
+
+        <!-- Card 3 -->
+        <article class="tool-card" onclick="window.location.href='malwareanalysis.html'">
+          <div class="tool-card-header">
+            <img src="assets/dashboard.png" alt="Malware Scanner" class="tool-card-icon">
+            <span class="tool-badge live">LIVE</span>
+          </div>
+          <h3 class="tool-card-title">Malware Scanner</h3>
+          <p class="tool-card-desc">Upload script files or code payloads to analyze entropy anomalies and shell risks.</p>
+          <div class="tool-card-btn-wrap">
+            <a href="malwareanalysis.html" class="tool-card-btn" onclick="event.stopPropagation()">Try It →</a>
+          </div>
+        </article>
+
+        <!-- Card 4 -->
+        <article class="tool-card" onclick="window.location.href='dashboard.html'">
+          <div class="tool-card-header">
+            <img src="assets/safescore.png" alt="Personal Safe Score" class="tool-card-icon">
+            <span class="tool-badge dashboard">DASHBOARD</span>
+          </div>
+          <h3 class="tool-card-title">Personal Safe Score</h3>
+          <p class="tool-card-desc">Track your security history and monitor calculated safety ratings in real time.</p>
+          <div class="tool-card-btn-wrap">
+            <a href="dashboard.html" class="tool-card-btn" onclick="event.stopPropagation()">View Score →</a>
+          </div>
+        </article>
       </div>
 
       <!-- Explore CYPR Section -->
@@ -915,23 +1189,23 @@
     // Carousel Data & Config
     let slides = [
       {
-        tag: "NEW FEATURE",
-        title: "GitHub OAuth login is here",
-        desc: "Sign in faster with your existing GitHub account.",
-        image: null,
-        link: null
-      },
-      {
         tag: "PRODUCT UPDATE",
-        title: "VAJRA Engine v2 is live",
+        title: "VAJRA engine v2 is live",
         desc: "16 security telemetry signals analyze every URL scan in real time.",
         image: null,
         link: null
       },
       {
-        tag: "AWARENESS UPDATE",
-        title: "Double-key Vault is coming",
-        desc: "Securely store notes, passwords, and sensitive keys right in your browser.",
+        tag: "NEW FEATURE",
+        title: "GitHub OAuth login is live",
+        desc: "Sign in faster and secure your developer workflows with 1-click auth.",
+        image: null,
+        link: null
+      },
+      {
+        tag: "SECURITY INTEL",
+        title: "Threat Monitoring v2.4",
+        desc: "Real-time CISA & CVE vulnerability monitoring active across CYPR.",
         image: null,
         link: null
       }
@@ -1089,12 +1363,20 @@
         b = JSON.parse(localStorage.getItem('cypr_admin_announcement') || 'null');
       }
       
-      // Check if dismissed
-      const currentBnrId = (b && b.active) ? String(b.publishedAt) : 'default';
-      if (localStorage.getItem('cypr_banner_dismissed_id') === currentBnrId) {
-        banner.style.display = 'none';
-        banner.classList.add('hidden');
-        return;
+      // Check if dismissed (custom admin announcements use localStorage; default banner uses sessionStorage)
+      if (b && b.active) {
+        const currentBnrId = String(b.publishedAt);
+        if (localStorage.getItem('cypr_banner_dismissed_id') === currentBnrId) {
+          banner.style.display = 'none';
+          banner.classList.add('hidden');
+          return;
+        }
+      } else {
+        if (sessionStorage.getItem('cypr_default_banner_dismissed') === 'true') {
+          banner.style.display = 'none';
+          banner.classList.add('hidden');
+          return;
+        }
       }
 
       if (b && b.active) {
@@ -1205,8 +1487,11 @@
         banner.style.overflow = 'hidden';
 
         const b = JSON.parse(localStorage.getItem('cypr_admin_announcement') || 'null');
-        const currentBnrId = (b && b.active) ? String(b.publishedAt) : 'default';
-        localStorage.setItem('cypr_banner_dismissed_id', currentBnrId);
+        if (b && b.active) {
+          localStorage.setItem('cypr_banner_dismissed_id', String(b.publishedAt));
+        } else {
+          sessionStorage.setItem('cypr_default_banner_dismissed', 'true');
+        }
 
         setTimeout(() => {
           banner.style.display = 'none';
@@ -1218,6 +1503,9 @@
     window.addEventListener('DOMContentLoaded', async () => {
       setGreeting();
       setFactOfTheDay();
+      initCarousel();
+      updateHelpline();
+      loadAnnounceBanner(); // Synchronous initial render (zero delay)
 
       // Fetch public announcements from backend database
       try {
@@ -1229,14 +1517,12 @@
         if (r.ok) {
           const res = await r.json();
           window.dbAnnouncements = res.data && res.data.content ? res.data.content : [];
+          loadAnnounceBanner();
         }
       } catch (e) {
         console.error("Failed to fetch announcements:", e);
       }
 
-      initCarousel();
-      updateHelpline();
-      loadAnnounceBanner();
       if (userId) {
         fetchProfileAndActivity();
         fetchThreatIntel();
@@ -1401,11 +1687,15 @@
 
           div.innerHTML = `
         <div class="news-info">
-          <div class="news-source">${item.source} · ${timeStr}</div>
+          <div class="news-source">
+            <span class="src-name">${item.source}</span>
+            <span class="src-sep">•</span>
+            <span class="src-time">${timeStr}</span>
+          </div>
           <h4>${item.title}</h4>
         </div>
         <div class="news-arrow">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="width:14px;height:14px;"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="width:16px;height:16px;"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
         </div>
       `;
           newsList.appendChild(div);
@@ -1415,24 +1705,24 @@
         newsList.innerHTML = `
       <div class="news-item" onclick="window.location.href='cyber-news.html?highlight=ransomware'">
         <div class="news-info">
-          <div class="news-source">The Hacker News · 2h ago</div>
+          <div class="news-source"><span class="src-name">The Hacker News</span><span class="src-sep">•</span><span class="src-time">2h ago</span></div>
           <h4>New Ransomware Campaign Targeting Enterprise Systems Worldwide</h4>
         </div>
-        <div class="news-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="width:14px;height:14px;"><path d="M5 12h14M12 5l7 7-7 7"/></svg></div>
+        <div class="news-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="width:16px;height:16px;"><path d="M5 12h14M12 5l7 7-7 7"/></svg></div>
       </div>
       <div class="news-item" onclick="window.location.href='cyber-news.html?highlight=windows'">
         <div class="news-info">
-          <div class="news-source">BleepingComputer · 5h ago</div>
+          <div class="news-source"><span class="src-name">BleepingComputer</span><span class="src-sep">•</span><span class="src-time">5h ago</span></div>
           <h4>Critical Windows Update Fixes Exploited Kernel Security Flaw</h4>
         </div>
-        <div class="news-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="width:14px;height:14px;"><path d="M5 12h14M12 5l7 7-7 7"/></svg></div>
+        <div class="news-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="width:16px;height:16px;"><path d="M5 12h14M12 5l7 7-7 7"/></svg></div>
       </div>
       <div class="news-item" onclick="window.location.href='cyber-news.html?highlight=phishing'">
         <div class="news-info">
-          <div class="news-source">KrebsOnSecurity · 1d ago</div>
+          <div class="news-source"><span class="src-name">KrebsOnSecurity</span><span class="src-sep">•</span><span class="src-time">1d ago</span></div>
           <h4>Phishing Campaign Spoofs Financial Institutions via Homoglyphs</h4>
         </div>
-        <div class="news-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="width:14px;height:14px;"><path d="M5 12h14M12 5l7 7-7 7"/></svg></div>
+        <div class="news-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="width:16px;height:16px;"><path d="M5 12h14M12 5l7 7-7 7"/></svg></div>
       </div>
     `;
         const activeCount = document.getElementById('intelBadge');
@@ -1449,7 +1739,131 @@
       t.style.cssText = `position:fixed;bottom:30px;left:50%;transform:translateX(-50%);background:var(--bg2);border:1px solid ${color};border-radius:100px;padding:10px 22px;font-family:var(--mono);font-size:.78rem;color:${color};z-index:999;white-space:nowrap;pointer-events:none;box-shadow:0 0 20px ${color}33;`;
       document.body.appendChild(t); setTimeout(() => { t.style.opacity = '0'; t.style.transition = 'opacity .3s'; setTimeout(() => t.remove(), 300); }, 2400);
     }
+
+    // ── PIN TOOLS SYSTEM ──
+    const ALL_AVAILABLE_TOOLS = [
+      { id: 'url_check', name: 'URL Phishing Checker', desc: 'Scan any URL against 70+ threat engines via VirusTotal. Get instant verdicts.', icon: 'assets/phishing.png', badge: 'LIVE', badgeClass: 'live', href: 'url-check.html', btnText: 'TRY IT', defaultPinned: true },
+      { id: 'pwd_test', name: 'Password Strength Test', desc: 'Verify passwords locally in your browser with 0 server logs.', icon: 'assets/password.png', badge: 'LIVE', badgeClass: 'live', href: 'password-check.html', btnText: 'TRY IT', defaultPinned: true },
+      { id: 'malware_scan', name: 'Malware Scanner', desc: 'Upload script files or code payloads to analyze entropy anomalies.', icon: 'assets/dashboard.png', badge: 'LIVE', badgeClass: 'live', href: 'malwareanalysis.html', btnText: 'TRY IT', defaultPinned: true },
+      { id: 'safe_score', name: 'Personal Safe Score', desc: 'Track your security history and monitor calculated safety ratings.', icon: 'assets/safescore.png', badge: 'DASHBOARD', badgeClass: 'dashboard', href: 'profile.html', btnText: 'VIEW SCORE', defaultPinned: true },
+      { id: 'breach_search', name: 'Data Breach Search', desc: 'Check if your email or credentials leaked online in breach dumps.', icon: 'assets/shield.png', badge: 'NEW', badgeClass: 'live', href: 'tools.html?tool=breach', btnText: 'SEARCH BREACHES', defaultPinned: false },
+      { id: 'ssl_check', name: 'SSL Certificate Inspector', desc: 'Inspect SSL validity, expiration dates, and cipher suites.', icon: 'assets/shield.png', badge: 'PRO', badgeClass: 'dashboard', href: 'tools.html?tool=ssl', btnText: 'INSPECT SSL', defaultPinned: false },
+      { id: 'threat_intel', name: 'Threat Intel Feed', desc: 'Real-time CISA & CVE vulnerability updates and cybersecurity news.', icon: 'assets/news.png', badge: 'INTEL', badgeClass: 'live', href: 'cyber-news.html', btnText: 'VIEW FEED', defaultPinned: false },
+      { id: 'activity_log', name: 'Security Audit Log', desc: 'Browse your previous file analyses and URL scan records in audit log.', icon: 'assets/history.png', badge: 'HISTORY', badgeClass: 'history', href: 'activity-logs.html', btnText: 'VIEW LOGS', defaultPinned: false }
+    ];
+
+    function getPinnedTools() {
+      const saved = localStorage.getItem('cypr_pinned_tools');
+      if (saved) {
+        try { return JSON.parse(saved); } catch (_) {}
+      }
+      return ALL_AVAILABLE_TOOLS.filter(t => t.defaultPinned).map(t => t.id);
+    }
+
+    function openPinToolsModal() {
+      const modal = document.getElementById('pinToolsModal');
+      const list = document.getElementById('pinToolsList');
+      if (!modal || !list) return;
+
+      const pinnedIds = getPinnedTools();
+      list.innerHTML = ALL_AVAILABLE_TOOLS.map(tool => {
+        const isPinned = pinnedIds.includes(tool.id);
+        const pinnedClass = isPinned ? 'theme-accent-green' : '';
+        return `
+          <div style="display: flex; align-items: center; justify-content: space-between; padding: 12px 14px; border-radius: 12px; background: var(--surface2); border: 1px solid var(--border); transition: all 0.2s ease;">
+            <div style="display: flex; align-items: center; gap: 12px; flex: 1; min-width: 0;">
+              <div style="width: 36px; height: 36px; border-radius: 10px; background: var(--card); border: 1px solid var(--border); display: flex; align-items: center; justify-content: center; flex-shrink: 0; padding: 5px; box-sizing: border-box;">
+                <img src="${tool.icon}" alt="${tool.name}" style="width: 100%; height: 100%; object-fit: contain;" onerror="this.onerror=null; this.src='assets/favicon.png';">
+              </div>
+              <div style="min-width: 0;">
+                <div style="font-size: 0.85rem; font-weight: 700; color: var(--text); font-family: var(--font-body);">${tool.name}</div>
+                <div style="font-size: 0.74rem; color: var(--text-muted); text-overflow: ellipsis; overflow: hidden; white-space: nowrap;">${tool.desc}</div>
+              </div>
+            </div>
+            <label style="display: flex; align-items: center; gap: 8px; cursor: pointer; user-select: none; margin-left: 12px; flex-shrink: 0;">
+              <input type="checkbox" class="tool-pin-checkbox" value="${tool.id}" ${isPinned ? 'checked' : ''} style="width: 16px; height: 16px; accent-color: #10b981; cursor: pointer;">
+              <span class="${pinnedClass}" style="font-size: 0.78rem; font-weight: 700; color: ${isPinned ? 'inherit' : 'var(--text-muted)'};">${isPinned ? 'Pinned' : 'Pin'}</span>
+            </label>
+          </div>
+        `;
+      }).join('');
+
+      modal.style.display = 'grid';
+    }
+
+    function closePinToolsModal() {
+      const modal = document.getElementById('pinToolsModal');
+      if (modal) modal.style.display = 'none';
+    }
+
+    function savePinnedTools() {
+      const checked = Array.from(document.querySelectorAll('.tool-pin-checkbox:checked')).map(cb => cb.value);
+      if (checked.length === 0) {
+        showToast('Please select at least 1 tool to pin!', 'warn');
+        return;
+      }
+      localStorage.setItem('cypr_pinned_tools', JSON.stringify(checked));
+      closePinToolsModal();
+      showToast('Pinned tools updated!', 'info');
+      renderQuickToolsGrid();
+    }
+
+    function renderQuickToolsGrid() {
+      const pinnedIds = getPinnedTools();
+      const grid = document.querySelector('.quick-tools-row');
+      if (!grid) return;
+
+      const pinnedTools = ALL_AVAILABLE_TOOLS.filter(t => pinnedIds.includes(t.id));
+      grid.innerHTML = pinnedTools.map(t => `
+        <article class="tool-card" onclick="window.location.href='${t.href}'">
+          <div class="tool-card-header">
+            <img src="${t.icon}" alt="${t.name}" class="tool-card-icon" onerror="this.onerror=null; this.src='assets/favicon.png';">
+            <span class="tool-badge ${t.badgeClass || 'live'}">${t.badge}</span>
+          </div>
+          <h3 class="tool-card-title">${t.name}</h3>
+          <p class="tool-card-desc">${t.desc}</p>
+          <div class="tool-card-btn-wrap">
+            <a href="${t.href}" class="tool-card-btn" onclick="event.stopPropagation()">${t.btnText} →</a>
+          </div>
+        </article>
+      `).join('');
+    }
+
+    // Initialize custom pinned grid on page load
+    document.addEventListener('DOMContentLoaded', () => {
+      renderQuickToolsGrid();
+    });
   </script>
+
+  <!-- PIN TOOLS MODAL -->
+  <div id="pinToolsModal" style="display: none; position: fixed; inset: 0; z-index: 99999; background: rgba(0, 0, 0, 0.75); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); place-items: center; padding: 20px; box-sizing: border-box;">
+    <div style="width: 100%; max-width: 520px; background: var(--bg2); border: 1px solid var(--border); border-radius: 18px; padding: 24px; box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6); display: flex; flex-direction: column; gap: 18px;">
+      
+      <!-- Modal Header -->
+      <div style="display: flex; align-items: center; justify-content: space-between;">
+        <div>
+          <h3 style="font-size: 1.1rem; font-weight: 800; color: var(--text); margin: 0 0 4px 0;">Customize Quick Tools</h3>
+          <p style="font-size: 0.78rem; color: var(--text-muted); margin: 0;">Pin or unpin tools to customize your home dashboard shortcuts.</p>
+        </div>
+        <button onclick="closePinToolsModal()" style="background: transparent; border: none; color: var(--text-muted); cursor: pointer; padding: 4px;">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        </button>
+      </div>
+
+      <!-- Tools List -->
+      <div id="pinToolsList" style="display: flex; flex-direction: column; gap: 10px; max-height: 340px; overflow-y: auto; padding-right: 4px;">
+        <!-- Tool items populated dynamically -->
+      </div>
+
+      <!-- Modal Footer -->
+      <div style="display: flex; align-items: center; justify-content: flex-end; gap: 10px; border-top: 1px solid var(--border); padding-top: 14px;">
+        <button onclick="closePinToolsModal()" style="padding: 8px 16px; border-radius: 8px; background: transparent; border: 1px solid var(--border); color: var(--text-muted); font-size: 0.82rem; font-weight: 600; cursor: pointer;">Cancel</button>
+        <button onclick="savePinnedTools()" style="padding: 8px 18px; border-radius: 8px; background: linear-gradient(135deg, #e05a00 0%, #ff6b00 100%); border: none; color: #fff; font-size: 0.82rem; font-weight: 700; cursor: pointer; box-shadow: 0 4px 14px rgba(224, 90, 0, 0.35);">Save Pinned Tools</button>
+      </div>
+
+    </div>
+  </div>
+
   <script src="notifications.js"></script>
 </body>
 
