@@ -1,6 +1,6 @@
 <p align="center">
   <a href="https://github.com/iamvineetupadhyay/CYPR-Tech">
-    <img src="frontend/assets/logo/cypr-logo.png" alt="CYPR Tech Logo" width="120" />
+    <img src="assets/logo/cypr-logo.png" alt="CYPR Tech Logo" width="120" />
   </a>
 </p>
 
