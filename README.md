@@ -55,21 +55,49 @@ Combining **VAJRA** (a proprietary 16-signal deterministic heuristic detection e
 
 ---
 
-## 📸 Screenshots & Interface Showcase
+## 📸 Interactive Screenshots & UI Showcase
 
-<p align="center">
-  <img src="assets/screenshots/dashboard.png" alt="CYPR Executive Security Dashboard" width="48%" />
-  <img src="assets/screenshots/home.png" alt="CYPR Welcome Home Hub" width="48%" />
-</p>
+Click on any tab below to expand high-resolution UI previews:
 
+<details open>
+<summary><b>📊 Executive Security Dashboard</b></summary>
+<br />
 <p align="center">
-  <img src="assets/screenshots/malware-scanner.png" alt="File Malware Scanner & Payload Sandbox" width="48%" />
-  <img src="assets/screenshots/cyber-news.png" alt="AI Cyber News Feed & Web Scraper" width="48%" />
+  <img src="assets/screenshots/dashboard.png" alt="CYPR Executive Security Dashboard" width="100%" />
 </p>
+</details>
 
+<details>
+<summary><b>🏠 Welcome Home Security Hub</b></summary>
+<br />
 <p align="center">
-  <img src="assets/screenshots/password-check.png" alt="Client-Side Password Entropy & Strength Test" width="96%" />
+  <img src="assets/screenshots/home.png" alt="CYPR Welcome Home Hub" width="100%" />
 </p>
+</details>
+
+<details>
+<summary><b>🦠 File Malware Scanner & Payload Sandbox</b></summary>
+<br />
+<p align="center">
+  <img src="assets/screenshots/malware-scanner.png" alt="File Malware Scanner & Payload Sandbox" width="100%" />
+</p>
+</details>
+
+<details>
+<summary><b>📰 AI Cyber News Feed & Web Scraper</b></summary>
+<br />
+<p align="center">
+  <img src="assets/screenshots/cyber-news.png" alt="AI Cyber News Feed & Web Scraper" width="100%" />
+</p>
+</details>
+
+<details>
+<summary><b>🔐 Client-Side Password Entropy & Strength Test</b></summary>
+<br />
+<p align="center">
+  <img src="assets/screenshots/password-check.png" alt="Client-Side Password Entropy & Strength Test" width="100%" />
+</p>
+</details>
 
 ---
 
