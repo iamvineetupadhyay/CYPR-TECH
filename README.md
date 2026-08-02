@@ -55,23 +55,20 @@ Combining **VAJRA** (a proprietary 16-signal deterministic heuristic detection e
 
 ---
 
-## 📸 Screenshots
-
-*(High-resolution screenshots will be added below)*
+## 📸 Screenshots & Interface Showcase
 
 <p align="center">
-  <img src="assets/screenshots/dashboard.png" alt="CYPR Dashboard Overview" width="48%" />
-  <img src="assets/screenshots/url-scanner.png" alt="URL Risk Scanner & VAJRA Breakdown" width="48%" />
+  <img src="assets/screenshots/dashboard.png" alt="CYPR Executive Security Dashboard" width="48%" />
+  <img src="assets/screenshots/home.png" alt="CYPR Welcome Home Hub" width="48%" />
 </p>
 
 <p align="center">
-  <img src="assets/screenshots/malware-scanner.png" alt="File Malware Scanner" width="48%" />
-  <img src="assets/screenshots/cyber-news.png" alt="AI Cyber News & Scraper" width="48%" />
+  <img src="assets/screenshots/malware-scanner.png" alt="File Malware Scanner & Payload Sandbox" width="48%" />
+  <img src="assets/screenshots/cyber-news.png" alt="AI Cyber News Feed & Web Scraper" width="48%" />
 </p>
 
 <p align="center">
-  <img src="assets/screenshots/ai-buddy.png" alt="RAG AI Buddy Chatbot" width="48%" />
-  <img src="assets/screenshots/activity-logs.png" alt="Activity Logs & Security Audit" width="48%" />
+  <img src="assets/screenshots/password-check.png" alt="Client-Side Password Entropy & Strength Test" width="96%" />
 </p>
 
 ---
