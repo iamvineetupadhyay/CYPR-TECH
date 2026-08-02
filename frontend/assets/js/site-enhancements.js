@@ -870,17 +870,17 @@
       top: calc(100% + 10px);
       right: 0;
       width: 230px;
-      background: var(--surface) !important;
-      backdrop-filter: blur(16px);
-      -webkit-backdrop-filter: blur(16px);
-      border: 1px solid var(--border) !important;
+      background: var(--bg2, #120e0c) !important;
+      backdrop-filter: none !important;
+      -webkit-backdrop-filter: none !important;
+      border: 1px solid var(--border2, #2b201a) !important;
       border-radius: 14px;
       padding: 6px;
       box-shadow: 0 16px 40px -8px rgba(0, 0, 0, 0.2), 0 0 0 1px rgba(255, 255, 255, 0.05) !important;
       display: flex;
       flex-direction: column;
       gap: 2px;
-      z-index: 99999;
+      z-index: 999999 !important;
       transform: translateY(-8px) scale(0.96);
       opacity: 0;
       pointer-events: none;
@@ -888,11 +888,14 @@
       transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.2s cubic-bezier(0.16, 1, 0.3, 1), visibility 0.2s ease;
       box-sizing: border-box;
     }
-    .cm-dropdown-menu.open {
-      transform: translateY(0) scale(1);
-      opacity: 1;
-      pointer-events: auto;
-      visibility: visible;
+    .cm-dropdown-menu.open,
+    .cm-user-menu.active .cm-dropdown-menu,
+    .tb-user.active .cm-dropdown-menu {
+      display: flex !important;
+      transform: translateY(0) scale(1) !important;
+      opacity: 1 !important;
+      pointer-events: auto !important;
+      visibility: visible !important;
     }
     .cm-dropdown-header {
       padding: 10px 12px 8px 12px;
@@ -1732,18 +1735,25 @@
         top: calc(100% + 8px);
         right: 0;
         width: 230px;
-        background: var(--card, var(--bg2)) !important;
-        border: 1px solid var(--border) !important;
+        background: var(--bg2, #120e0c) !important;
+        border: 1px solid var(--border2, #2b201a) !important;
         border-radius: 14px;
         padding: 8px 0;
-        box-shadow: 0 12px 36px rgba(0, 0, 0, 0.35);
+        box-shadow: 0 16px 40px rgba(0, 0, 0, 0.5);
         z-index: 100000;
         display: none;
         flex-direction: column;
-        backdrop-filter: blur(16px);
+        backdrop-filter: none !important;
+        -webkit-backdrop-filter: none !important;
       }
-      .cm-user-menu.active .cm-dropdown-menu {
+      .cm-user-menu.active .cm-dropdown-menu,
+      .tb-user.active .cm-dropdown-menu,
+      .tb-user .cm-dropdown-menu.open {
         display: flex !important;
+        opacity: 1 !important;
+        pointer-events: auto !important;
+        visibility: visible !important;
+        transform: translateY(0) scale(1) !important;
       }
       .cm-dropdown-header {
         padding: 10px 14px;
@@ -2332,10 +2342,14 @@
   }
 
 
-  // Helper: Read session details
   function readUserId() {
     const params = new URLSearchParams(window.location.search);
-    return params.get('id') || localStorage.getItem('userId') || localStorage.getItem('cypr_user_id');
+    return params.get('id') ||
+           localStorage.getItem('userId') ||
+           localStorage.getItem('cypr_user_id') ||
+           localStorage.getItem('cm_session_token') ||
+           localStorage.getItem('cm_user_email') ||
+           sessionStorage.getItem('cm_session_token');
   }
 
   function creditValue(profile) {
@@ -2917,8 +2931,16 @@
       const userMenu = rightGroup.querySelector('.cm-user-menu');
       const userTrigger = rightGroup.querySelector('.cm-user-trigger');
       if (userMenu && userTrigger) {
+        let lastUserMenuToggle = 0;
         const toggleDropdown = (e) => {
-          e.preventDefault();
+          const now = Date.now();
+          if (now - lastUserMenuToggle < 300) {
+            if (e.cancelable) e.preventDefault();
+            e.stopPropagation();
+            return;
+          }
+          lastUserMenuToggle = now;
+          if (e.cancelable) e.preventDefault();
           e.stopPropagation();
           userMenu.classList.toggle('active');
         };
@@ -3487,92 +3509,135 @@
       }
 
       const tbUser = topbar.querySelector('.tb-user');
-      if (tbUser && !tbUser.querySelector('.cm-dropdown-menu')) {
+      if (tbUser) {
         tbUser.style.position = 'relative';
+        tbUser.style.cursor = 'pointer';
 
-        const ddMenu = document.createElement('div');
-        ddMenu.className = 'cm-dropdown-menu';
-        const userEmail = localStorage.getItem('cm_user_email') || '';
-        const isAdmin = userEmail === 'vineetk5704@gmail.com' || userEmail === 'admin@cypr.com';
+        if (tbUser.hasAttribute('href')) tbUser.removeAttribute('href');
+        if (tbUser.hasAttribute('onclick')) tbUser.removeAttribute('onclick');
 
-        ddMenu.innerHTML = `
-          <div class="cm-dropdown-header">
-            <span class="name" id="ddName">Loading profile...</span>
-            <span class="email" id="ddEmail">...</span>
-          </div>
-          <div class="cm-dropdown-divider"></div>
-          <a href="dashboard.html" class="cm-dropdown-item">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-              <rect x="3" y="3" width="7" height="7" rx="1.5"/>
-              <rect x="14" y="3" width="7" height="5" rx="1.5"/>
-              <rect x="14" y="12" width="7" height="9" rx="1.5"/>
-              <rect x="3" y="14" width="7" height="7" rx="1.5"/>
-            </svg>
-            <span>Dashboard</span>
-          </a>
-          <a href="activity-logs.html" class="cm-dropdown-item">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M3 12a9 9 0 1 0 3-6.7"/>
-              <path d="M3 3v6h6"/>
-              <path d="M12 7v5l3 3"/>
-            </svg>
-            <span>Activity</span>
-          </a>
-          <a href="pricing.html" class="cm-dropdown-item">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-              <rect x="2" y="5" width="20" height="14" rx="2"/>
-              <path d="M2 10h20"/>
-              <path d="M6 15h4"/>
-            </svg>
-            <span>Billing & Credits</span>
-          </a>
-          ${isAdmin ? `
-          <a href="admin.html" class="cm-dropdown-item admin-item">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M12 2l7 4v6c0 5-3.5 8.5-7 10-3.5-1.5-7-5-7-10V6l7-4z"/>
-              <path d="M9 12l2 2 4-4"/>
-            </svg>
-            <span>Admin Panel</span>
-          </a>
-          ` : ''}
-          <div class="cm-dropdown-divider"></div>
-          <a href="settings.html" class="cm-dropdown-item">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-              <circle cx="12" cy="12" r="3"/>
-              <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09a1.65 1.65 0 0 0-1-1.51 1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82A1.65 1.65 0 0 0 3.09 13H3a2 2 0 1 1 0-4h.09a1.65 1.65 0 0 0 1.51-1 1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33A1.65 1.65 0 0 0 10 3.09V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82A1.65 1.65 0 0 0 20.91 11H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/>
-            </svg>
-            <span>Settings</span>
-          </a>
-          <a href="contactus.html" class="cm-dropdown-item">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-              <circle cx="12" cy="12" r="10"/>
-              <path d="M9 9h.01"/>
-              <path d="M15 9h.01"/>
-              <path d="M8 13a5 5 0 0 1 8 0"/>
-            </svg>
-            <span>Help & Support</span>
-          </a>
-          <div class="cm-dropdown-divider"></div>
-          <div class="cm-dropdown-item logout">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/>
-              <path d="M16 17l5-5-5-5"/>
-              <path d="M21 12H9"/>
-            </svg>
-            <span>Sign Out</span>
-          </div>
-        `;
-        tbUser.appendChild(ddMenu);
+        if (!tbUser.querySelector('.cm-dropdown-menu')) {
+          const ddMenu = document.createElement('div');
+          ddMenu.className = 'cm-dropdown-menu';
+          const userEmail = localStorage.getItem('cm_user_email') || '';
+          const userName = localStorage.getItem('cm_user_name') || 'User';
+          const isAdmin = userEmail === 'vineetk5704@gmail.com' || userEmail === 'admin@cypr.com';
 
-        tbUser.addEventListener('click', (e) => {
-          if (ddMenu.contains(e.target)) return;
-          e.preventDefault();
-          e.stopPropagation();
-          ddMenu.classList.toggle('open');
-        });
+          ddMenu.innerHTML = `
+            <div class="cm-dropdown-header">
+              <span class="name" id="ddName">${userName}</span>
+              <span class="email" id="ddEmail">${userEmail || '...'}</span>
+            </div>
+            <div class="cm-dropdown-divider"></div>
+            <a href="dashboard.html" class="cm-dropdown-item">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="3" y="3" width="7" height="7" rx="1.5"/>
+                <rect x="14" y="3" width="7" height="5" rx="1.5"/>
+                <rect x="14" y="12" width="7" height="9" rx="1.5"/>
+                <rect x="3" y="14" width="7" height="7" rx="1.5"/>
+              </svg>
+              <span>Dashboard</span>
+            </a>
+            <a href="activity-logs.html" class="cm-dropdown-item">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M3 12a9 9 0 1 0 3-6.7"/>
+                <path d="M3 3v6h6"/>
+                <path d="M12 7v5l3 3"/>
+              </svg>
+              <span>Activity</span>
+            </a>
+            <a href="pricing.html" class="cm-dropdown-item">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="2" y="5" width="20" height="14" rx="2"/>
+                <path d="M2 10h20"/>
+                <path d="M6 15h4"/>
+              </svg>
+              <span>Billing & Credits</span>
+            </a>
+            ${isAdmin ? `
+            <a href="admin.html" class="cm-dropdown-item admin-item">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M12 2l7 4v6c0 5-3.5 8.5-7 10-3.5-1.5-7-5-7-10V6l7-4z"/>
+                <path d="M9 12l2 2 4-4"/>
+              </svg>
+              <span>Admin Panel</span>
+            </a>
+            ` : ''}
+            <div class="cm-dropdown-divider"></div>
+            <a href="settings.html" class="cm-dropdown-item">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="12" r="3"/>
+                <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09a1.65 1.65 0 0 0-1-1.51 1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82A1.65 1.65 0 0 0 3.09 13H3a2 2 0 1 1 0-4h.09a1.65 1.65 0 0 0 1.51-1 1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33A1.65 1.65 0 0 0 10 3.09V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82A1.65 1.65 0 0 0 20.91 11H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/>
+              </svg>
+              <span>Settings</span>
+            </a>
+            <a href="contactus.html" class="cm-dropdown-item">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="12" r="10"/>
+                <path d="M9 9h.01"/>
+                <path d="M15 9h.01"/>
+                <path d="M8 13a5 5 0 0 1 8 0"/>
+              </svg>
+              <span>Help & Support</span>
+            </a>
+            <div class="cm-dropdown-divider"></div>
+            <div class="cm-dropdown-item logout">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/>
+                <path d="M16 17l5-5-5-5"/>
+                <path d="M21 12H9"/>
+              </svg>
+              <span>Sign Out</span>
+            </div>
+          `;
+          tbUser.appendChild(ddMenu);
 
-        ddMenu.querySelector('.logout').addEventListener('click', handleSignOut);
-        document.addEventListener('click', () => ddMenu.classList.remove('open'));
+          let lastTbUserToggle = 0;
+          const toggleTbUserDropdown = (e) => {
+            if (ddMenu.contains(e.target)) return;
+            const now = Date.now();
+            if (now - lastTbUserToggle < 300) {
+              if (e.cancelable) e.preventDefault();
+              e.stopPropagation();
+              return;
+            }
+            lastTbUserToggle = now;
+            if (e.cancelable) e.preventDefault();
+            e.stopPropagation();
+            const isOpen = ddMenu.classList.contains('open');
+            if (isOpen) {
+              ddMenu.classList.remove('open');
+              tbUser.classList.remove('active');
+            } else {
+              ddMenu.classList.add('open');
+              tbUser.classList.add('active');
+            }
+          };
+
+          tbUser.addEventListener('click', toggleTbUserDropdown);
+          tbUser.addEventListener('touchend', toggleTbUserDropdown);
+
+          // Bind directly to avatar child elements as well in case child stops propagation
+          ['#tbAvatar', '#tbName', '.tb-avatar', '.tb-user-name', '.tb-user-info'].forEach(selector => {
+            const childEl = tbUser.querySelector(selector);
+            if (childEl) {
+              childEl.addEventListener('click', toggleTbUserDropdown);
+              childEl.addEventListener('touchend', toggleTbUserDropdown);
+            }
+          });
+
+          const logoutBtn = ddMenu.querySelector('.logout');
+          if (logoutBtn) logoutBtn.addEventListener('click', handleSignOut);
+
+          const closeMenuOnOutsideClick = (e) => {
+            if (!tbUser.contains(e.target)) {
+              ddMenu.classList.remove('open');
+              tbUser.classList.remove('active');
+            }
+          };
+          document.addEventListener('click', closeMenuOnOutsideClick);
+          document.addEventListener('touchend', closeMenuOnOutsideClick);
+        }
       }
     }
 
@@ -4091,10 +4156,12 @@
     if (!isNoHeaderPage) {
       enhancePublicHeader();
       enhancePublicFooter();
+      enhanceDashboardUI();
     }
 
     // Instantly paint cached values on initial load to eliminate initials flashing or avatar desync
     if (userId) {
+      enhanceDashboardUI();
       applyCachedProfile();
     }
 
