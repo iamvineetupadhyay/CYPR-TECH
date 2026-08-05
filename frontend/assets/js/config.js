@@ -25,27 +25,124 @@
     // 🔗 Dynamically set base URL based on environment so requests go to the right server!
     window.CYPR_TECH_API_BASE = isLocalDev ? LOCAL_API : AWS_PRODUCTION_API;
 
+    // CENTRALIZED AUTHENTICATION & SESSION SECURITY MANAGER
+    window.CYPR_AUTH = {
+        isRedirecting: false,
+        SESSION_KEYS: [
+            'cm_session_token', 'userId', 'cypr_user_id', 'userName', 'userEmail',
+            'cm_user_name', 'cm_user_email', 'cm_user_initials', 'cm_user_avatar',
+            'cm_user_credits', 'cm_user_subscription', 'cm_user_score', 'cypr_notifications',
+            'cm_session_created_at', 'cm_last_activity', 'cm_remember_me'
+        ],
+
+        getToken: function() {
+            return sessionStorage.getItem('cm_session_token') || localStorage.getItem('cm_session_token');
+        },
+
+        decodeJwtPayload: function(token) {
+            if (!token || typeof token !== 'string') return null;
+            try {
+                const parts = token.split('.');
+                if (parts.length !== 3) return null;
+                let base64Url = parts[1];
+                let base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+                while (base64.length % 4 !== 0) {
+                    base64 += '=';
+                }
+                const jsonPayload = decodeURIComponent(atob(base64).split('').map(function(c) {
+                    return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+                }).join(''));
+                return JSON.parse(jsonPayload);
+            } catch (e) {
+                return null;
+            }
+        },
+
+        isTokenExpired: function(token) {
+            const payload = this.decodeJwtPayload(token);
+            if (!payload || !payload.exp) return true;
+            const currentTime = Math.floor(Date.now() / 1000);
+            return payload.exp <= currentTime;
+        },
+
+        updateActivity: function() {
+            const now = Date.now().toString();
+            if (localStorage.getItem('cm_session_token')) {
+                localStorage.setItem('cm_last_activity', now);
+            }
+            if (sessionStorage.getItem('cm_session_token')) {
+                sessionStorage.setItem('cm_last_activity', now);
+            }
+        },
+
+        clearSession: function() {
+            const keys = this.SESSION_KEYS;
+            for (let i = 0; i < keys.length; i++) {
+                localStorage.removeItem(keys[i]);
+                sessionStorage.removeItem(keys[i]);
+            }
+        },
+
+        validateSession: function() {
+            const token = this.getToken();
+            if (!token) return false;
+
+            if (this.isTokenExpired(token)) {
+                this.clearSession();
+                return false;
+            }
+
+            const isRemember = (localStorage.getItem('cm_remember_me') === 'true') || !!localStorage.getItem('cm_session_token');
+            const lastActivityStr = sessionStorage.getItem('cm_last_activity') || localStorage.getItem('cm_last_activity') || localStorage.getItem('cm_session_created_at');
+            if (lastActivityStr) {
+                const lastActivity = parseInt(lastActivityStr, 10);
+                if (!isNaN(lastActivity)) {
+                    const now = Date.now();
+                    const inactivityLimit = isRemember ? (7 * 24 * 60 * 60 * 1000) : (24 * 60 * 60 * 1000);
+                    if ((now - lastActivity) > inactivityLimit) {
+                        this.clearSession();
+                        return false;
+                    }
+                }
+            }
+
+            return true;
+        },
+
+        handleUnauthorized: function() {
+            if (this.isRedirecting) return;
+            this.isRedirecting = true;
+            this.clearSession();
+
+            const protectedPages = ['home.html', 'dashboard.html', 'profile.html', 'settings.html', 'activity-logs.html', 'admin.html', 'malwareanalysis.html', 'url-check.html', 'password-check.html'];
+            const currentPath = window.location.pathname;
+            const pageName = currentPath.substring(currentPath.lastIndexOf('/') + 1);
+
+            if (protectedPages.includes(pageName)) {
+                window.location.href = 'login.html?session_expired=true';
+            } else {
+                this.isRedirecting = false;
+            }
+        }
+    };
+
     // GLOBAL FETCH INTERCEPTOR FOR SECURITY HARDENING
     const originalFetch = window.fetch;
     window.fetch = async function(resource, config = {}) {
         let resourceUrl = typeof resource === 'string' ? resource : (resource instanceof URL ? resource.toString() : '');
         
-        // 🛠️ FIX: Agar request short path '/api/' se shuru ho rahi hai, toh uske aage hamara correct Base URL jodd do!
         if (resourceUrl.startsWith('/api/')) {
-            // Check if it already has a trailing slash or avoid double slashes
             resource = window.CYPR_TECH_API_BASE + resourceUrl;
             resourceUrl = resource;
         }
         
-        // If request goes to our Spring Boot backend
         if (resourceUrl.startsWith(window.CYPR_TECH_API_BASE)) {
-            const token = localStorage.getItem('cm_session_token');
-            if (token) {
+            const token = window.CYPR_AUTH.getToken();
+            if (token && window.CYPR_AUTH.validateSession()) {
                 if (!config.headers) {
                     config.headers = {};
                 }
                 
-                // Attach Bearer token safely regardless of headers format
                 if (config.headers instanceof Headers) {
                     config.headers.set('Authorization', 'Bearer ' + token);
                 } else if (Array.isArray(config.headers)) {
@@ -55,6 +152,24 @@
                 }
             }
         }
-        return originalFetch(resource, config);
+
+        const response = await originalFetch(resource, config);
+
+        const isAuthEndpoint = resourceUrl.includes('/api/user/login') ||
+                               resourceUrl.includes('/api/user/register') ||
+                               resourceUrl.includes('/api/user/forgot-password') ||
+                               resourceUrl.includes('/api/user/reset-password') ||
+                               resourceUrl.includes('/api/user/verify') ||
+                               resourceUrl.includes('/api/oauth/');
+
+        if (resourceUrl.startsWith(window.CYPR_TECH_API_BASE) && !isAuthEndpoint) {
+            if (response.status === 401) {
+                window.CYPR_AUTH.handleUnauthorized();
+            } else if (response.status !== 403 && response.ok) {
+                window.CYPR_AUTH.updateActivity();
+            }
+        }
+
+        return response;
     };
 })();

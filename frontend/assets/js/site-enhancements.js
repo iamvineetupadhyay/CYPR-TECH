@@ -2342,14 +2342,32 @@
   }
 
 
+  // Multi-tab Session Expiration & Logout Synchronization
+  window.addEventListener('storage', function(e) {
+    if (['cm_session_token', 'userId', 'cypr_user_id'].includes(e.key) && !e.newValue) {
+      if (window.CYPR_AUTH) window.CYPR_AUTH.clearSession();
+      const protectedPages = ['home.html', 'dashboard.html', 'profile.html', 'settings.html', 'activity-logs.html', 'admin.html', 'malwareanalysis.html', 'url-check.html', 'password-check.html'];
+      const pageName = window.location.pathname.substring(window.location.pathname.lastIndexOf('/') + 1);
+      if (protectedPages.includes(pageName)) {
+        window.location.href = 'login.html?session_expired=true';
+      } else {
+        window.location.reload();
+      }
+    }
+  });
+
   function readUserId() {
+    if (window.CYPR_AUTH && !window.CYPR_AUTH.validateSession()) {
+      return null;
+    }
     const params = new URLSearchParams(window.location.search);
     return params.get('id') ||
+           sessionStorage.getItem('userId') ||
            localStorage.getItem('userId') ||
+           sessionStorage.getItem('cypr_user_id') ||
            localStorage.getItem('cypr_user_id') ||
-           localStorage.getItem('cm_session_token') ||
-           localStorage.getItem('cm_user_email') ||
-           sessionStorage.getItem('cm_session_token');
+           sessionStorage.getItem('cm_session_token') ||
+           localStorage.getItem('cm_session_token');
   }
 
   function creditValue(profile) {
@@ -2364,12 +2382,15 @@
   // Handle Logout
   function handleSignOut(e) {
     if (e) e.preventDefault();
-    // Clear all user session keys to prevent stale data on next login
-    ['userId', 'cypr_user_id', 'userName', 'userEmail',
-      'cm_user_name', 'cm_user_email', 'cm_user_initials', 'cm_user_avatar',
-      'cm_user_credits', 'cm_user_subscription', 'cm_user_score', 'cypr_notifications'
-    ].forEach(k => localStorage.removeItem(k));
-    sessionStorage.clear();
+    if (window.CYPR_AUTH) {
+      window.CYPR_AUTH.clearSession();
+    } else {
+      ['userId', 'cypr_user_id', 'userName', 'userEmail',
+        'cm_user_name', 'cm_user_email', 'cm_user_initials', 'cm_user_avatar',
+        'cm_user_credits', 'cm_user_subscription', 'cm_user_score', 'cypr_notifications',
+        'cm_session_created_at', 'cm_last_activity', 'cm_remember_me'
+      ].forEach(k => { localStorage.removeItem(k); sessionStorage.removeItem(k); });
+    }
     showToast("🔒 Logged out securely. Stay safe!");
     setTimeout(() => {
       window.location.href = 'index.html?logout=true';

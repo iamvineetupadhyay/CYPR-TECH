@@ -2,8 +2,8 @@
 <html lang="en">
 
 <head>
-  <link rel="icon" type="image/png" href="assets/favicon.png">
-  <script src="assets/js/config.js"></script>
+    <link rel="icon" type="image/png" href="assets/favicon.png">
+    <script src="assets/js/config.js"></script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Create Account — CYPR Tech</title>
@@ -270,6 +270,107 @@
             padding: 4px;
         }
 
+        /* Real-time Username Availability Status Badge */
+        .username-status-badge {
+            position: absolute;
+            right: 12px;
+            top: 50%;
+            transform: translateY(-50%) scale(0.95);
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 0.73rem;
+            font-weight: 600;
+            font-family: var(--font-mono, monospace);
+            letter-spacing: 0.02em;
+            transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+            opacity: 0;
+            pointer-events: none;
+            z-index: 3;
+        }
+
+        .username-status-badge.visible {
+            opacity: 1;
+            transform: translateY(-50%) scale(1);
+        }
+
+        .username-status-badge.checking {
+            background: rgba(0, 212, 255, 0.1);
+            border: 1px solid rgba(0, 212, 255, 0.35);
+            color: #00d4ff;
+            box-shadow: 0 0 10px rgba(0, 212, 255, 0.2);
+        }
+
+        .username-status-badge.available {
+            background: rgba(0, 255, 136, 0.1);
+            border: 1px solid rgba(0, 255, 136, 0.4);
+            color: #00ff88;
+            box-shadow: 0 0 12px rgba(0, 255, 136, 0.25);
+        }
+
+        .username-status-badge.taken {
+            background: rgba(255, 77, 106, 0.1);
+            border: 1px solid rgba(255, 77, 106, 0.4);
+            color: #ff4d6a;
+            box-shadow: 0 0 12px rgba(255, 77, 106, 0.25);
+        }
+
+        .username-status-badge.invalid {
+            background: rgba(255, 184, 0, 0.1);
+            border: 1px solid rgba(255, 184, 0, 0.4);
+            color: #ffb800;
+        }
+
+        .badge-dot {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            display: inline-block;
+        }
+
+        .checking .badge-dot {
+            background: #00d4ff;
+            animation: pulseGlow 1.2s infinite ease-in-out;
+        }
+
+        .available .badge-dot {
+            background: #00ff88;
+            box-shadow: 0 0 6px #00ff88;
+        }
+
+        .taken .badge-dot {
+            background: #ff4d6a;
+            box-shadow: 0 0 6px #ff4d6a;
+        }
+
+        .invalid .badge-dot {
+            background: #ffb800;
+        }
+
+        @keyframes pulseGlow {
+
+            0%,
+            100% {
+                opacity: 0.3;
+                transform: scale(0.8);
+            }
+
+            50% {
+                opacity: 1;
+                transform: scale(1.25);
+            }
+        }
+
+        .username-hint-text {
+            font-size: 0.78rem;
+            margin-top: 6px;
+            color: var(--text-dim, #8a99ad);
+            min-height: 18px;
+            transition: all 0.2s ease;
+        }
+
         .form-row2 {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -476,37 +577,37 @@
         </div>
         <a href="signup.html" class="auth-brand">CYPR</a>
         <div class="auth-left-body">
-            <h2>Start your<br>security<br><em>journey</em></h2>
-            <p>Create your free account and get instant access to real-time threat detection, a personal safe score, and
-                full scan history.</p>
+            <h2>Join <em>CYPR</em></h2>
+            <p>Sign up for free and unlock instant access to real-time threat detection, your personal safe score, and
+                complete scan history And Many More Features.</p>
             <div class="perks">
                 <div class="perk">
-                    <div class="perk-check">✓</div> URL scans & password Checks
+                    <div class="perk-check">✓</div> URL Scans & Password Checks
                 </div>
                 <div class="perk">
-                    <div class="perk-check">✓</div>Personal Safe Score dashboard
+                    <div class="perk-check">✓</div>Personal Safe Score Dashboard
                 </div>
                 <div class="perk">
-                    <div class="perk-check">✓</div>Full scan history & top tools tracker
+                    <div class="perk-check">✓</div>Full Scan History & Top Tools Tracker
                 </div>
                 <div class="perk">
-                    <div class="perk-check">✓</div>Powered by VirusTotal (70+ AV engines)
+                    <div class="perk-check">✓</div>Powered by Vajra Engine -by CYPR and VirusTotal (70+ AV engines)
                 </div>
             </div>
             <div class="steps-indicator">
                 <div class="step-ind active" id="si1">
                     <div class="step-ind-dot active">1</div>
-                    <div class="step-ind-label">Account</div>
+                    <div class="step-ind-label">Sign Up</div>
                 </div>
                 <div class="step-line" id="sl1"></div>
                 <div class="step-ind" id="si2">
                     <div class="step-ind-dot">2</div>
-                    <div class="step-ind-label">Profile</div>
+                    <div class="step-ind-label">Personalize</div>
                 </div>
                 <div class="step-line" id="sl2"></div>
                 <div class="step-ind" id="si3">
                     <div class="step-ind-dot">3</div>
-                    <div class="step-ind-label">Done</div>
+                    <div class="step-ind-label">Finish</div>
                 </div>
             </div>
         </div>
@@ -518,8 +619,8 @@
         <div class="auth-form-wrap fade-up d1">
 
             <div class="auth-form-top">
-                <h1 id="stepTitle">Create Account</h1>
-                <p id="stepSubTitle">Already have an account? <a href="login.html">Sign in →</a></p>
+                <h1 id="stepTitle">Sign Up</h1>
+                <p id="stepSubTitle">Already a user? <a href="login.html">Sign In</a></p>
             </div>
 
             <div class="form-msg" id="formMsg"></div>
@@ -537,20 +638,20 @@
                             <path fill="#EA4335"
                                 d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" />
                         </svg>
-                        Google
+                        Continue with Google
                     </button>
                     <button class="social-btn" id="githubSignupBtn" onclick="oauthRedirect('github')">
                         <svg viewBox="0 0 24 24" fill="currentColor">
                             <path
                                 d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z" />
                         </svg>
-                        GitHub
+                        Continue with GitHub
                     </button>
                 </div>
 
                 <div class="divider">
                     <div class="divider-line"></div>
-                    <div class="divider-text">or email</div>
+                    <div class="divider-text">or</div>
                     <div class="divider-line"></div>
                 </div>
 
@@ -591,27 +692,33 @@
                     <div class="cf-turnstile" data-sitekey="0x4AAAAAADVBkGhwUWSe0IBU" data-theme="dark"></div>
                 </div>
 
-                <button class="btn btn-accent btn-full" onclick="validateAndGoToStep2()">Next →</button>
+                <button class="btn btn-accent btn-full" onclick="validateAndGoToStep2()">Continue</button>
             </div>
 
             <div id="step2Fields" style="display: none;">
                 <div class="form-group">
-                    <label class="input-label">Choose Username</label>
+                    <label class="input-label">Set Username</label>
                     <div class="input-wrap">
                         <span class="input-icon">@</span>
-                        <input type="text" class="input-field" id="username" onblur="checkUniqueUsername()">
+                        <input type="text" class="input-field" id="username" placeholder="Get Your Username"
+                            style="padding-right: 130px;" oninput="handleUsernameTyping()">
+                        <div id="usernameStatusBadge" class="username-status-badge"></div>
+                    </div>
+                    <div id="usernameHint" class="username-hint-text">Choose a unique username (only letters,
+                        numbers,and
+                        _)
                     </div>
                 </div>
 
 
                 <div class="form-group">
-                    <label class="input-label">Profile Picture </label>
+                    <label class="input-label">Upload A Profile Picture </label>
                     <input type="file" id="profilePic" class="input-field" accept="image/*" style="padding: 10px;">
                 </div>
 
                 <div class="form-group">
-                    <label class="input-label">Your Bio</label>
-                    <textarea class="input-field" id="bio" placeholder="Tell Us About Yourself"
+                    <label class="input-label">Add Bio</label>
+                    <textarea class="input-field" id="bio" placeholder="Express Your Self To Everyone"
                         style="height: 80px; padding: 12px;"></textarea>
                 </div>
 
@@ -619,7 +726,9 @@
                 <div class="terms-row">
                     <input type="checkbox" id="terms">
 
-                    <label for="terms">I agree to the <a href="#" onclick="event.preventDefault(); showLegalModal('terms')">Terms of Service</a> and <a href="#" onclick="event.preventDefault(); showLegalModal('privacy')">Privacy
+                    <label for="terms">I agree to the <a href="#"
+                            onclick="event.preventDefault(); showLegalModal('terms')">Terms of Service</a> and <a
+                            href="#" onclick="event.preventDefault(); showLegalModal('privacy')">Privacy
                             Policy</a>. Your data is never sold.</label>
                 </div>
 
@@ -632,7 +741,7 @@
                 </div>
             </div>
 
-            <div class="auth-switch">Need help? <a href="#">Contact Support</a></div>
+            <div class="auth-switch">Need help? <a href="contactus.html">Contact Support</a></div>
         </div>
     </div>
 
@@ -677,7 +786,7 @@
                 let token = "";
                 try {
                     if (window.turnstile) token = turnstile.getResponse();
-                } catch (e) {}
+                } catch (e) { }
                 if (!token) {
                     const el = document.querySelector('[name="cf-turnstile-response"]');
                     if (el) token = el.value;
@@ -755,7 +864,7 @@
                 if (window.turnstile) {
                     turnstileToken = turnstile.getResponse();
                 }
-            } catch (e) {}
+            } catch (e) { }
             if (!turnstileToken) {
                 const el = document.querySelector('[name="cf-turnstile-response"]');
                 if (el) turnstileToken = el.value;
@@ -829,24 +938,92 @@
         }
 
 
-        async function checkUniqueUsername() {
-            const un = document.getElementById('username').value.trim();
-            if (un.length < 3) return;
+        let usernameDebounceTimer = null;
+        let currentUsernameController = null;
 
-            try {
-                const response = await fetch(`${window.CYPR_TECH_API_BASE}/api/user/check-username?username=${un}`);
-                const exists = await response.json();
+        function handleUsernameTyping() {
+            const input = document.getElementById('username');
+            const badge = document.getElementById('usernameStatusBadge');
+            const hint = document.getElementById('usernameHint');
+            const signupBtn = document.getElementById('signupBtn');
+            const un = input.value.trim();
 
-                if (exists) {
-                    showMsg('error', '⚠ This username is already taken. Try another.');
-                    document.getElementById('signupBtn').disabled = true;
-                } else {
-                    showMsg('success', '✓ Username available!');
-                    document.getElementById('signupBtn').disabled = false;
-                }
-            } catch (err) {
-                console.log("Check failed, server might be offline.");
+            if (usernameDebounceTimer) clearTimeout(usernameDebounceTimer);
+            if (currentUsernameController) currentUsernameController.abort();
+
+            if (!un) {
+                if (badge) { badge.className = 'username-status-badge'; badge.innerHTML = ''; }
+                if (hint) { hint.textContent = 'Choose a unique handle for your CYPR profile'; hint.style.color = ''; }
+                if (signupBtn) signupBtn.disabled = false;
+                return;
             }
+
+            const validPattern = /^[a-zA-Z0-9_]+$/;
+            if (un.length < 3) {
+                if (badge) {
+                    badge.className = 'username-status-badge visible invalid';
+                    badge.innerHTML = '<span class="badge-dot"></span> Too short';
+                }
+                if (hint) { hint.textContent = 'Username must be at least 3 characters long.'; hint.style.color = '#ffb800'; }
+                if (signupBtn) signupBtn.disabled = true;
+                return;
+            }
+
+            if (!validPattern.test(un)) {
+                if (badge) {
+                    badge.className = 'username-status-badge visible invalid';
+                    badge.innerHTML = '<span class="badge-dot"></span> Invalid';
+                }
+                if (hint) { hint.textContent = 'Only letters, numbers, and underscores are allowed.'; hint.style.color = '#ffb800'; }
+                if (signupBtn) signupBtn.disabled = true;
+                return;
+            }
+
+            // Show Checking status while debouncing
+            if (badge) {
+                badge.className = 'username-status-badge visible checking';
+                badge.innerHTML = '<span class="badge-dot"></span> Checking...';
+            }
+            if (hint) { hint.textContent = 'Checking handle availability...'; hint.style.color = 'var(--text-dim)'; }
+
+            usernameDebounceTimer = setTimeout(async () => {
+                try {
+                    currentUsernameController = new AbortController();
+                    const response = await fetch(`${window.CYPR_TECH_API_BASE}/api/user/check-username?username=${encodeURIComponent(un)}`, {
+                        signal: currentUsernameController.signal
+                    });
+
+                    if (!response.ok) throw new Error('Check failed');
+
+                    const exists = await response.json();
+
+                    if (document.getElementById('username').value.trim() !== un) return;
+
+                    if (exists) {
+                        if (badge) {
+                            badge.className = 'username-status-badge visible taken';
+                            badge.innerHTML = '<span class="badge-dot"></span> Taken';
+                        }
+                        if (hint) { hint.textContent = 'This handle is already taken. Try adding numbers or underscores.'; hint.style.color = '#ff4d6a'; }
+                        if (signupBtn) signupBtn.disabled = true;
+                    } else {
+                        if (badge) {
+                            badge.className = 'username-status-badge visible available';
+                            badge.innerHTML = '<span class="badge-dot"></span> Available';
+                        }
+                        if (hint) { hint.textContent = 'Handle is unique and ready to secure.'; hint.style.color = '#00ff88'; }
+                        if (signupBtn) signupBtn.disabled = false;
+                    }
+                } catch (err) {
+                    if (err.name === 'AbortError') return;
+                    if (badge) {
+                        badge.className = 'username-status-badge visible invalid';
+                        badge.innerHTML = '<span class="badge-dot"></span> Unknown';
+                    }
+                    if (hint) { hint.textContent = 'Unable to verify handle availability right now.'; hint.style.color = 'var(--text-dim)'; }
+                    if (signupBtn) signupBtn.disabled = false;
+                }
+            }, 300);
         }
     </script>
 </body>

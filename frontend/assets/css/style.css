@@ -13,7 +13,8 @@
   --border: #e2e8f0;
   --border2: #cbd5e1;
   --border-bright: #e2e8f0;
-  --accent: #e05a00; /* Sleek brand orange */
+  --accent: #e05a00;
+  /* Sleek brand orange */
   --accent2: #f97316;
   --accent3: #ef4444;
   --green: #00b85c;
@@ -41,7 +42,9 @@
   --nav-bg: rgba(248, 250, 252, 0.95);
 }
 
-*, *::before, *::after {
+*,
+*::before,
+*::after {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
@@ -432,7 +435,7 @@ code {
 }
 
 .breadcrumb,
-.page-wrapper > div[style*='font-family:var(--font-mono)'] {
+.page-wrapper>div[style*='font-family:var(--font-mono)'] {
   display: flex;
   align-items: center;
   flex-wrap: wrap;
@@ -599,14 +602,14 @@ code {
 .btn-accent {
   background: #e05a00;
   color: #ffffff;
-  box-shadow: 0 4px 12px rgba(224, 90, 0,0.2);
+  box-shadow: 0 4px 12px rgba(224, 90, 0, 0.2);
 }
 
 .btn-primary:hover,
 .btn-accent:hover {
   background: #c24e00;
   transform: translateY(-2px);
-  box-shadow: 0 8px 20px rgba(224, 90, 0,0.3);
+  box-shadow: 0 8px 20px rgba(224, 90, 0, 0.3);
 }
 
 .btn-ghost {
@@ -1059,6 +1062,7 @@ footer {
     opacity: 0;
     transform: translateY(18px);
   }
+
   to {
     opacity: 1;
     transform: translateY(0);
@@ -1072,9 +1076,12 @@ footer {
 }
 
 @keyframes pulse {
-  0%, 100% {
+
+  0%,
+  100% {
     opacity: 1;
   }
+
   50% {
     opacity: 0.55;
   }
@@ -1084,12 +1091,14 @@ footer {
   0% {
     transform: translateX(0);
   }
+
   100% {
     transform: translateX(-50%);
   }
 }
 
 @media (max-width: 1024px) {
+
   .service-grid,
   .features-grid,
   .testi-grid {
@@ -1103,6 +1112,7 @@ footer {
 }
 
 @media (max-width: 900px) {
+
   .tool-page,
   .contact-grid {
     grid-template-columns: 1fr;
@@ -1169,6 +1179,7 @@ footer {
 }
 
 @media (max-width: 480px) {
+
   .hero h1,
   .tool-header h2,
   .auth-form-top h1 {
@@ -1189,6 +1200,7 @@ footer {
     width: 100%;
   }
 }
+
 /* ============================================================
    CYPR TECH — NEWS MODULE STYLES
    Add these at the END of assets/css/style.css
@@ -1778,6 +1790,7 @@ html[data-theme="dark"] .ai-summary-title::before {
     max-height: 240px;
   }
 }
+
 /* ============================================================
    CYPR TECH — PRICING PAGE STYLES
    Add at the END of assets/css/style.css
@@ -1996,7 +2009,8 @@ html[data-theme="dark"] .tool-slide .tool-icon {
   color: var(--text-dim, #4b5563);
   line-height: 1.6;
   margin-bottom: 24px;
-  flex-grow: 1; /* Pushes the button to the bottom */
+  flex-grow: 1;
+  /* Pushes the button to the bottom */
 }
 
 }
@@ -2030,6 +2044,7 @@ html {
 }
 
 @media (max-width: 1024px) {
+
   .tool-page,
   .contact-grid {
     grid-template-columns: 1fr !important;
@@ -2048,6 +2063,7 @@ html {
 }
 
 @media (max-width: 768px) {
+
   /* ── DASHBOARD SHELL DRAWERS ── */
   .sidebar {
     transform: translateX(-100%);
@@ -2065,7 +2081,8 @@ html {
   }
 
   .tb-hamburger {
-    display: flex !important; /* Visible on mobile */
+    display: flex !important;
+    /* Visible on mobile */
   }
 
   .sb-overlay {
@@ -2217,6 +2234,7 @@ html {
 }
 
 @media (max-width: 480px) {
+
   /* Public Landing Page tweaks */
   .navbar {
     padding: 0 16px !important;
@@ -2278,6 +2296,7 @@ html {
 
 /* ── 1200px: Wide tablet / small laptops ── */
 @media (max-width: 1200px) {
+
   /* Tool pages: collapse sidebar panel */
   .tool-page,
   .contact-grid {
@@ -2299,6 +2318,7 @@ html {
 
 /* ── 1024px: Tablets landscape ── */
 @media (max-width: 1024px) {
+
   /* Tool pages: stack to single column */
   .tool-page,
   .contact-grid {
@@ -2352,6 +2372,7 @@ html {
   .form-grid {
     grid-template-columns: 1fr !important;
   }
+
   .fg.full {
     grid-column: 1 !important;
   }
@@ -2359,10 +2380,12 @@ html {
 
 /* ── 768px: Tablets portrait / large mobile ── */
 @media (max-width: 768px) {
+
   /* Global hamburger */
   .hamburger {
     display: flex !important;
   }
+
   .navbar nav,
   .nav-links,
   .nav-actions {
@@ -2437,6 +2460,7 @@ html {
     flex-direction: column !important;
     gap: 10px !important;
   }
+
   .scan-row .btn-scan,
   .scan-row .btn-primary {
     width: 100% !important;
@@ -2459,6 +2483,7 @@ html {
   .testi-grid {
     grid-template-columns: 1fr;
   }
+
   .stats-row {
     grid-template-columns: 1fr;
   }
@@ -2467,9 +2492,11 @@ html {
   .auth-split {
     grid-template-columns: 1fr !important;
   }
+
   .auth-left {
     display: none !important;
   }
+
   .auth-right {
     min-height: 100vh !important;
   }
@@ -2483,6 +2510,7 @@ html {
     -webkit-overflow-scrolling: touch;
     scrollbar-width: none;
   }
+
   .settings-tabs::-webkit-scrollbar,
   .s-tabs::-webkit-scrollbar {
     display: none;
@@ -2505,10 +2533,12 @@ html {
     width: 200px !important;
     height: 200px !important;
   }
+
   .score-ring-wrap svg {
     width: 200px !important;
     height: 200px !important;
   }
+
   .score-number {
     font-size: 3rem !important;
   }
@@ -2517,6 +2547,7 @@ html {
   .section {
     padding: 56px 20px !important;
   }
+
   .score-section,
   .cta-section {
     padding: 56px 20px !important;
@@ -2535,6 +2566,7 @@ html {
     text-align: center;
     padding: 24px 16px !important;
   }
+
   .footer-links {
     flex-wrap: wrap;
     justify-content: center;
@@ -2555,6 +2587,7 @@ html {
   .stat-tiles {
     grid-template-columns: repeat(2, 1fr) !important;
   }
+
   .top-grid {
     grid-template-columns: 1fr !important;
   }
@@ -2562,6 +2595,7 @@ html {
 
 /* ── 480px: Mobile phones ── */
 @media (max-width: 480px) {
+
   /* Typography scale-down */
   h1 {
     font-size: clamp(1.5rem, 6vw, 2rem) !important;
@@ -2587,10 +2621,12 @@ html {
     flex-direction: column !important;
     width: 100% !important;
   }
+
   .hero-stat {
     border-right: none !important;
     border-bottom: 1px solid var(--border) !important;
   }
+
   .hero-stat:last-child {
     border-bottom: none !important;
   }
@@ -2600,6 +2636,7 @@ html {
     flex-direction: column;
     width: 100%;
   }
+
   .hero-actions .btn {
     width: 100%;
     text-align: center;
@@ -2657,6 +2694,7 @@ html {
     width: 160px !important;
     height: 160px !important;
   }
+
   .score-ring-wrap svg {
     width: 160px !important;
     height: 160px !important;
@@ -2713,6 +2751,7 @@ html {
 
 /* ══ TOUCH DEVICE ENHANCEMENTS ══ */
 @media (hover: none) and (pointer: coarse) {
+
   /* Increase tap targets */
   .btn,
   .nav-links a,
@@ -2735,7 +2774,8 @@ html {
   }
 
   /* Prevent double-tap zoom on buttons */
-  button, a {
+  button,
+  a {
     touch-action: manipulation;
   }
 }
@@ -2744,7 +2784,7 @@ html {
 html[data-theme="dark"],
 html[data-theme="dark"] body {
   background-color: #0b0f14 !important;
-  background-image: 
+  background-image:
     radial-gradient(circle at 12% 88%, rgba(224, 90, 0, 0.15) 0%, rgba(224, 90, 0, 0.04) 35%, transparent 60%),
     radial-gradient(circle at 88% 12%, rgba(16, 185, 129, 0.08) 0%, rgba(16, 185, 129, 0.02) 35%, transparent 55%),
     radial-gradient(circle at 50% 0%, rgba(249, 115, 22, 0.06) 0%, transparent 45%) !important;
@@ -2752,4 +2792,3 @@ html[data-theme="dark"] body {
   background-repeat: no-repeat !important;
   background-size: cover !important;
 }
-

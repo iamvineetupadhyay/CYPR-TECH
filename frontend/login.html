@@ -198,7 +198,7 @@
     </div>
 
     <div class="form-footer">
-      <label class="remember"><input type="checkbox" checked> Remember me</label>
+      <label class="remember"><input type="checkbox" id="rememberMeCheck" checked> Remember me</label>
       <a href="forgotpassword.html" class="forgot">Forgot password?</a>
     </div>
 
@@ -216,8 +216,12 @@
 window.onload = async function() {
     const params = new URLSearchParams(window.location.search);
     const verifyToken = params.get('verify_token');
+    const sessionExpired = params.get('session_expired');
     
-    if (verifyToken) {
+    if (sessionExpired === 'true') {
+        showMsg('error', 'Your session has expired. Please sign in again.');
+        window.history.replaceState({}, document.title, window.location.pathname);
+    } else if (verifyToken) {
         showMsg('success', 'Verifying your security token...');
         try {
             const response = await fetch(`${window.CYPR_TECH_API_BASE}/api/user/verify?token=${verifyToken}`);
@@ -275,25 +279,38 @@ async function handleLogin() {
 
         if (response.ok) {
             const user = await response.json();
+            
+            // Clear existing session from both storages first
+            if (window.CYPR_AUTH) {
+                window.CYPR_AUTH.clearSession();
+            }
+
+            const rememberMe = document.getElementById('rememberMeCheck')?.checked ?? true;
+            const storage = rememberMe ? localStorage : sessionStorage;
+            const now = Date.now().toString();
+
             // Store session token securely for JWT authentication
             if (user.sessionToken) {
-                localStorage.setItem('cm_session_token', user.sessionToken);
+                storage.setItem('cm_session_token', user.sessionToken);
             }
-            // Store user ID AND full profile in localStorage to prevent stale session leakage
-            localStorage.setItem('userId', user.id);
-            localStorage.setItem('cypr_user_id', user.id);
+            // Store user ID AND full profile in storage to prevent stale session leakage
+            storage.setItem('userId', user.id);
+            storage.setItem('cypr_user_id', user.id);
             const name = user.name || 'User';
             const init = name.split(' ').map(w => w[0]).join('').toUpperCase().slice(0, 2);
-            localStorage.setItem('cm_user_name', name);
-            localStorage.setItem('cm_user_email', user.email || '');
-            localStorage.setItem('cm_user_initials', init);
-            localStorage.setItem('cm_user_credits', user.credits ?? 5);
-            localStorage.setItem('cm_user_subscription', user.subscriptionType || 'FREE');
-            localStorage.setItem('cm_user_score', user.safetyScore || 100);
+            storage.setItem('cm_user_name', name);
+            storage.setItem('cm_user_email', user.email || '');
+            storage.setItem('cm_user_initials', init);
+            storage.setItem('cm_user_credits', user.credits ?? 5);
+            storage.setItem('cm_user_subscription', user.subscriptionType || 'FREE');
+            storage.setItem('cm_user_score', user.safetyScore || 100);
+            storage.setItem('cm_session_created_at', now);
+            storage.setItem('cm_last_activity', now);
+            storage.setItem('cm_remember_me', rememberMe ? 'true' : 'false');
             if (user.profilePicUrl || user.avatarSrc) {
-                localStorage.setItem('cm_user_avatar', user.profilePicUrl || user.avatarSrc);
+                storage.setItem('cm_user_avatar', user.profilePicUrl || user.avatarSrc);
             } else {
-                localStorage.removeItem('cm_user_avatar');
+                storage.removeItem('cm_user_avatar');
             }
             // Clear stale notifications so fresh ones load from activity
             localStorage.removeItem('cypr_notifications');

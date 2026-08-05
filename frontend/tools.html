@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <link rel="icon" type="image/png" href="assets/favicon.png">
   <script src="assets/js/config.js"></script>
@@ -152,30 +153,161 @@
     }
 
     /* ── NAVBAR (same as index.html) ── */
-    .navbar{position:fixed;top:0;left:0;right:0;z-index:100;height:var(--nav-h);display:flex;align-items:center;justify-content:space-between;padding:0 60px;background:var(--bg);box-shadow:0 2px 8px var(--shadow);border-bottom:1px solid var(--border);}
-    .nav-logo{font-family:var(--font-display);font-size:1.3rem;font-weight:800;color:var(--text);display:flex;align-items:center;gap:8px;}
-    .nav-logo span{color:var(--lime);}
-    .nav-links{display:flex;gap:6px;align-items:center;}
-    .nav-links a{font-family:var(--font-display);font-size:0.85rem;font-weight:500;color:var(--text2);padding:8px 16px;border-radius:6px;transition:all 0.2s;border:1px solid transparent;}
-    .nav-links a:hover{color:var(--lime);background:var(--bg3);}
-    .nav-links a.active{color:var(--lime);font-weight:600;}
-    .nav-actions{display:flex;gap:10px;align-items:center;}
-    .hamburger{display:none;flex-direction:column;gap:5px;width:36px;height:36px;background:none;border:1px solid var(--border);border-radius:6px;padding:8px;cursor:pointer;}
-    .hamburger span{display:block;width:100%;height:2px;background:var(--text2);border-radius:2px;transition:all 0.3s;}
-    .mobile-nav{display:none;position:fixed;top:var(--nav-h);left:0;right:0;background:var(--bg);border-bottom:1px solid var(--border);z-index:99;padding:16px;flex-direction:column;gap:4px;}
-    .mobile-nav.open{display:flex;}
-    .mobile-nav a{font-family:var(--font-display);font-size:0.85rem;font-weight:500;color:var(--text2);padding:13px 16px;border-radius:8px;border:1px solid transparent;transition:all 0.2s;}
-    .mobile-nav a:hover{color:var(--lime);background:var(--bg3);}
-    .mobile-nav a.active{color:var(--lime);font-weight:600;}
-    .mobile-nav .mobile-actions{display:flex;flex-direction:column;gap:8px;margin-top:12px;padding-top:12px;border-top:1px solid var(--border);}
-    @media(max-width:900px){.navbar{padding:0 20px;}.nav-links,.nav-actions{display:none;}.hamburger{display:flex;}}
+    .navbar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 100;
+      height: var(--nav-h);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 60px;
+      background: var(--bg);
+      box-shadow: 0 2px 8px var(--shadow);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .nav-logo {
+      font-family: var(--font-display);
+      font-size: 1.3rem;
+      font-weight: 800;
+      color: var(--text);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .nav-logo span {
+      color: var(--lime);
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 6px;
+      align-items: center;
+    }
+
+    .nav-links a {
+      font-family: var(--font-display);
+      font-size: 0.85rem;
+      font-weight: 500;
+      color: var(--text2);
+      padding: 8px 16px;
+      border-radius: 6px;
+      transition: all 0.2s;
+      border: 1px solid transparent;
+    }
+
+    .nav-links a:hover {
+      color: var(--lime);
+      background: var(--bg3);
+    }
+
+    .nav-links a.active {
+      color: var(--lime);
+      font-weight: 600;
+    }
+
+    .nav-actions {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+    }
+
+    .hamburger {
+      display: none;
+      flex-direction: column;
+      gap: 5px;
+      width: 36px;
+      height: 36px;
+      background: none;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 8px;
+      cursor: pointer;
+    }
+
+    .hamburger span {
+      display: block;
+      width: 100%;
+      height: 2px;
+      background: var(--text2);
+      border-radius: 2px;
+      transition: all 0.3s;
+    }
+
+    .mobile-nav {
+      display: none;
+      position: fixed;
+      top: var(--nav-h);
+      left: 0;
+      right: 0;
+      background: var(--bg);
+      border-bottom: 1px solid var(--border);
+      z-index: 99;
+      padding: 16px;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .mobile-nav.open {
+      display: flex;
+    }
+
+    .mobile-nav a {
+      font-family: var(--font-display);
+      font-size: 0.85rem;
+      font-weight: 500;
+      color: var(--text2);
+      padding: 13px 16px;
+      border-radius: 8px;
+      border: 1px solid transparent;
+      transition: all 0.2s;
+    }
+
+    .mobile-nav a:hover {
+      color: var(--lime);
+      background: var(--bg3);
+    }
+
+    .mobile-nav a.active {
+      color: var(--lime);
+      font-weight: 600;
+    }
+
+    .mobile-nav .mobile-actions {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      margin-top: 12px;
+      padding-top: 12px;
+      border-top: 1px solid var(--border);
+    }
+
+    @media(max-width:900px) {
+      .navbar {
+        padding: 0 20px;
+      }
+
+      .nav-links,
+      .nav-actions {
+        display: none;
+      }
+
+      .hamburger {
+        display: flex;
+      }
+    }
   </style>
 </head>
-<body class="grid-bg">
-<div class="orb orb-1"></div>
-<div class="orb orb-2"></div>
 
-<nav class="navbar" id="mainNav">
+<body class="grid-bg">
+  <div class="orb orb-1"></div>
+  <div class="orb orb-2"></div>
+
+  <nav class="navbar" id="mainNav">
     <a href="index.html" class="nav-logo">CYPR</a>
     <div class="nav-links">
       <a href="tools.html" class="active">Tools</a>
@@ -188,7 +320,8 @@
       <a href="login.html" class="btn btn-ghost btn-sm">Sign In</a>
       <a href="signup.html" class="btn btn-accent btn-sm">Get Started</a>
     </div>
-    <button class="hamburger" id="ham" aria-label="Menu" onclick="document.getElementById('mobileNav').classList.toggle('open')">
+    <button class="hamburger" id="ham" aria-label="Menu"
+      onclick="document.getElementById('mobileNav').classList.toggle('open')">
       <span></span><span></span><span></span>
     </button>
   </nav>
@@ -205,111 +338,120 @@
     </div>
   </div>
 
-<main class="page-wrapper marketing-page" style="padding-top: 20px;">
-  <div style="text-align: center; margin-bottom: 36px;">
-    <h1 style="font-size: 2.2rem; font-weight: 800; color: var(--text); letter-spacing: -0.02em;">Security Tools</h1>
-  </div>
+  <main class="page-wrapper marketing-page" style="padding-top: 20px;">
+    <div style="text-align: center; margin-bottom: 36px;">
+      <h1 style="font-size: 2.2rem; font-weight: 800; color: var(--text); letter-spacing: -0.02em;">Security Tools</h1>
+    </div>
 
-  <div class="tools-grid">
-    <!-- Card 1 -->
-    <article class="tool-card">
-      <div class="tool-card-header">
-        <img src="assets/phishing.png" alt="URL Phishing Checker" class="tool-card-icon">
-        <span class="tool-badge live">LIVE</span>
-      </div>
-      <h3 class="tool-card-title">URL Phishing Checker</h3>
-      <p class="tool-card-desc">Scan any URL against 70+ antivirus engines via VirusTotal. Get a verdict in under a second — Safe, Suspicious, or Malicious.</p>
-      <a href="url-check.html" class="tool-card-link">TRY IT →</a>
-    </article>
+    <div class="tools-grid">
+      <!-- Card 1 -->
+      <article class="tool-card">
+        <div class="tool-card-header">
+          <img src="assets/phishing.png" alt="URL Phishing Checker" class="tool-card-icon">
+          <span class="tool-badge live">LIVE</span>
+        </div>
+        <h3 class="tool-card-title">URL Phishing Checker</h3>
+        <p class="tool-card-desc">Scan any URL against 70+ antivirus engines via VirusTotal. Get a verdict in under a
+          second — Safe, Suspicious, or Malicious.</p>
+        <a href="url-check.html" class="tool-card-link">TRY IT →</a>
+      </article>
 
-    <!-- Card 2 -->
-    <article class="tool-card">
-      <div class="tool-card-header">
-        <img src="assets/password.png" alt="Password Strength Test" class="tool-card-icon">
-        <span class="tool-badge live">LIVE</span>
-      </div>
-      <h3 class="tool-card-title">Password Strength Test</h3>
-      <p class="tool-card-desc">Verify your passwords locally in your browser. Measure complexity, entropy, and crack resistance without sending data to servers.</p>
-      <a href="password-check.html" class="tool-card-link">TRY IT →</a>
-    </article>
+      <!-- Card 2 -->
+      <article class="tool-card">
+        <div class="tool-card-header">
+          <img src="assets/password.png" alt="Password Strength Test" class="tool-card-icon">
+          <span class="tool-badge live">LIVE</span>
+        </div>
+        <h3 class="tool-card-title">Password Strength Test</h3>
+        <p class="tool-card-desc">Verify your passwords locally in your browser. Measure complexity, entropy, and crack
+          resistance without sending data to servers.</p>
+        <a href="password-check.html" class="tool-card-link">TRY IT →</a>
+      </article>
 
-    <!-- Card 3 -->
-    <article class="tool-card">
-      <div class="tool-card-header">
-        <img src="assets/dashboard.png" alt="Malware Scanner" class="tool-card-icon">
-        <span class="tool-badge live">LIVE</span>
-      </div>
-      <h3 class="tool-card-title">Malware Scanner</h3>
-      <p class="tool-card-desc">Upload script files, code files, or text payloads to check for Shannon entropy anomalies, signature compliance, and shell risks.</p>
-      <a href="malwareanalysis.html" class="tool-card-link">TRY IT →</a>
-    </article>
+      <!-- Card 3 -->
+      <article class="tool-card">
+        <div class="tool-card-header">
+          <img src="assets/dashboard.png" alt="Malware Scanner" class="tool-card-icon">
+          <span class="tool-badge live">LIVE</span>
+        </div>
+        <h3 class="tool-card-title">Malware Scanner</h3>
+        <p class="tool-card-desc">Upload script files, code files, or text payloads to check for Shannon entropy
+          anomalies, signature compliance, and shell risks.</p>
+        <a href="malwareanalysis.html" class="tool-card-link">TRY IT →</a>
+      </article>
 
-    <!-- Card 4 -->
-    <article class="tool-card">
-      <div class="tool-card-header">
-        <img src="assets/safescore.png" alt="Personal Safe Score" class="tool-card-icon">
-        <span class="tool-badge dashboard">DASHBOARD</span>
-      </div>
-      <h3 class="tool-card-title">Personal Safe Score</h3>
-      <p class="tool-card-desc">Track your security history and monitor your calculated safety rating based on scanned assets and dynamic threat logs.</p>
-      <a href="dashboard.html" class="tool-card-link">VIEW SCORE →</a>
-    </article>
+      <!-- Card 4 -->
+      <article class="tool-card">
+        <div class="tool-card-header">
+          <img src="assets/safescore.png" alt="Personal Safe Score" class="tool-card-icon">
+          <span class="tool-badge dashboard">DASHBOARD</span>
+        </div>
+        <h3 class="tool-card-title">Personal Safe Score</h3>
+        <p class="tool-card-desc">Track your security history and monitor your calculated safety rating based on scanned
+          assets and dynamic threat logs.</p>
+        <a href="dashboard.html" class="tool-card-link">VIEW SCORE →</a>
+      </article>
 
-    <!-- Card 5 -->
-    <article class="tool-card">
-      <div class="tool-card-header">
-        <img src="assets/history.png" alt="Scan History" class="tool-card-icon">
-        <span class="tool-badge history">HISTORY</span>
-      </div>
-      <h3 class="tool-card-title">Scan History</h3>
-      <p class="tool-card-desc">Browse your previous file analyses, url scan records, and password test events in a detailed, searchable audit log.</p>
-      <a href="activity-logs.html" class="tool-card-link">VIEW LOGS →</a>
-    </article>
+      <!-- Card 5 -->
+      <article class="tool-card">
+        <div class="tool-card-header">
+          <img src="assets/history.png" alt="Scan History" class="tool-card-icon">
+          <span class="tool-badge history">HISTORY</span>
+        </div>
+        <h3 class="tool-card-title">Scan History</h3>
+        <p class="tool-card-desc">Browse your previous file analyses, url scan records, and password test events in a
+          detailed, searchable audit log.</p>
+        <a href="activity-logs.html" class="tool-card-link">VIEW LOGS →</a>
+      </article>
 
-    <!-- Card 6 -->
-    <article class="tool-card">
-      <div class="tool-card-header">
-        <img src="assets/threat.png" alt="Threat Intelligence" class="tool-card-icon">
-        <span class="tool-badge alerts">ALERTS</span>
-      </div>
-      <h3 class="tool-card-title">Threat Intelligence</h3>
-      <p class="tool-card-desc">Receive real-time alerts on active cybercampaigns, local threat distributions, and global zero-day warnings.</p>
-      <a href="cyber-news.html" class="tool-card-link">READ ALERTS →</a>
-    </article>
+      <!-- Card 6 -->
+      <article class="tool-card">
+        <div class="tool-card-header">
+          <img src="assets/threat.png" alt="Threat Intelligence" class="tool-card-icon">
+          <span class="tool-badge alerts">ALERTS</span>
+        </div>
+        <h3 class="tool-card-title">Threat Intelligence</h3>
+        <p class="tool-card-desc">Receive real-time alerts on active cybercampaigns, local threat distributions, and
+          global zero-day warnings.</p>
+        <a href="cyber-news.html" class="tool-card-link">READ ALERTS →</a>
+      </article>
 
-    <!-- Card 7 -->
-    <article class="tool-card">
-      <div class="tool-card-header">
-        <img src="assets/bestpractices.png" alt="Security Best Practices" class="tool-card-icon">
-        <span class="tool-badge soon">COMING SOON</span>
-      </div>
-      <h3 class="tool-card-title">Security Best Practices</h3>
-      <p class="tool-card-desc">Actionable security guidelines, 2FA setup advice, and digital hygiene principles tailored to defend your family.</p>
-      <span class="tool-card-link" style="color:var(--text3); cursor:default;">UNAVAILABLE</span>
-    </article>
+      <!-- Card 7 -->
+      <article class="tool-card">
+        <div class="tool-card-header">
+          <img src="assets/bestpractices.png" alt="Security Best Practices" class="tool-card-icon">
+          <span class="tool-badge soon">COMING SOON</span>
+        </div>
+        <h3 class="tool-card-title">Security Best Practices</h3>
+        <p class="tool-card-desc">Actionable security guidelines, 2FA setup advice, and digital hygiene principles
+          tailored to defend your family.</p>
+        <span class="tool-card-link" style="color:var(--text3); cursor:default;">UNAVAILABLE</span>
+      </article>
 
-    <!-- Card 8 -->
-    <article class="tool-card">
-      <div class="tool-card-header">
-        <img src="assets/favicon.png" alt="Family Vault" class="tool-card-icon">
-        <span class="tool-badge soon">COMING SOON</span>
-      </div>
-      <h3 class="tool-card-title">Family Vault</h3>
-      <p class="tool-card-desc">A private shared vault to securely document recovery keys, security policies, and family authentication pins.</p>
-      <span class="tool-card-link" style="color:var(--text3); cursor:default;">UNAVAILABLE</span>
-    </article>
-  </div>
-</main>
+      <!-- Card 8 -->
+      <article class="tool-card">
+        <div class="tool-card-header">
+          <img src="assets/favicon.png" alt="Family Vault" class="tool-card-icon">
+          <span class="tool-badge soon">COMING SOON</span>
+        </div>
+        <h3 class="tool-card-title">Family Vault</h3>
+        <p class="tool-card-desc">A private shared vault to securely document recovery keys, security policies, and
+          family authentication pins.</p>
+        <span class="tool-card-link" style="color:var(--text3); cursor:default;">UNAVAILABLE</span>
+      </article>
+    </div>
+  </main>
 
-<footer class="footer">
-  <div class="footer-logo">CYPR Tech</div>
-  <div class="footer-links">
-    <a href="tools.html">Tools</a>
-    <a href="pricing.html">Pricing</a>
-    <a href="cyber-news.html">Cyber News</a>
-    <a href="aboutus.html">About Us</a>
-  </div>
-  <div class="footer-copy">© 2026 CYPR Tech. Built to protect.</div>
-</footer>
+  <footer class="footer">
+    <div class="footer-logo">CYPR Tech</div>
+    <div class="footer-links">
+      <a href="tools.html">Tools</a>
+      <a href="pricing.html">Pricing</a>
+      <a href="cyber-news.html">Cyber News</a>
+      <a href="aboutus.html">About Us</a>
+    </div>
+    <div class="footer-copy">© 2026 CYPR Tech. Built to protect.</div>
+  </footer>
 </body>
+
 </html>

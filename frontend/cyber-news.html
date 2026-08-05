@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <link rel="icon" type="image/png" href="assets/favicon.png">
   <script src="assets/js/config.js"></script>
@@ -10,27 +11,169 @@
   <link rel="stylesheet" href="assets/css/style.css">
   <script src="assets/js/site-enhancements.js"></script>
   <style>
-    .navbar{position:fixed;top:0;left:0;right:0;z-index:100;height:var(--nav-h);display:flex;align-items:center;justify-content:space-between;padding:0 60px;background:var(--bg);box-shadow:0 2px 8px var(--shadow);border-bottom:1px solid var(--border);}
-    .nav-logo{font-family:var(--font-display);font-size:1.3rem;font-weight:800;color:var(--text);display:flex;align-items:center;gap:8px;}
-    .nav-logo span{color:var(--lime);}
-    .nav-links{display:flex;gap:6px;align-items:center;}
-    .nav-links a{font-family:var(--font-display);font-size:0.85rem;font-weight:500;color:var(--text2);padding:8px 16px;border-radius:6px;transition:all 0.2s;border:1px solid transparent;}
-    .nav-links a:hover{color:var(--lime);background:var(--bg3);}
-    .nav-links a.active{color:var(--lime);font-weight:600;}
-    .nav-actions{display:flex;gap:10px;align-items:center;}
-    .hamburger{display:none;flex-direction:column;gap:5px;width:36px;height:36px;background:none;border:1px solid var(--border);border-radius:6px;padding:8px;cursor:pointer;}
-    .hamburger span{display:block;width:100%;height:2px;background:var(--text2);border-radius:2px;transition:all 0.3s;}
-    .mobile-nav{display:none;position:fixed;top:var(--nav-h);left:0;right:0;background:var(--bg);border-bottom:1px solid var(--border);z-index:99;padding:16px;flex-direction:column;gap:4px;}
-    .mobile-nav.open{display:flex;}
-    .mobile-nav a{font-family:var(--font-display);font-size:0.85rem;font-weight:500;color:var(--text2);padding:13px 16px;border-radius:8px;border:1px solid transparent;transition:all 0.2s;}
-    .mobile-nav a:hover{color:var(--lime);background:var(--bg3);}
-    .mobile-nav a.active{color:var(--lime);font-weight:600;}
-    .mobile-nav .mobile-actions{display:flex;flex-direction:column;gap:8px;margin-top:12px;padding-top:12px;border-top:1px solid var(--border);}
-    @media(max-width:900px){.navbar{padding:0 20px;}.nav-links,.nav-actions{display:none;}.hamburger{display:flex;}}
-    @keyframes borderFlash {
-      0%, 100% { border-color: var(--border); transform: scale(1); }
-      50% { border-color: var(--accent); box-shadow: 0 0 25px var(--lime-glow); transform: scale(1.02); }
+    .navbar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 100;
+      height: var(--nav-h);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 60px;
+      background: var(--bg);
+      box-shadow: 0 2px 8px var(--shadow);
+      border-bottom: 1px solid var(--border);
     }
+
+    .nav-logo {
+      font-family: var(--font-display);
+      font-size: 1.3rem;
+      font-weight: 800;
+      color: var(--text);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .nav-logo span {
+      color: var(--lime);
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 6px;
+      align-items: center;
+    }
+
+    .nav-links a {
+      font-family: var(--font-display);
+      font-size: 0.85rem;
+      font-weight: 500;
+      color: var(--text2);
+      padding: 8px 16px;
+      border-radius: 6px;
+      transition: all 0.2s;
+      border: 1px solid transparent;
+    }
+
+    .nav-links a:hover {
+      color: var(--lime);
+      background: var(--bg3);
+    }
+
+    .nav-links a.active {
+      color: var(--lime);
+      font-weight: 600;
+    }
+
+    .nav-actions {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+    }
+
+    .hamburger {
+      display: none;
+      flex-direction: column;
+      gap: 5px;
+      width: 36px;
+      height: 36px;
+      background: none;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 8px;
+      cursor: pointer;
+    }
+
+    .hamburger span {
+      display: block;
+      width: 100%;
+      height: 2px;
+      background: var(--text2);
+      border-radius: 2px;
+      transition: all 0.3s;
+    }
+
+    .mobile-nav {
+      display: none;
+      position: fixed;
+      top: var(--nav-h);
+      left: 0;
+      right: 0;
+      background: var(--bg);
+      border-bottom: 1px solid var(--border);
+      z-index: 99;
+      padding: 16px;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .mobile-nav.open {
+      display: flex;
+    }
+
+    .mobile-nav a {
+      font-family: var(--font-display);
+      font-size: 0.85rem;
+      font-weight: 500;
+      color: var(--text2);
+      padding: 13px 16px;
+      border-radius: 8px;
+      border: 1px solid transparent;
+      transition: all 0.2s;
+    }
+
+    .mobile-nav a:hover {
+      color: var(--lime);
+      background: var(--bg3);
+    }
+
+    .mobile-nav a.active {
+      color: var(--lime);
+      font-weight: 600;
+    }
+
+    .mobile-nav .mobile-actions {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      margin-top: 12px;
+      padding-top: 12px;
+      border-top: 1px solid var(--border);
+    }
+
+    @media(max-width:900px) {
+      .navbar {
+        padding: 0 20px;
+      }
+
+      .nav-links,
+      .nav-actions {
+        display: none;
+      }
+
+      .hamburger {
+        display: flex;
+      }
+    }
+
+    @keyframes borderFlash {
+
+      0%,
+      100% {
+        border-color: var(--border);
+        transform: scale(1);
+      }
+
+      50% {
+        border-color: var(--accent);
+        box-shadow: 0 0 25px var(--lime-glow);
+        transform: scale(1.02);
+      }
+    }
+
     .flash-highlight {
       animation: borderFlash 2.2s ease-in-out 3;
       border: 1.8px solid var(--accent) !important;
@@ -45,13 +188,15 @@
       margin-top: 24px;
       transition: grid-template-columns 0.25s cubic-bezier(0.16, 1, 0.3, 1);
     }
+
     .news-layout-wrapper.sources-hidden {
       grid-template-columns: 1fr;
     }
+
     .news-layout-wrapper.sources-hidden .feeds-sidebar {
       display: none;
     }
-    
+
     /* Feeds Sidebar */
     .feeds-sidebar {
       background: var(--card);
@@ -62,6 +207,7 @@
       top: 100px;
       box-shadow: var(--shadow);
     }
+
     .sidebar-title {
       font-size: 0.9rem;
       font-weight: 800;
@@ -72,11 +218,13 @@
       border-bottom: 1px solid var(--border);
       padding-bottom: 10px;
     }
+
     .feed-filter-list {
       display: flex;
       flex-direction: column;
       gap: 6px;
     }
+
     .feed-filter-btn {
       width: 100%;
       text-align: left;
@@ -93,17 +241,20 @@
       gap: 10px;
       transition: all 0.18s ease;
     }
+
     .feed-filter-btn:hover {
       background: var(--bg2);
       color: var(--text);
       border-color: var(--border);
     }
+
     .feed-filter-btn.active {
       background: var(--lime-dim);
       border-color: var(--lime-glow);
       color: var(--accent);
       font-weight: 700;
     }
+
     .feed-filter-btn .dot {
       width: 6px;
       height: 6px;
@@ -112,10 +263,12 @@
       display: inline-block;
       transition: background 0.18s;
     }
+
     .feed-filter-btn.active .dot {
       background: var(--accent);
       box-shadow: 0 0 8px var(--lime-glow);
     }
+
     .feed-filter-btn .feed-badge {
       margin-left: auto;
       font-size: 0.65rem;
@@ -125,6 +278,7 @@
       padding: 2px 6px;
       border-radius: 4px;
     }
+
     .feed-filter-btn.active .feed-badge {
       background: var(--accent);
       color: #ffffff;
@@ -136,7 +290,7 @@
       flex-direction: column;
       gap: 20px;
     }
-    
+
     /* Pagination Styles */
     .pagination-wrap {
       display: flex;
@@ -147,6 +301,7 @@
       padding-top: 24px;
       border-top: 1px solid var(--border);
     }
+
     .pagination-btn {
       min-width: 36px;
       height: 36px;
@@ -163,27 +318,31 @@
       justify-content: center;
       transition: all 0.2s ease;
     }
+
     .pagination-btn:hover:not(:disabled) {
       background: var(--bg2);
       border-color: var(--border2);
       color: var(--text);
     }
+
     .pagination-btn.active {
       background: var(--accent);
       border-color: var(--accent);
       color: #ffffff;
       font-weight: 700;
     }
+
     .pagination-btn:disabled {
       opacity: 0.4;
       cursor: not-allowed;
     }
-    
+
     /* Responsive adjustment */
     @media(max-width: 1024px) {
       .news-layout-wrapper {
         grid-template-columns: 1fr;
       }
+
       .feeds-sidebar {
         position: relative;
         top: 0;
@@ -191,269 +350,275 @@
     }
   </style>
 </head>
-<body class="grid-bg">
-<div class="orb orb-1"></div>
-<div class="orb orb-2"></div>
 
-<nav class="navbar" id="mainNav">
-  <a href="index.html" class="nav-logo">CYPR</a>
-  <div class="nav-links">
+<body class="grid-bg">
+  <div class="orb orb-1"></div>
+  <div class="orb orb-2"></div>
+
+  <nav class="navbar" id="mainNav">
+    <a href="index.html" class="nav-logo">CYPR</a>
+    <div class="nav-links">
+      <a href="tools.html">Tools</a>
+      <a href="pricing.html">Pricing</a>
+      <a href="cyber-news.html" class="active">Cyber News</a>
+      <a href="aboutus.html">About Us</a>
+      <a href="contactus.html">Contact</a>
+    </div>
+    <div class="nav-actions">
+      <a href="login.html" class="btn btn-ghost btn-sm">Sign In</a>
+      <a href="signup.html" class="btn btn-accent btn-sm">Get Started</a>
+    </div>
+    <button class="hamburger" id="ham" aria-label="Menu"
+      onclick="document.getElementById('mobileNav').classList.toggle('open')">
+      <span></span><span></span><span></span>
+    </button>
+  </nav>
+
+  <div class="mobile-nav" id="mobileNav">
     <a href="tools.html">Tools</a>
     <a href="pricing.html">Pricing</a>
     <a href="cyber-news.html" class="active">Cyber News</a>
     <a href="aboutus.html">About Us</a>
     <a href="contactus.html">Contact</a>
-  </div>
-  <div class="nav-actions">
-    <a href="login.html" class="btn btn-ghost btn-sm">Sign In</a>
-    <a href="signup.html" class="btn btn-accent btn-sm">Get Started</a>
-  </div>
-  <button class="hamburger" id="ham" aria-label="Menu" onclick="document.getElementById('mobileNav').classList.toggle('open')">
-    <span></span><span></span><span></span>
-  </button>
-</nav>
-
-<div class="mobile-nav" id="mobileNav">
-  <a href="tools.html">Tools</a>
-  <a href="pricing.html">Pricing</a>
-  <a href="cyber-news.html" class="active">Cyber News</a>
-  <a href="aboutus.html">About Us</a>
-  <a href="contactus.html">Contact</a>
-  <div class="mobile-actions">
-    <a href="login.html" class="btn btn-ghost" style="width:100%">Sign In</a>
-    <a href="signup.html" class="btn btn-accent" style="width:100%">Get Started Free</a>
-  </div>
-</div>
-
-<main class="page-wrapper marketing-page" style="padding-top: 20px;">
-  <section class="marketing-section" style="border-top: none; padding-top: 0;">
-    <div class="section-heading" style="display: block; margin-bottom: 24px;">
-      <h1 class="section-title" style="font-size: 2.2rem; font-weight: 800; color: var(--text);">Cyber News</h1>
+    <div class="mobile-actions">
+      <a href="login.html" class="btn btn-ghost" style="width:100%">Sign In</a>
+      <a href="signup.html" class="btn btn-accent" style="width:100%">Get Started Free</a>
     </div>
+  </div>
 
-    <div class="news-layout-wrapper" id="newsLayoutWrapper">
-      <!-- Left Column: Controls + Grid + Pagination (Max Span) -->
-      <div class="news-content-area">
-        <div class="news-controls">
-          <div class="news-status" id="newsStatus">Loading latest cyber news...</div>
-          <div style="display: flex; gap: 8px; align-items: center;">
-            <button class="btn btn-ghost btn-sm" type="button" id="toggleSourcesBtn" onclick="toggleSources()" style="display: flex; align-items: center; gap: 6px;">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="width:12px;height:12px;"><path d="M22 3H2l8 9.46V19l4 2v-8.54L22 3z"/></svg>
-              Sources Filter
-            </button>
-            <button class="btn btn-ghost btn-sm" type="button" id="refreshNews">Refresh Feeds</button>
-          </div>
-        </div>
-
-        <div class="news-grid" id="newsGrid">
-          <div class="news-empty">Fetching latest RSS items...</div>
-        </div>
-
-        <!-- Pagination -->
-        <div class="pagination-wrap" id="paginationWrap"></div>
+  <main class="page-wrapper marketing-page" style="padding-top: 20px;">
+    <section class="marketing-section" style="border-top: none; padding-top: 0;">
+      <div class="section-heading" style="display: block; margin-bottom: 24px;">
+        <h1 class="section-title" style="font-size: 2.2rem; font-weight: 800; color: var(--text);">Cyber News</h1>
       </div>
 
-      <!-- Right Column: Sources Sidebar (Toggleable) -->
-      <aside class="feeds-sidebar" id="feedsSidebar">
-        <h3 class="sidebar-title">News Sources</h3>
-        <div class="feed-filter-list" id="feedFilterList">
-          <!-- Populated dynamically via JS -->
+      <div class="news-layout-wrapper" id="newsLayoutWrapper">
+        <!-- Left Column: Controls + Grid + Pagination (Max Span) -->
+        <div class="news-content-area">
+          <div class="news-controls">
+            <div class="news-status" id="newsStatus">Loading latest cyber news...</div>
+            <div style="display: flex; gap: 8px; align-items: center;">
+              <button class="btn btn-ghost btn-sm" type="button" id="toggleSourcesBtn" onclick="toggleSources()"
+                style="display: flex; align-items: center; gap: 6px;">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+                  style="width:12px;height:12px;">
+                  <path d="M22 3H2l8 9.46V19l4 2v-8.54L22 3z" />
+                </svg>
+                Sources Filter
+              </button>
+              <button class="btn btn-ghost btn-sm" type="button" id="refreshNews">Refresh Feeds</button>
+            </div>
+          </div>
+
+          <div class="news-grid" id="newsGrid">
+            <div class="news-empty">Fetching latest RSS items...</div>
+          </div>
+
+          <!-- Pagination -->
+          <div class="pagination-wrap" id="paginationWrap"></div>
         </div>
-      </aside>
+
+        <!-- Right Column: Sources Sidebar (Toggleable) -->
+        <aside class="feeds-sidebar" id="feedsSidebar">
+          <h3 class="sidebar-title">News Sources</h3>
+          <div class="feed-filter-list" id="feedFilterList">
+            <!-- Populated dynamically via JS -->
+          </div>
+        </aside>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-logo">CYPR Tech</div>
+    <div class="footer-links">
+      <a href="tools.html">Tools</a>
+      <a href="pricing.html">Pricing</a>
+      <a href="cyber-news.html">Cyber News</a>
+      <a href="aboutus.html">About Us</a>
     </div>
-  </section>
-</main>
+    <div class="footer-copy">© 2026 CYPR Tech. Built to protect.</div>
+  </footer>
 
-<footer class="footer">
-  <div class="footer-logo">CYPR Tech</div>
-  <div class="footer-links">
-    <a href="tools.html">Tools</a>
-    <a href="pricing.html">Pricing</a>
-    <a href="cyber-news.html">Cyber News</a>
-    <a href="aboutus.html">About Us</a>
-  </div>
-  <div class="footer-copy">© 2026 CYPR Tech. Built to protect.</div>
-</footer>
+  <script>
+    const feeds = [
+      { name: 'The Hacker News', tag: 'News', url: 'https://feeds.feedburner.com/TheHackersNews' },
+      { name: 'BleepingComputer', tag: 'News', url: 'https://www.bleepingcomputer.com/feed/' },
+      { name: 'KrebsOnSecurity', tag: 'Cybercrime', url: 'https://krebsonsecurity.com/feed/' },
+      { name: 'CISA Alerts', tag: 'Advisory', url: 'https://www.cisa.gov/cybersecurity-advisories/all.xml' },
+      { name: 'NIST Cybersecurity', tag: 'Research', url: 'https://www.nist.gov/news-events/information%20technology/rss.xml' },
+      { name: 'InfoSecurity Magazine', tag: 'Operations', url: 'https://www.infosecurity-magazine.com/rss/news/' },
+      { name: 'Dark Reading', tag: 'News', url: 'https://www.darkreading.com/rss.xml' },
+      { name: 'SecurityWeek', tag: 'News', url: 'https://www.securityweek.com/feed/' }
+    ];
 
-<script>
-const feeds = [
-  { name: 'The Hacker News', tag: 'News', url: 'https://feeds.feedburner.com/TheHackersNews' },
-  { name: 'BleepingComputer', tag: 'News', url: 'https://www.bleepingcomputer.com/feed/' },
-  { name: 'KrebsOnSecurity', tag: 'Cybercrime', url: 'https://krebsonsecurity.com/feed/' },
-  { name: 'CISA Alerts', tag: 'Advisory', url: 'https://www.cisa.gov/cybersecurity-advisories/all.xml' },
-  { name: 'NIST Cybersecurity', tag: 'Research', url: 'https://www.nist.gov/news-events/information%20technology/rss.xml' },
-  { name: 'InfoSecurity Magazine', tag: 'Operations', url: 'https://www.infosecurity-magazine.com/rss/news/' },
-  { name: 'Dark Reading', tag: 'News', url: 'https://www.darkreading.com/rss.xml' },
-  { name: 'SecurityWeek', tag: 'News', url: 'https://www.securityweek.com/feed/' }
-];
+    const newsGrid = document.getElementById('newsGrid');
+    const newsStatus = document.getElementById('newsStatus');
+    const refreshNews = document.getElementById('refreshNews');
+    const feedFilterList = document.getElementById('feedFilterList');
+    const paginationWrap = document.getElementById('paginationWrap');
 
-const newsGrid = document.getElementById('newsGrid');
-const newsStatus = document.getElementById('newsStatus');
-const refreshNews = document.getElementById('refreshNews');
-const feedFilterList = document.getElementById('feedFilterList');
-const paginationWrap = document.getElementById('paginationWrap');
+    // Pagination & Filter State
+    let allNewsItems = [];
+    let filteredNewsItems = [];
+    let currentPage = 1;
+    const itemsPerPage = 9; // 3x3 layout
+    let activeSourceFilter = 'all';
 
-// Pagination & Filter State
-let allNewsItems = [];
-let filteredNewsItems = [];
-let currentPage = 1;
-const itemsPerPage = 9; // 3x3 layout
-let activeSourceFilter = 'all';
+    function stripHtml(value = '') {
+      const div = document.createElement('div');
+      div.innerHTML = value;
+      return (div.textContent || div.innerText || '').replace(/\s+/g, ' ').trim();
+    }
 
-function stripHtml(value = '') {
-  const div = document.createElement('div');
-  div.innerHTML = value;
-  return (div.textContent || div.innerText || '').replace(/\s+/g, ' ').trim();
-}
+    function escapeHtml(value = '') {
+      const div = document.createElement('div');
+      div.textContent = value;
+      return div.innerHTML;
+    }
 
-function escapeHtml(value = '') {
-  const div = document.createElement('div');
-  div.textContent = value;
-  return div.innerHTML;
-}
+    function shortText(value, limit = 180) {
+      const clean = stripHtml(value);
+      if (clean.length <= limit) return clean;
+      return `${clean.slice(0, limit).trim()}...`;
+    }
 
-function shortText(value, limit = 180) {
-  const clean = stripHtml(value);
-  if (clean.length <= limit) return clean;
-  return `${clean.slice(0, limit).trim()}...`;
-}
+    function formatDate(value) {
+      const date = new Date(value);
+      if (!value || Number.isNaN(date.getTime())) return 'Latest';
+      return date.toLocaleDateString('en-IN', { day: '2-digit', month: 'short', year: 'numeric' });
+    }
 
-function formatDate(value) {
-  const date = new Date(value);
-  if (!value || Number.isNaN(date.getTime())) return 'Latest';
-  return date.toLocaleDateString('en-IN', { day: '2-digit', month: 'short', year: 'numeric' });
-}
+    function normalizeItem(item, feed) {
+      return {
+        source: feed.name,
+        tag: feed.tag,
+        title: stripHtml(item.title || 'Untitled cyber update'),
+        link: item.link || item.guid || '#',
+        date: item.pubDate || item.isoDate || item.published || item.updated || '',
+        description: shortText(item.description || item.content || item.summary || 'Open CYPR Tech AI article for details.'),
+        author: stripHtml(item.author || item.creator || item['dc:creator'] || feed.name),
+        image: item.thumbnail || item.enclosure?.link || item.enclosure?.url || item.image || item.image_url || ''
+      };
+    }
 
-function normalizeItem(item, feed) {
-  return {
-    source: feed.name,
-    tag: feed.tag,
-    title: stripHtml(item.title || 'Untitled cyber update'),
-    link: item.link || item.guid || '#',
-    date: item.pubDate || item.isoDate || item.published || item.updated || '',
-    description: shortText(item.description || item.content || item.summary || 'Open CYPR Tech AI article for details.'),
-    author: stripHtml(item.author || item.creator || item['dc:creator'] || feed.name),
-    image: item.thumbnail || item.enclosure?.link || item.enclosure?.url || item.image || item.image_url || ''
-  };
-}
+    async function fetchViaRss2Json(feed) {
+      const endpoint = `https://api.rss2json.com/v1/api.json?rss_url=${encodeURIComponent(feed.url)}`;
+      const response = await fetch(endpoint);
+      if (!response.ok) throw new Error(`Unable to read ${feed.name}`);
+      const data = await response.json();
+      if (!Array.isArray(data.items)) throw new Error(`No articles found for ${feed.name}`);
+      return data.items.slice(0, 15).map(item => normalizeItem(item, feed));
+    }
 
-async function fetchViaRss2Json(feed) {
-  const endpoint = `https://api.rss2json.com/v1/api.json?rss_url=${encodeURIComponent(feed.url)}`;
-  const response = await fetch(endpoint);
-  if (!response.ok) throw new Error(`Unable to read ${feed.name}`);
-  const data = await response.json();
-  if (!Array.isArray(data.items)) throw new Error(`No articles found for ${feed.name}`);
-  return data.items.slice(0, 15).map(item => normalizeItem(item, feed));
-}
+    async function fetchViaAllOrigins(feed) {
+      const endpoint = `https://api.allorigins.win/raw?url=${encodeURIComponent(feed.url)}`;
+      const response = await fetch(endpoint);
+      if (!response.ok) throw new Error(`Unable to read ${feed.name}`);
+      const xmlText = await response.text();
+      const xml = new DOMParser().parseFromString(xmlText, 'application/xml');
+      return [...xml.querySelectorAll('item, entry')].slice(0, 15).map(node => normalizeItem({
+        title: node.querySelector('title')?.textContent,
+        link: node.querySelector('link')?.getAttribute('href') || node.querySelector('link')?.textContent,
+        pubDate: node.querySelector('pubDate, published, updated')?.textContent,
+        description: node.querySelector('description, summary')?.textContent,
+        content: node.getElementsByTagName('content:encoded')[0]?.textContent || node.querySelector('content')?.textContent,
+        author: node.querySelector('author')?.textContent || node.getElementsByTagName('dc:creator')[0]?.textContent,
+        thumbnail: node.getElementsByTagName('media:thumbnail')[0]?.getAttribute('url') || node.getElementsByTagName('media:content')[0]?.getAttribute('url') || node.querySelector('enclosure')?.getAttribute('url')
+      }, feed));
+    }
 
-async function fetchViaAllOrigins(feed) {
-  const endpoint = `https://api.allorigins.win/raw?url=${encodeURIComponent(feed.url)}`;
-  const response = await fetch(endpoint);
-  if (!response.ok) throw new Error(`Unable to read ${feed.name}`);
-  const xmlText = await response.text();
-  const xml = new DOMParser().parseFromString(xmlText, 'application/xml');
-  return [...xml.querySelectorAll('item, entry')].slice(0, 15).map(node => normalizeItem({
-    title: node.querySelector('title')?.textContent,
-    link: node.querySelector('link')?.getAttribute('href') || node.querySelector('link')?.textContent,
-    pubDate: node.querySelector('pubDate, published, updated')?.textContent,
-    description: node.querySelector('description, summary')?.textContent,
-    content: node.getElementsByTagName('content:encoded')[0]?.textContent || node.querySelector('content')?.textContent,
-    author: node.querySelector('author')?.textContent || node.getElementsByTagName('dc:creator')[0]?.textContent,
-    thumbnail: node.getElementsByTagName('media:thumbnail')[0]?.getAttribute('url') || node.getElementsByTagName('media:content')[0]?.getAttribute('url') || node.querySelector('enclosure')?.getAttribute('url')
-  }, feed));
-}
+    async function loadFeed(feed) {
+      try { return await fetchViaRss2Json(feed); }
+      catch (error) { return fetchViaAllOrigins(feed); }
+    }
 
-async function loadFeed(feed) {
-  try { return await fetchViaRss2Json(feed); }
-  catch (error) { return fetchViaAllOrigins(feed); }
-}
+    function badgeClass(tag) {
+      if (tag === 'Advisory' || tag === 'Research') return 'badge-warn';
+      if (tag === 'Operations') return 'badge-accent';
+      return 'badge-green';
+    }
 
-function badgeClass(tag) {
-  if (tag === 'Advisory' || tag === 'Research') return 'badge-warn';
-  if (tag === 'Operations') return 'badge-accent';
-  return 'badge-green';
-}
+    // Render Feeds Left Sidebar filter list
+    function renderSidebar() {
+      if (!feedFilterList) return;
 
-// Render Feeds Left Sidebar filter list
-function renderSidebar() {
-  if (!feedFilterList) return;
-  
-  const countMap = {};
-  allNewsItems.forEach(item => {
-    countMap[item.source] = (countMap[item.source] || 0) + 1;
-  });
-  
-  let html = `
+      const countMap = {};
+      allNewsItems.forEach(item => {
+        countMap[item.source] = (countMap[item.source] || 0) + 1;
+      });
+
+      let html = `
     <button class="feed-filter-btn ${activeSourceFilter === 'all' ? 'active' : ''}" onclick="applyFilter('all')">
       <span class="dot"></span>
       All Sources
       <span class="feed-badge">${allNewsItems.length}</span>
     </button>
   `;
-  
-  feeds.forEach(feed => {
-    const count = countMap[feed.name] || 0;
-    if (count > 0) {
-      html += `
+
+      feeds.forEach(feed => {
+        const count = countMap[feed.name] || 0;
+        if (count > 0) {
+          html += `
         <button class="feed-filter-btn ${activeSourceFilter === feed.name ? 'active' : ''}" onclick="applyFilter('${feed.name}')">
           <span class="dot"></span>
           ${feed.name}
           <span class="feed-badge">${count}</span>
         </button>
       `;
+        }
+      });
+
+      feedFilterList.innerHTML = html;
     }
-  });
-  
-  feedFilterList.innerHTML = html;
-}
 
-// Filter Action
-function applyFilter(sourceName) {
-  activeSourceFilter = sourceName;
-  if (sourceName === 'all') {
-    filteredNewsItems = allNewsItems;
-  } else {
-    filteredNewsItems = allNewsItems.filter(item => item.source === sourceName);
-  }
-  currentPage = 1;
-  renderSidebar();
-  renderCurrentPage();
-}
-
-// Render current page items inside Grid
-function renderCurrentPage() {
-  const start = (currentPage - 1) * itemsPerPage;
-  const end = start + itemsPerPage;
-  const pageItems = filteredNewsItems.slice(start, end);
-  
-  renderNews(pageItems);
-  renderPaginationControls();
-}
-
-function renderNews(items) {
-  if (!items.length) {
-    newsGrid.innerHTML = '<div class="news-empty">No news articles found for this selection.</div>';
-    return;
-  }
-  
-  const highlightUrl = new URLSearchParams(window.location.search).get('highlight');
-  
-  newsGrid.innerHTML = items.map(item => {
-    let isHighlighted = false;
-    if (highlightUrl) {
-      const decodedUrl = decodeURIComponent(highlightUrl);
-      if (item.link === decodedUrl) {
-        isHighlighted = true;
-      } else if (decodedUrl === 'ransomware' && item.title.toLowerCase().includes('ransomware')) {
-        isHighlighted = true;
-      } else if (decodedUrl === 'windows' && item.title.toLowerCase().includes('windows')) {
-        isHighlighted = true;
-      } else if (decodedUrl === 'phishing' && item.title.toLowerCase().includes('phishing')) {
-        isHighlighted = true;
+    // Filter Action
+    function applyFilter(sourceName) {
+      activeSourceFilter = sourceName;
+      if (sourceName === 'all') {
+        filteredNewsItems = allNewsItems;
+      } else {
+        filteredNewsItems = allNewsItems.filter(item => item.source === sourceName);
       }
+      currentPage = 1;
+      renderSidebar();
+      renderCurrentPage();
     }
-    
-    return `
+
+    // Render current page items inside Grid
+    function renderCurrentPage() {
+      const start = (currentPage - 1) * itemsPerPage;
+      const end = start + itemsPerPage;
+      const pageItems = filteredNewsItems.slice(start, end);
+
+      renderNews(pageItems);
+      renderPaginationControls();
+    }
+
+    function renderNews(items) {
+      if (!items.length) {
+        newsGrid.innerHTML = '<div class="news-empty">No news articles found for this selection.</div>';
+        return;
+      }
+
+      const highlightUrl = new URLSearchParams(window.location.search).get('highlight');
+
+      newsGrid.innerHTML = items.map(item => {
+        let isHighlighted = false;
+        if (highlightUrl) {
+          const decodedUrl = decodeURIComponent(highlightUrl);
+          if (item.link === decodedUrl) {
+            isHighlighted = true;
+          } else if (decodedUrl === 'ransomware' && item.title.toLowerCase().includes('ransomware')) {
+            isHighlighted = true;
+          } else if (decodedUrl === 'windows' && item.title.toLowerCase().includes('windows')) {
+            isHighlighted = true;
+          } else if (decodedUrl === 'phishing' && item.title.toLowerCase().includes('phishing')) {
+            isHighlighted = true;
+          }
+        }
+
+        return `
       <a class="card news-card ${isHighlighted ? 'flash-highlight' : ''}" href="news-article.html?url=${encodeURIComponent(item.link)}">
         <div class="news-thumb">${item.image ? `<img src="${escapeHtml(item.image)}" alt="${escapeHtml(item.title)}" loading="lazy" onerror="this.src='assets/default-news.jpg'; this.onerror=null;">` : '<img src="assets/default-news.jpg" alt="CYPR Tech News" loading="lazy">'}</div>
         <div class="news-card-top"><span class="badge ${badgeClass(item.tag)}">${escapeHtml(item.source)}</span><span class="news-date">${formatDate(item.date)}</span></div>
@@ -462,234 +627,235 @@ function renderNews(items) {
         <div class="news-card-foot"><span class="metric-label">${escapeHtml(item.author || item.source)}</span><span class="feature-link">Read AI Article</span></div>
       </a>
     `;
-  }).join('');
+      }).join('');
 
-  if (highlightUrl) {
-    setTimeout(() => {
-      const targetCard = document.querySelector('.news-card.flash-highlight');
-      if (targetCard) {
-        targetCard.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      if (highlightUrl) {
+        setTimeout(() => {
+          const targetCard = document.querySelector('.news-card.flash-highlight');
+          if (targetCard) {
+            targetCard.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          }
+        }, 400);
       }
-    }, 400);
-  }
-}
+    }
 
-// Render dynamic pagination buttons
-function renderPaginationControls() {
-  if (!paginationWrap) return;
-  
-  const totalPages = Math.ceil(filteredNewsItems.length / itemsPerPage) || 1;
-  
-  if (totalPages <= 1) {
-    paginationWrap.innerHTML = '';
-    return;
-  }
-  
-  let html = `
+    // Render dynamic pagination buttons
+    function renderPaginationControls() {
+      if (!paginationWrap) return;
+
+      const totalPages = Math.ceil(filteredNewsItems.length / itemsPerPage) || 1;
+
+      if (totalPages <= 1) {
+        paginationWrap.innerHTML = '';
+        return;
+      }
+
+      let html = `
     <button class="pagination-btn" onclick="goToPage(${currentPage - 1})" ${currentPage === 1 ? 'disabled' : ''}>
       &larr; Prev
     </button>
   `;
-  
-  for (let i = 1; i <= totalPages; i++) {
-    html += `
+
+      for (let i = 1; i <= totalPages; i++) {
+        html += `
       <button class="pagination-btn ${i === currentPage ? 'active' : ''}" onclick="goToPage(${i})">
         ${i}
       </button>
     `;
-  }
-  
-  html += `
+      }
+
+      html += `
     <button class="pagination-btn" onclick="goToPage(${currentPage + 1})" ${currentPage === totalPages ? 'disabled' : ''}>
       Next &rarr;
     </button>
   `;
-  
-  paginationWrap.innerHTML = html;
-}
 
-function goToPage(page) {
-  const totalPages = Math.ceil(filteredNewsItems.length / itemsPerPage) || 1;
-  if (page < 1 || page > totalPages) return;
-  currentPage = page;
-  renderCurrentPage();
-  window.scrollTo({ top: newsGrid.offsetTop - 120, behavior: 'smooth' });
-}
+      paginationWrap.innerHTML = html;
+    }
 
-const fallbackNews = [
-  {
-    source: 'The Hacker News',
-    tag: 'Advisory',
-    title: 'New Ransomware Campaign Targeting Enterprise Systems Worldwide',
-    link: 'https://thehackernews.com/ransomware',
-    date: new Date().toISOString(),
-    description: 'Security researchers have uncovered a highly sophisticated ransomware operation targeting corporate database engines using zero-day vulnerabilities in common database plugins.',
-    author: 'Ravie Lakshmanan',
-    image: ''
-  },
-  {
-    source: 'BleepingComputer',
-    tag: 'Operations',
-    title: 'Critical Microsoft Windows Update Fixes Exploited Kernel Security Flaw',
-    link: 'https://bleepingcomputer.com/windows',
-    date: new Date(Date.now() - 86400000).toISOString(),
-    description: 'Microsoft has released an out-of-band security patch addressing a critical elevation of privilege vulnerability in Windows Kernel that is currently being exploited in the wild.',
-    author: 'Sergei Shevchenko',
-    image: ''
-  },
-  {
-    source: 'KrebsOnSecurity',
-    tag: 'Research',
-    title: 'Phishing Campaign Spoofs Major Financial Institutions via Unicode Domain Homoglyphs',
-    link: 'https://krebsonsecurity.com/phishing',
-    date: new Date(Date.now() - 172800000).toISOString(),
-    description: 'A newly detected threat actor group is using lookalike homoglyph domains to bypass standard phishing filters, mimicking major banks and credential authentication services.',
-    author: 'Brian Krebs',
-    image: ''
-  },
-  {
-    source: 'CISA Alerts',
-    tag: 'Advisory',
-    title: 'CISA Urges Organizations to Patch Active Directory Vulnerabilities Immediately',
-    link: 'https://cisa.gov/active-directory',
-    date: new Date(Date.now() - 259200000).toISOString(),
-    description: 'The Cybersecurity and Infrastructure Security Agency (CISA) has added several new active directory manipulation flaws to its Known Exploited Vulnerabilities catalog.',
-    author: 'CISA Gov',
-    image: ''
-  },
-  {
-    source: 'Sophos News',
-    tag: 'Operations',
-    title: 'AI-Generated Phishing Templates Increasing in Complexity',
-    link: 'https://sophos.com/ai-phishing',
-    date: new Date(Date.now() - 345600000).toISOString(),
-    description: 'Sophos threat intelligence indicates a sharp spike in personalized phishing emails constructed using large language models, exhibiting perfect grammar and convincing spear-phishing contexts.',
-    author: 'John Shier',
-    image: ''
-  }
-];
+    function goToPage(page) {
+      const totalPages = Math.ceil(filteredNewsItems.length / itemsPerPage) || 1;
+      if (page < 1 || page > totalPages) return;
+      currentPage = page;
+      renderCurrentPage();
+      window.scrollTo({ top: newsGrid.offsetTop - 120, behavior: 'smooth' });
+    }
 
-async function loadNews(forceRefresh = false) {
-  refreshNews.disabled = true;
-  
-  const CACHE_KEY = 'cypr_news_cache';
-  const CACHE_TIME_KEY = 'cypr_news_cache_time';
-  const CACHE_DURATION = 15 * 60 * 1000;
-  
-  const cachedData = localStorage.getItem(CACHE_KEY);
-  const cachedTime = localStorage.getItem(CACHE_TIME_KEY);
-  const now = Date.now();
-  
-  let items = [];
-  let fromCache = false;
-  
-  if (!forceRefresh && cachedData && cachedTime && (now - cachedTime < CACHE_DURATION)) {
-    items = JSON.parse(cachedData);
-    fromCache = true;
-  } else {
-    newsStatus.textContent = 'Loading latest cyber news...';
-    
-    const feedPromises = feeds.map(async (feed) => {
-      try {
-        // Fetch feed with an individual timeout of 5 seconds
-        const fetchPromise = loadFeed(feed);
-        const timeoutPromise = new Promise((_, reject) => 
-          setTimeout(() => reject(new Error('Timeout')), 5000)
-        );
-        return await Promise.race([fetchPromise, timeoutPromise]);
-      } catch (err) {
-        console.warn(`Feed ${feed.name} failed:`, err);
-        return null;
+    const fallbackNews = [
+      {
+        source: 'The Hacker News',
+        tag: 'Advisory',
+        title: 'New Ransomware Campaign Targeting Enterprise Systems Worldwide',
+        link: 'https://thehackernews.com/ransomware',
+        date: new Date().toISOString(),
+        description: 'Security researchers have uncovered a highly sophisticated ransomware operation targeting corporate database engines using zero-day vulnerabilities in common database plugins.',
+        author: 'Ravie Lakshmanan',
+        image: ''
+      },
+      {
+        source: 'BleepingComputer',
+        tag: 'Operations',
+        title: 'Critical Microsoft Windows Update Fixes Exploited Kernel Security Flaw',
+        link: 'https://bleepingcomputer.com/windows',
+        date: new Date(Date.now() - 86400000).toISOString(),
+        description: 'Microsoft has released an out-of-band security patch addressing a critical elevation of privilege vulnerability in Windows Kernel that is currently being exploited in the wild.',
+        author: 'Sergei Shevchenko',
+        image: ''
+      },
+      {
+        source: 'KrebsOnSecurity',
+        tag: 'Research',
+        title: 'Phishing Campaign Spoofs Major Financial Institutions via Unicode Domain Homoglyphs',
+        link: 'https://krebsonsecurity.com/phishing',
+        date: new Date(Date.now() - 172800000).toISOString(),
+        description: 'A newly detected threat actor group is using lookalike homoglyph domains to bypass standard phishing filters, mimicking major banks and credential authentication services.',
+        author: 'Brian Krebs',
+        image: ''
+      },
+      {
+        source: 'CISA Alerts',
+        tag: 'Advisory',
+        title: 'CISA Urges Organizations to Patch Active Directory Vulnerabilities Immediately',
+        link: 'https://cisa.gov/active-directory',
+        date: new Date(Date.now() - 259200000).toISOString(),
+        description: 'The Cybersecurity and Infrastructure Security Agency (CISA) has added several new active directory manipulation flaws to its Known Exploited Vulnerabilities catalog.',
+        author: 'CISA Gov',
+        image: ''
+      },
+      {
+        source: 'Sophos News',
+        tag: 'Operations',
+        title: 'AI-Generated Phishing Templates Increasing in Complexity',
+        link: 'https://sophos.com/ai-phishing',
+        date: new Date(Date.now() - 345600000).toISOString(),
+        description: 'Sophos threat intelligence indicates a sharp spike in personalized phishing emails constructed using large language models, exhibiting perfect grammar and convincing spear-phishing contexts.',
+        author: 'John Shier',
+        image: ''
+      }
+    ];
+
+    async function loadNews(forceRefresh = false) {
+      refreshNews.disabled = true;
+
+      const CACHE_KEY = 'cypr_news_cache';
+      const CACHE_TIME_KEY = 'cypr_news_cache_time';
+      const CACHE_DURATION = 15 * 60 * 1000;
+
+      const cachedData = localStorage.getItem(CACHE_KEY);
+      const cachedTime = localStorage.getItem(CACHE_TIME_KEY);
+      const now = Date.now();
+
+      let items = [];
+      let fromCache = false;
+
+      if (!forceRefresh && cachedData && cachedTime && (now - cachedTime < CACHE_DURATION)) {
+        items = JSON.parse(cachedData);
+        fromCache = true;
+      } else {
+        newsStatus.textContent = 'Loading latest cyber news...';
+
+        const feedPromises = feeds.map(async (feed) => {
+          try {
+            // Fetch feed with an individual timeout of 5 seconds
+            const fetchPromise = loadFeed(feed);
+            const timeoutPromise = new Promise((_, reject) =>
+              setTimeout(() => reject(new Error('Timeout')), 5000)
+            );
+            return await Promise.race([fetchPromise, timeoutPromise]);
+          } catch (err) {
+            console.warn(`Feed ${feed.name} failed:`, err);
+            return null;
+          }
+        });
+
+        let succeededFeedsCount = 0;
+        try {
+          const results = await Promise.all(feedPromises);
+          succeededFeedsCount = results.filter(Boolean).length;
+          items = results.filter(Boolean).flat().sort((a, b) => new Date(b.date || 0) - new Date(a.date || 0));
+        } catch (err) {
+          console.error("News load error:", err);
+        }
+
+        if (items && items.length > 0) {
+          localStorage.setItem(CACHE_KEY, JSON.stringify(items));
+          localStorage.setItem(CACHE_TIME_KEY, now.toString());
+          newsStatus.textContent = `${items.length} fresh articles loaded (from ${succeededFeedsCount}/${feeds.length} sources)`;
+        }
+      }
+
+      if (!items || items.length === 0) {
+        const backupCache = localStorage.getItem(CACHE_KEY);
+        if (backupCache) {
+          items = JSON.parse(backupCache);
+          newsStatus.textContent = `Loaded from offline cache due to connection timeout`;
+        } else {
+          items = fallbackNews;
+          newsStatus.textContent = `Loaded offline curated threat intelligence feeds (fallback)`;
+        }
+      } else if (fromCache) {
+        newsStatus.textContent = `${items.length} articles loaded from cache (auto-refreshes in ${Math.round((CACHE_DURATION - (now - cachedTime)) / 60000)}m)`;
+      }
+
+      allNewsItems = items;
+      filteredNewsItems = items;
+
+      // Highlight url check to direct page locking
+      const highlightUrl = new URLSearchParams(window.location.search).get('highlight');
+      if (highlightUrl) {
+        const decodedUrl = decodeURIComponent(highlightUrl);
+        const idx = filteredNewsItems.findIndex(item => item.link === decodedUrl);
+        if (idx !== -1) {
+          currentPage = Math.floor(idx / itemsPerPage) + 1;
+        }
+      } else {
+        currentPage = 1;
+      }
+
+      renderSidebar();
+      renderCurrentPage();
+
+      refreshNews.disabled = false;
+    }
+
+    function toggleSources() {
+      const wrapper = document.getElementById('newsLayoutWrapper');
+      const btn = document.getElementById('toggleSourcesBtn');
+      if (!wrapper || !btn) return;
+
+      const isHidden = wrapper.classList.toggle('sources-hidden');
+      localStorage.setItem('cypr_sources_visible', isHidden ? 'false' : 'true');
+
+      if (isHidden) {
+        btn.style.background = 'none';
+        btn.style.borderColor = 'var(--border)';
+      } else {
+        btn.style.background = 'var(--bg3)';
+        btn.style.borderColor = 'var(--border2)';
+      }
+    }
+
+    // Restore sidebar toggle state on load
+    window.addEventListener('DOMContentLoaded', () => {
+      const visible = localStorage.getItem('cypr_sources_visible') ?? 'true';
+      const wrapper = document.getElementById('newsLayoutWrapper');
+      const btn = document.getElementById('toggleSourcesBtn');
+      if (wrapper && btn) {
+        if (visible === 'false') {
+          wrapper.classList.add('sources-hidden');
+          btn.style.background = 'none';
+          btn.style.borderColor = 'var(--border)';
+        } else {
+          wrapper.classList.remove('sources-hidden');
+          btn.style.background = 'var(--bg3)';
+          btn.style.borderColor = 'var(--border2)';
+        }
       }
     });
 
-    let succeededFeedsCount = 0;
-    try {
-      const results = await Promise.all(feedPromises);
-      succeededFeedsCount = results.filter(Boolean).length;
-      items = results.filter(Boolean).flat().sort((a, b) => new Date(b.date || 0) - new Date(a.date || 0));
-    } catch (err) {
-      console.error("News load error:", err);
-    }
-    
-    if (items && items.length > 0) {
-      localStorage.setItem(CACHE_KEY, JSON.stringify(items));
-      localStorage.setItem(CACHE_TIME_KEY, now.toString());
-      newsStatus.textContent = `${items.length} fresh articles loaded (from ${succeededFeedsCount}/${feeds.length} sources)`;
-    }
-  }
-  
-  if (!items || items.length === 0) {
-    const backupCache = localStorage.getItem(CACHE_KEY);
-    if (backupCache) {
-      items = JSON.parse(backupCache);
-      newsStatus.textContent = `Loaded from offline cache due to connection timeout`;
-    } else {
-      items = fallbackNews;
-      newsStatus.textContent = `Loaded offline curated threat intelligence feeds (fallback)`;
-    }
-  } else if (fromCache) {
-    newsStatus.textContent = `${items.length} articles loaded from cache (auto-refreshes in ${Math.round((CACHE_DURATION - (now - cachedTime)) / 60000)}m)`;
-  }
-  
-  allNewsItems = items;
-  filteredNewsItems = items;
-  
-  // Highlight url check to direct page locking
-  const highlightUrl = new URLSearchParams(window.location.search).get('highlight');
-  if (highlightUrl) {
-    const decodedUrl = decodeURIComponent(highlightUrl);
-    const idx = filteredNewsItems.findIndex(item => item.link === decodedUrl);
-    if (idx !== -1) {
-      currentPage = Math.floor(idx / itemsPerPage) + 1;
-    }
-  } else {
-    currentPage = 1;
-  }
-  
-  renderSidebar();
-  renderCurrentPage();
-  
-  refreshNews.disabled = false;
-}
-
-function toggleSources() {
-  const wrapper = document.getElementById('newsLayoutWrapper');
-  const btn = document.getElementById('toggleSourcesBtn');
-  if (!wrapper || !btn) return;
-  
-  const isHidden = wrapper.classList.toggle('sources-hidden');
-  localStorage.setItem('cypr_sources_visible', isHidden ? 'false' : 'true');
-  
-  if (isHidden) {
-    btn.style.background = 'none';
-    btn.style.borderColor = 'var(--border)';
-  } else {
-    btn.style.background = 'var(--bg3)';
-    btn.style.borderColor = 'var(--border2)';
-  }
-}
-
-// Restore sidebar toggle state on load
-window.addEventListener('DOMContentLoaded', () => {
-  const visible = localStorage.getItem('cypr_sources_visible') ?? 'true';
-  const wrapper = document.getElementById('newsLayoutWrapper');
-  const btn = document.getElementById('toggleSourcesBtn');
-  if (wrapper && btn) {
-    if (visible === 'false') {
-      wrapper.classList.add('sources-hidden');
-      btn.style.background = 'none';
-      btn.style.borderColor = 'var(--border)';
-    } else {
-      wrapper.classList.remove('sources-hidden');
-      btn.style.background = 'var(--bg3)';
-      btn.style.borderColor = 'var(--border2)';
-    }
-  }
-});
-
-refreshNews.addEventListener('click', () => loadNews(true));
-loadNews();
-</script>
+    refreshNews.addEventListener('click', () => loadNews(true));
+    loadNews();
+  </script>
 </body>
+
 </html>

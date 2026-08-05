@@ -130,7 +130,13 @@
     return;
   }
 
-  // Store session exactly like normal email login does
+  // Clear old sessions first
+  if (window.CYPR_AUTH) {
+    window.CYPR_AUTH.clearSession();
+  }
+
+  const now = Date.now().toString();
+  // Store session with timestamp
   localStorage.setItem('cm_session_token',    token);
   localStorage.setItem('userId',              userId);
   localStorage.setItem('cypr_user_id',          userId);
@@ -140,6 +146,9 @@
   localStorage.setItem('cm_user_credits',     credits);
   localStorage.setItem('cm_user_subscription', subscription);
   localStorage.setItem('cm_user_score',       score);
+  localStorage.setItem('cm_session_created_at', now);
+  localStorage.setItem('cm_last_activity', now);
+  localStorage.setItem('cm_remember_me', 'true');
 
   if (avatar) {
     localStorage.setItem('cm_user_avatar', avatar);
